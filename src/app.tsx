@@ -26,7 +26,7 @@ const weapons=
 [
   {
     title: "Espadas",
-    imageUrl: "/weapons/sword.png"
+    imageUrl: "/Broadsword.wepb"
   },
   {
     title: "Arcos", 
