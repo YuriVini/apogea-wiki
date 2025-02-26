@@ -6,6 +6,7 @@ import DaggerIcon from '/daggers/Dagger2.webp'
 import ShieldIcon from '/shield/Shield4.webp'
 import BowIcon from '/bow/StoneBow.webp'
 import ArmorIcon from '/armor/Armor1.webp'
+import SteamIcon from '/steam/steam.png'
 
 const highlightQuest = [
   {
@@ -86,63 +87,63 @@ const App = () => {
       <main className='max-w-7xl mx-auto p-6'>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
           {/* Featured Guides */}
-          <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg'>
+          <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
             <h2 className='text-xl font-bold text-white mb-4'>
               Guias em Destaque
             </h2>
             <ul className='space-y-3'>
-              <li className='text-gray-300 hover:text-white cursor-pointer'>
+              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
                 Primeiros Passos em Apogea
               </li>
-              <li className='text-gray-300 hover:text-white cursor-pointer'>
+              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
                 Sistema de Combate
               </li>
-              <li className='text-gray-300 hover:text-white cursor-pointer'>
+              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
                 Progressão de Personagem
               </li>
             </ul>
           </div>
 
           {/* Classes */}
-          <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg'>
+          <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
             <h2 className='text-xl font-bold text-white mb-4'>Classes</h2>
             <ul className='space-y-3'>
-              <li className='text-gray-300 hover:text-white cursor-pointer'>
+              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
                 Guerreiro
               </li>
-              <li className='text-gray-300 hover:text-white cursor-pointer'>
+              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
                 Mago
               </li>
-              <li className='text-gray-300 hover:text-white cursor-pointer'>
+              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
                 Arqueiro
               </li>
-              <li className='text-gray-300 hover:text-white cursor-pointer'>
+              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
                 Rogue
               </li>
             </ul>
           </div>
 
           {/* Latest Updates */}
-          <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg'>
+          <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
             <h2 className='text-xl font-bold text-white mb-4'>
               Últimas Atualizações
             </h2>
             <div className='space-y-4'>
               <div>
                 <p className='text-sm text-gray-400'>22/03/2024</p>
-                <p className='text-gray-300'>
+                <p className='text-gray-300 transition-colors duration-200 hover:text-white'>
                   Novo Dungeon: Cavernas Cristalinas
                 </p>
               </div>
               <div>
                 <p className='text-sm text-gray-400'>20/03/2024</p>
-                <p className='text-gray-300'>
+                <p className='text-gray-300 transition-colors duration-200 hover:text-white'>
                   Atualização do Sistema de Crafting
                 </p>
               </div>
               <div>
                 <p className='text-sm text-gray-400'>18/03/2024</p>
-                <p className='text-gray-300'>Nova Região: Floresta Ancestral</p>
+                <p className='text-gray-300 transition-colors duration-200 hover:text-white'>Nova Região: Floresta Ancestral</p>
               </div>
             </div>
           </div>
@@ -174,16 +175,18 @@ const App = () => {
             <h2 className='text-2xl font-bold text-white mb-6 text-center'>
               Armas e Equipamentos
             </h2>
-            <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto'>
+            <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
               <div className='grid grid-cols-3 gap-4'>
                 {weapons.map((weapon, index) => (
-                  <WeaponBox key={index} {...weapon} />
+                  <div key={index} className="transition-transform duration-300 hover:scale-125">
+                    <WeaponBox {...weapon} />
+                  </div>
                 ))}
               </div>
               <div className='text-center mt-6'>
                 <a
                   href='#'
-                  className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'
+                  className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all duration-300 hover:scale-110'
                 >
                   Ver Mais Equipamentos
                 </a>
@@ -237,7 +240,7 @@ const App = () => {
               </h3>
               <div className='flex space-x-4'>
                 <a
-                  href='#'
+                  href='https://discord.gg/2AcC8D9s'
                   className='hover:text-white flex items-center gap-2'
                 >
                   <svg
@@ -250,7 +253,7 @@ const App = () => {
                   Discord
                 </a>
                 <a
-                  href='#'
+                  href='https://x.com/TrinitasGames'
                   className='hover:text-white flex items-center gap-2'
                 >
                   <svg
@@ -263,7 +266,7 @@ const App = () => {
                   Twitter
                 </a>
                 <a
-                  href='#'
+                  href='https://www.patreon.com/Apogea'
                   className='hover:text-white flex items-center gap-2'
                 >
                   <svg
@@ -271,11 +274,24 @@ const App = () => {
                     viewBox='0 0 24 24'
                     fill='currentColor'
                   >
-                    <path d='M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z' />
+                    <path d="M14.82 2.41c3.96 0 7.18 3.24 7.18 7.21 0 3.96-3.22 7.18-7.18 7.18-3.97 0-7.21-3.22-7.21-7.18 0-3.97 3.24-7.21 7.21-7.21M2 21.6h3.5V2.41H2V21.6z"/>
                   </svg>
-                  YouTube
+                  Patreon
                 </a>
               </div>
+              <a 
+                href='https://store.steampowered.com/app/2796220/Apogea/'
+                className='inline-flex items-center px-8 py-4 mt-6 bg-[#1b2838] hover:bg-[#2a475e] text-white rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <img 
+                  src="/steam.png" 
+                  alt="Steam icon" 
+                  className="w-7 h-7 mr-3 filter brightness-110" 
+                />
+                <span className="font-medium text-lg">Baixar na Steam</span>
+              </a>
             </div>
           </div>
           <div className='text-center mt-8 pt-8 border-t border-gray-700'>
