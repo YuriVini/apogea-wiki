@@ -1,7 +1,11 @@
 import { HighlightQuest } from './components/highlight-quest'
 import { WeaponBox } from './components/weapon-box'
+import StaffIcon from '/staff/Wooden_staff.webp'
 import SwordIcon from '/swords/Broadsword.webp'
 import DaggerIcon from '/daggers/Dagger2.webp'
+import ShieldIcon from '/shield/Shield4.webp'
+import BowIcon from '/bow/StoneBow.webp'
+import ArmorIcon from '/armor/Armor1.webp'
 
 const highlightQuest = [
   {
@@ -34,11 +38,11 @@ const weapons = [
   },
   {
     title: 'Arcos',
-    imageUrl: '/weapons/bow.png',
+    imageUrl: BowIcon,
   },
   {
     title: 'Cajados',
-    imageUrl: '/weapons/staff.png',
+    imageUrl: StaffIcon,
   },
   {
     title: 'Adagas',
@@ -46,11 +50,11 @@ const weapons = [
   },
   {
     title: 'Escudos',
-    imageUrl: '/weapons/shield.png',
+    imageUrl: ShieldIcon,
   },
   {
     title: 'Armaduras',
-    imageUrl: '/weapons/armor.png',
+    imageUrl: ArmorIcon,
   },
 ]
 
