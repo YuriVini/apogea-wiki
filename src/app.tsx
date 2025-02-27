@@ -6,7 +6,7 @@ import DaggerIcon from '/daggers/Dagger2.webp'
 import ShieldIcon from '/shield/Shield4.webp'
 import BowIcon from '/bow/StoneBow.webp'
 import ArmorIcon from '/armor/Armor1.webp'
-import SteamIcon from '/steam/steam.png'
+
 
 const highlightQuest = [
   {
@@ -109,16 +109,16 @@ const App = () => {
             <h2 className='text-xl font-bold text-white mb-4'>Classes</h2>
             <ul className='space-y-3'>
               <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                Guerreiro
+                Knight
               </li>
               <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                Mago
-              </li>
-              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                Arqueiro
+                Mage
               </li>
               <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
                 Rogue
+              </li>
+              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
+                Squire
               </li>
             </ul>
           </div>
@@ -143,7 +143,9 @@ const App = () => {
               </div>
               <div>
                 <p className='text-sm text-gray-400'>18/03/2024</p>
-                <p className='text-gray-300 transition-colors duration-200 hover:text-white'>Nova Região: Floresta Ancestral</p>
+                <p className='text-gray-300 transition-colors duration-200 hover:text-white'>
+                  Nova Região: Floresta Ancestral
+                </p>
               </div>
             </div>
           </div>
@@ -178,7 +180,10 @@ const App = () => {
             <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
               <div className='grid grid-cols-3 gap-4'>
                 {weapons.map((weapon, index) => (
-                  <div key={index} className="transition-transform duration-300 hover:scale-125">
+                  <div
+                    key={index}
+                    className='transition-transform duration-300 hover:scale-125'
+                  >
                     <WeaponBox {...weapon} />
                   </div>
                 ))}
@@ -194,6 +199,24 @@ const App = () => {
             </div>
           </div>
         </div>
+
+        {/* Video Section */}
+        <div className='flex justify-center mb-10'>
+          <div className='max-w-4xl w-full'>
+            <h2 className='text-2xl font-bold text-white mb-6 text-center'>
+              Conheça Apogea
+            </h2>
+            <div className='relative pt-[56.25%] w-full'>
+              <iframe
+                className='absolute top-0 left-0 w-full h-full rounded-lg shadow-lg'
+                src='https://www.youtube.com/embed/_Qlm2aAbS6w'
+                title='Apogea Game Trailer'
+                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
       </main>
 
       {/* Footer */}
@@ -202,11 +225,12 @@ const App = () => {
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
             <div>
               <h3 className='text-white text-lg font-bold mb-4'>
-                Sobre WikiApogea
+                Sobre Apogea Wiki
               </h3>
               <p className='text-sm text-justify'>
-                Um mundo vasto de aventuras e descobertas aguarda por você em
-                Apogea. Junte-se a milhares de jogadores nesta jornada épica.
+                Uma página criada e mantida por fãs dedicados de Apogea. Todo o
+                conteúdo é produzido pela comunidade de jogadores para ajudar
+                novos aventureiros em sua jornada.
               </p>
             </div>
             <div>
@@ -274,23 +298,23 @@ const App = () => {
                     viewBox='0 0 24 24'
                     fill='currentColor'
                   >
-                    <path d="M14.82 2.41c3.96 0 7.18 3.24 7.18 7.21 0 3.96-3.22 7.18-7.18 7.18-3.97 0-7.21-3.22-7.21-7.18 0-3.97 3.24-7.21 7.21-7.21M2 21.6h3.5V2.41H2V21.6z"/>
+                    <path d='M14.82 2.41c3.96 0 7.18 3.24 7.18 7.21 0 3.96-3.22 7.18-7.18 7.18-3.97 0-7.21-3.22-7.21-7.18 0-3.97 3.24-7.21 7.21-7.21M2 21.6h3.5V2.41H2V21.6z' />
                   </svg>
                   Patreon
                 </a>
               </div>
-              <a 
+              <a
                 href='https://store.steampowered.com/app/2796220/Apogea/'
                 className='inline-flex items-center px-8 py-4 mt-6 bg-[#1b2838] hover:bg-[#2a475e] text-white rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1'
                 target='_blank'
                 rel='noopener noreferrer'
               >
-                <img 
-                  src="/steam.png" 
-                  alt="Steam icon" 
-                  className="w-7 h-7 mr-3 filter brightness-110" 
+                <img
+                  src='/social/steam.png'
+                  alt='Steam icon'
+                  className='w-7 h-7 mr-3 filter brightness-110'
                 />
-                <span className="font-medium text-lg">Baixar na Steam</span>
+                <span className='font-medium text-lg'>Baixar na Steam</span>
               </a>
             </div>
           </div>
