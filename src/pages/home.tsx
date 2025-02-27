@@ -1,4 +1,4 @@
-import { HighlightQuest } from '../components/quest'
+import { HighlightQuest } from '../components/highlight-quest'
 import { WeaponBox } from '../components/weapon-box'
 import StaffIcon from '/staff/Wooden_staff.webp'
 import SwordIcon from '/swords/Broadsword.webp'
