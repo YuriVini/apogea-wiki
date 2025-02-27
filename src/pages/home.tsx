@@ -1,11 +1,21 @@
 import { HighlightQuest } from '../components/highlight-quest'
 import { WeaponBox } from '../components/weapon-box'
+import { OtherBox } from '../components/other-box'
 import StaffIcon from '/staff/Wooden_staff.webp'
 import SwordIcon from '/swords/Broadsword.webp'
 import DaggerIcon from '/daggers/Dagger2.webp'
 import ShieldIcon from '/shield/Shield4.webp'
 import BowIcon from '/bow/StoneBow.webp'
 import ArmorIcon from '/armor/Armor1.webp'
+import BackpackIcon from '/backpack/Backpack_blue.webp'
+import CreatureDropsIcon from '/creature-drops/Forsaken_cross.webp'
+import QuestItensIcon from '/quest-items/Aqua_vial_jebidiah.webp'
+import GlovesIcon from '/gloves/Leather_gloves.webp'
+import RingIcon from '/ring/Golden_ring.webp'
+import NecklaceIcon from '/necklace/Silver_amulet.webp'
+import AbilitiesIcon from '/abilities/Ability2.webp'
+import SpellsIcon from '/spells/Spell23.webp'
+import FoodIcon from '/food/Bread_loaf.webp'
 import { Link } from 'react-router'
 
 const highlightQuest = [
@@ -50,12 +60,63 @@ const weapons = [
     imageUrl: DaggerIcon,
   },
   {
+    title: 'Luvas',
+    imageUrl: GlovesIcon,
+  },
+  {
     title: 'Escudos',
     imageUrl: ShieldIcon,
   },
   {
     title: 'Armaduras',
     imageUrl: ArmorIcon,
+  },
+  {
+    title: 'Anel',
+    imageUrl: RingIcon,
+  },
+  {
+    title: 'Colar',
+    imageUrl: NecklaceIcon,
+  },
+  {
+    title: 'Container',
+    imageUrl: BackpackIcon,
+  },
+  {
+    title: 'Drop de Criaturas',
+    imageUrl: CreatureDropsIcon,
+  },
+  {
+    title: 'Itens de Quest',
+    imageUrl: QuestItensIcon,
+  },
+]
+
+const other = [
+  {
+    title: 'Monstros',
+    imageUrl: QuestItensIcon
+  },
+  {
+    title: 'Habilidades',
+    imageUrl: AbilitiesIcon
+  },
+  {
+    title: 'Feitiços',
+    imageUrl: SpellsIcon
+  },
+  {
+    title: 'Livros',
+    imageUrl: QuestItensIcon
+  },
+  {
+    title: 'Comidas',
+    imageUrl: FoodIcon
+  },
+  {
+    title: 'NPCs',
+    imageUrl: QuestItensIcon
   },
 ]
 
@@ -195,12 +256,27 @@ export const Home = () => {
                 ))}
               </div>
               <div className='text-center mt-6'>
-                <a
-                  href='#'
-                  className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all duration-300 hover:scale-110'
-                >
-                  Ver Mais Equipamentos
-                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Others Section */}
+          <div className='mb-10'>
+            <h2 className='text-2xl font-bold text-white mb-6 text-center'>
+            Outros
+            </h2>
+            <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
+              <div className='grid grid-cols-3 gap-4'>
+                {other.map((item, index) => (
+                  <div
+                    key={index}
+                    className='transition-transform duration-300 hover:scale-125'
+                  >
+                    <OtherBox {...item} />
+                  </div>
+                ))}
+              </div>
+              <div className='text-center mt-6'>
               </div>
             </div>
           </div>
@@ -231,8 +307,8 @@ export const Home = () => {
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
             <div>
               <h3 className='text-white text-lg font-bold mb-4'>
-                Sobre WikiApogea
-              </h3>
+                Sobre Apogea Wiki
+              </h3> 
               <p className='text-sm text-justify'>
                 Um mundo vasto de aventuras e descobertas aguarda por você em
                 Apogea. Junte-se a milhares de jogadores nesta jornada épica.
