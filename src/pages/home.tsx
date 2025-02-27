@@ -61,7 +61,7 @@ const weapons = [
 
 export const Home = () => {
   return (
-    <div className='min-h-screen bg-gradient-to-b from-gray-900 to-gray-700'>
+    <div>
       {/* Header */}
       <header className='bg-gray-800/50 p-4 shadow-lg'>
         <div className='max-w-7xl mx-auto flex justify-between items-center'>
@@ -93,17 +93,21 @@ export const Home = () => {
             </h2>
             <ul className='space-y-3'>
               <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                <Link to='/featured-guides/primeiros-passos'>
+                <Link to='/guides/primeiros-passos'>
                   Primeiros Passos em Apogea
                 </Link>
               </li>
               <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                Sistema de Combate
+              <Link to='/guides/sistema-combate'>
+                  Sistema de Combate 
+                </Link>
               </li>
               <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                Progressão de Personagem
+              <Link to='/guides/progressao-personagem'>
+                  Progressão de Personagem 
+                </Link>
               </li>
-            </ul>
+            </ul> 
           </div>
 
           {/* Classes */}
@@ -111,16 +115,16 @@ export const Home = () => {
             <h2 className='text-xl font-bold text-white mb-4'>Classes</h2>
             <ul className='space-y-3'>
               <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                Guerreiro
+                Knight
               </li>
               <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                Mago
-              </li>
-              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                Arqueiro
+                Mage
               </li>
               <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
                 Rogue
+              </li>
+              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
+                Squire
               </li>
             </ul>
           </div>
