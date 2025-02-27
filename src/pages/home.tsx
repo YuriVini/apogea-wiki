@@ -205,6 +205,24 @@ export const Home = () => {
             </div>
           </div>
         </div>
+
+        {/* Video Section */}
+        <div className='flex justify-center mb-10'>
+          <div className='max-w-4xl w-full'>
+            <h2 className='text-2xl font-bold text-white mb-6 text-center'>
+              Conheça Apogea
+            </h2>
+            <div className='relative pt-[56.25%] w-full'>
+              <iframe
+                className='absolute top-0 left-0 w-full h-full rounded-lg shadow-lg'
+                src='https://www.youtube.com/embed/_Qlm2aAbS6w'
+                title='Apogea Game Trailer'
+                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
       </main>
 
       {/* Footer */}
