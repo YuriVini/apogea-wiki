@@ -10,7 +10,7 @@ export const HighlightQuest = ({
   description,
 }: HighlightQuestProps) => {
   return (
-    <div className='border-b border-gray-600 pb-4 hover:bg-gray-700/30 cursor-pointer'>
+    <div className='p-6 rounded-xl hover:bg-gray-700/30 cursor-pointer transition-all duration-300 hover:scale-105'>
       <a href='#' className='block'>
         <h3 className='text-xl text-white font-semibold'>{title}</h3>
         <p className='text-gray-300 mt-2'>Nível Recomendado: 30+</p>
