@@ -3,6 +3,7 @@ import { Footer } from '../components/footer'
 import { useState, useEffect } from 'react'
 import { ApiNoAuth } from '../@api/axios'
 import { Link } from 'react-router'
+import { Trash2 } from 'lucide-react';
 
 export const AllGuides = () => {
   const [guides, setGuides] = useState<GuidesApiTypes.Guide[]>([])
@@ -61,7 +62,7 @@ export const AllGuides = () => {
                     className='absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 shadow-lg hover:shadow-red-500/30'
                     title='Excluir guia'
                   >
-                    🗑️
+                    <Trash2 />
                   </button>
 
                   <Link to={`/guides/${guide.id}`} className='block'>

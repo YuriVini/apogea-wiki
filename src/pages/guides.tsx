@@ -1,11 +1,14 @@
-import { useParams } from 'react-router'
+import { useParams, useNavigate } from 'react-router'
 import { Footer } from '../components/footer'
 import { useEffect, useState } from 'react'
 import { ApiNoAuth } from '../@api/axios'
 import { Header } from '../components/header'
+import { Trash2 } from 'lucide-react';
+
 
 export const Guides = () => {
   const { guideId } = useParams()
+  const navigate = useNavigate()
 
   const [guide, setGuide] = useState<GuidesApiTypes.Guide>({} as GuidesApiTypes.Guide)
   const [isEditing, setIsEditing] = useState(false)
@@ -33,6 +36,20 @@ export const Guides = () => {
     } finally {
       setIsEditing(false)
       setEditingStep(null)
+    }
+  }
+
+  const handleDeleteGuide = async () => {
+    const confirmDelete = window.confirm('Tem certeza que deseja excluir este guia? Esta ação não pode ser desfeita.')
+    
+    if (confirmDelete) {
+      try {
+        await ApiNoAuth.delete(`/guides/${guideId}`)
+        alert('Guia excluído com sucesso!')
+        navigate('/guides')
+      } catch (error) {
+        alert('Erro ao excluir guia: \n' + JSON.stringify(error))
+      }
     }
   }
 
@@ -123,21 +140,38 @@ export const Guides = () => {
           ) : (
             <h1 className='text-4xl font-bold text-white animate-fade-in-down'>{guide.title}</h1>
           )}
-          <button
-            className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg 
-            transition-all duration-300 flex items-center gap-2
-            shadow-md hover:shadow-lg hover:shadow-blue-500/30
-            transform hover:scale-103 hover:-translate-y-0.5 active:translate-y-0
-            font-medium text-xs
-            border border-blue-400/30 hover:border-blue-300/40
-            backdrop-blur-sm bg-opacity-90
-            focus:outline-none focus:ring-2 focus:ring-blue-500/50
-            group'
-            onClick={isEditing ? handleSaveGuide : handleEditGuide}
-          >
-            <span className='text-base group-hover:rotate-12 transition-transform duration-300'>{isEditing ? '💾' : '✏️'}</span>
-            {isEditing ? 'Salvar Alterações' : 'Editar'}
-          </button>
+          <div className='flex gap-2'>
+            <button
+              className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg 
+              transition-all duration-300 flex items-center gap-2
+              shadow-md hover:shadow-lg hover:shadow-blue-500/30
+              transform hover:scale-103 hover:-translate-y-0.5 active:translate-y-0
+              font-medium text-xs
+              border border-blue-400/30 hover:border-blue-300/40
+              backdrop-blur-sm bg-opacity-90
+              focus:outline-none focus:ring-2 focus:ring-blue-500/50
+              group'
+              onClick={isEditing ? handleSaveGuide : handleEditGuide}
+            >
+              <span className='text-base group-hover:rotate-12 transition-transform duration-300'>{isEditing ? '💾' : '✏️'}</span>
+              {isEditing ? 'Salvar Alterações' : 'Editar'}
+            </button>
+            <button
+              className='bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg 
+              transition-all duration-300 flex items-center gap-2
+              shadow-md hover:shadow-lg hover:shadow-red-500/30
+              transform hover:scale-103 hover:-translate-y-0.5 active:translate-y-0
+              font-medium text-xs
+              border border-red-400/30 hover:border-red-300/40
+              backdrop-blur-sm bg-opacity-90
+              focus:outline-none focus:ring-2 focus:ring-red-500/50
+              group'
+              onClick={handleDeleteGuide}
+            >
+              <Trash2 className='text-base group-hover:rotate-12 transition-transform duration-300' />
+              Excluir Guia
+            </button>
+          </div>
         </div>
 
         {isEditing ? (
