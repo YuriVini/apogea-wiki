@@ -18,3 +18,8 @@ export interface Guide {
   steps: GuideStep[]
   footer_text: string
 }
+
+export interface GuideCreateResponse {
+  guideId: string
+  message: string
+}

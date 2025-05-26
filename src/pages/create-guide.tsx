@@ -11,7 +11,7 @@ export const CreateGuide = () => {
   const [guide, setGuide] = useState<GuidesApiTypes.Guide>({
     title: '',
     description: '',
-    steps: [{ title: '', description: '' }]
+    steps: [{ title: '', description: '' }],
   } as GuidesApiTypes.Guide)
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export const CreateGuide = () => {
   const handleAddStep = () => {
     setGuide({
       ...guide,
-      steps: [...guide.steps, { title: '', description: '' }]
+      steps: [...guide.steps, { title: '', description: '' }],
     })
   }
 
@@ -81,15 +81,15 @@ export const CreateGuide = () => {
       return
     }
 
-    if (guide.steps.some(step => !step.title.trim() || !step.description.trim())) {
+    if (guide.steps.some((step) => !step.title.trim() || !step.description.trim())) {
       alert('Por favor, preencha o título e a descrição de todos os passos.')
       return
     }
 
     try {
-      const response = await Api.post('/guides', guide)
+      const { data } = await Api.post<GuidesApiTypes.GuideCreateResponse>('/guides', guide)
       alert('Guia criado com sucesso!')
-      window.location.href = `/guides/${response.data.id}`
+      navigate(`/guides/${data.guideId}`)
     } catch (error) {
       alert('Erro ao criar guia: \n' + JSON.stringify(error))
     }
@@ -101,7 +101,7 @@ export const CreateGuide = () => {
 
   return (
     <div>
-     <Header />
+      <Header />
 
       <div className='max-w-4xl mx-auto p-8'>
         <div className='mb-6'>
@@ -137,10 +137,7 @@ export const CreateGuide = () => {
                 <div className='flex justify-between items-center'>
                   <h3 className='text-xl font-semibold text-white'>Passo {index + 1}</h3>
                   {guide.steps.length > 1 && (
-                    <button
-                      onClick={() => handleRemoveStep(index)}
-                      className='bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition-colors'
-                    >
+                    <button onClick={() => handleRemoveStep(index)} className='bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition-colors'>
                       🗑️ Remover Passo
                     </button>
                   )}
@@ -331,7 +328,6 @@ export const CreateGuide = () => {
         </div>
       </div>
 
-      {/* Botão flutuante para criar guia */}
       <button
         className='fixed bottom-8 right-8 bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-full 
         transition-all duration-300 flex items-center gap-2
