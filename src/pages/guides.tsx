@@ -1,109 +1,51 @@
-import { Footer } from "../components/footer"
-import { useState } from "react"
-
-interface GuideStep {
-  title: string
-  description: string
-  hint?: string
-  item?: string[]
-  note?: string
-  benefit?: string
-  advice?: string
-  image_url?: string
-}
-
-interface GuideProps {
-  title: string
-  description: string
-  steps: GuideStep[]
-  footer_text: string
-}
-
-const initialGuide: GuideProps = {
-  title: 'Primeiros Passos em Apogea',
-  description:
-    'Seja bem-vindo ao mundo de Apogea! Este guia vai te ajudar a dar os primeiros passos no jogo, entender as mecânicas iniciais e começar sua jornada com eficiência.',
-  steps: [
-    {
-      title: 'O Início da Jornada',
-      description:
-        'Assim que você iniciar o jogo, será transportado para a Catedral das Planícies, localizada no centro do mapa. Esse é seu ponto de partida, onde você poderá pegar seus primeiros equipamentos e aprender o básico da jogabilidade.',
-      hint: 'Explore o local com atenção, pois há baús contendo itens essenciais para sua aventura.',
-      image_url:
-        'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2796220/ss_8808540740e011e15562ebe6f8e2efe518d89e1e.1920x1080.jpg?t=1736214449',
-    },
-    {
-      title: 'Pegando Seus Primeiros Equipamentos',
-      description:
-        'Dentro da catedral, você encontrará um baú com seus primeiros itens.',
-      item: ['Uma espada enferrujada', 'Uma chave'],
-      note: 'A chave é essencial para abrir a próxima sala, então não se esqueça de pegá-la!',
-    },
-    {
-      title: 'Interagindo com NPCs',
-      description:
-        'Na próxima sala, você encontrará um soldado ferido. Converse com ele para obter informações e liberar o acesso a novas áreas.',
-      hint: 'Muitos NPCs em Apogea fornecem dicas valiosas e quests. Sempre interaja com eles para não perder conteúdos importantes.',
-    },
-    {
-      title: 'A Primeira Caçada',
-      description:
-        'Ao avançar pelo mapa, você encontrará uma passagem subterrânea que leva a uma caverna. Ali, poderá enfrentar seus primeiros inimigos: ratos.',
-      hint: 'Derrotar esses inimigos iniciais é uma ótima forma de ganhar experiência e coletar recursos para a jornada.',
-      advice:
-        'Recomenda-se farmar até juntar 100 de ouro antes de sair para explorar o mundo aberto.',
-    },
-    {
-      title: 'Explorando o Mundo de Apogea',
-      description:
-        'Ao avançar pelas primeiras salas, você encontrará uma escada que leva a um cômodo superior da catedral. A partir deste ponto, o jogo te dá liberdade para explorar o mundo aberto.',
-      hint: 'No início, é interessante seguir as missões principais para aprender mais sobre o jogo e desbloquear novas áreas.',
-    },
-    {
-      title: 'A Primeira Missão (Quest)',
-      description:
-        "Um dos primeiros NPCs importantes que você encontrará é Edmund. Fale com ele e diga 'quest' para iniciar sua primeira missão.",
-      benefit:
-        'Além disso, Edmund pode curar seu personagem caso seu HP esteja abaixo de 50%.',
-      hint: 'Sempre atualize seu mapa conversando com NPCs e interagindo com placas espalhadas pelo jogo. Isso ajuda a marcar locais importantes e facilita a navegação.',
-    },
-    {
-      title: 'Seguindo para Novos Desafios',
-      description:
-        'Após aceitar sua primeira missão, você poderá seguir para um novo local indicado no mapa, onde encontrará mais desafios e recompensas, como sua primeira mochila.',
-      hint: 'Sempre verifique baús e interaja com o ambiente para encontrar equipamentos úteis.',
-    },
-  ],
-  footer_text:
-    'Esse guia cobre as principais mecânicas iniciais do jogo e te prepara para explorar Apogea com mais segurança. Boa aventura! 🚀',
-}
+import { useParams } from 'react-router'
+import { Footer } from '../components/footer'
+import { useEffect, useState } from 'react'
+import { ApiNoAuth } from '../@api/axios'
 
 export const Guides = () => {
-  const [guide, setGuide] = useState<GuideProps>(initialGuide)
+  const { guideId } = useParams()
+
+  const [guide, setGuide] = useState<GuidesApiTypes.Guide>({} as GuidesApiTypes.Guide)
   const [isEditing, setIsEditing] = useState(false)
   const [editingStep, setEditingStep] = useState<number | null>(null)
+
+  const fetchGuideById = async () => {
+    try {
+      const response = await ApiNoAuth.get(`/guides/${guideId}`)
+      setGuide(response.data)
+    } catch (error) {
+      alert('Erro ao buscar guia: \n' + JSON.stringify(error))
+    }
+  }
 
   const handleEditGuide = () => {
     setIsEditing(true)
   }
 
-  const handleSaveGuide = () => {
-    setIsEditing(false)
-    setEditingStep(null)
-    console.log('Guia salvo:', guide)
+  const handleSaveGuide = async () => {
+    try {
+      const response = await ApiNoAuth.put(`/guides/${guideId}`, guide)
+      console.log(response)
+    } catch (error) {
+      alert('Erro ao salvar guia: \n' + JSON.stringify(error))
+    } finally {
+      setIsEditing(false)
+      setEditingStep(null)
+    }
   }
 
   const handleEditStep = (index: number) => {
     setEditingStep(index)
   }
 
-  const handleUpdateStep = (index: number, updatedStep: GuideStep) => {
+  const handleUpdateStep = (index: number, updatedStep: GuidesApiTypes.GuideStep) => {
     const newSteps = [...guide.steps]
     newSteps[index] = updatedStep
     setGuide({ ...guide, steps: newSteps })
   }
 
-  const handleUpdateGuide = (field: keyof GuideProps, value: string) => {
+  const handleUpdateGuide = (field: keyof GuidesApiTypes.Guide, value: string) => {
     setGuide({ ...guide, [field]: value })
   }
 
@@ -122,7 +64,7 @@ export const Guides = () => {
   }
 
   const handleAddStep = () => {
-    const newStep: GuideStep = {
+    const newStep: GuidesApiTypes.GuideStep = {
       title: 'Novo Passo',
       description: 'Descrição do novo passo',
     }
@@ -141,32 +83,34 @@ export const Guides = () => {
     }
   }
 
-  const handleToggleStepProperty = (index: number, property: keyof GuideStep) => {
+  const handleToggleStepProperty = (index: number, property: keyof GuidesApiTypes.GuideStep) => {
     const step = guide.steps[index]
     const newSteps = [...guide.steps]
-    
+
     if (step[property] !== undefined) {
-      // Se a propriedade existe, removê-la
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [property]: _, ...stepWithoutProperty } = step
-      newSteps[index] = stepWithoutProperty as GuideStep
+      newSteps[index] = stepWithoutProperty as GuidesApiTypes.GuideStep
     } else {
-      // Se a propriedade não existe, adicioná-la com valor padrão
-      let defaultValue: any = ''
+      let defaultValue: string | string[] = ''
       if (property === 'item') {
-        defaultValue = ['']
+        defaultValue = []
       }
       newSteps[index] = { ...step, [property]: defaultValue }
     }
-    
+
     setGuide({ ...guide, steps: newSteps })
   }
 
+  useEffect(() => {
+    fetchGuideById()
+  }, [])
+
   return (
     <div>
-      {/* Header */}
       <header className='bg-gray-800/50 p-4 shadow-lg'>
         <div className='max-w-7xl mx-auto flex justify-between items-center'>
-          <h1 onClick={() => window.location.href = '/'} className='text-3xl font-bold text-white hover:text-blue-400 transition-colors duration-300 cursor-pointer'>
+          <h1 onClick={() => (window.location.href = '/')} className='text-3xl font-bold text-white hover:text-blue-400 transition-colors duration-300 cursor-pointer'>
             Apogea Wiki
           </h1>
           <nav className='space-x-6'>
@@ -190,17 +134,15 @@ export const Guides = () => {
         <div className='flex justify-between items-center mb-6'>
           {isEditing ? (
             <input
-              type="text"
+              type='text'
               value={guide.title}
               onChange={(e) => handleUpdateGuide('title', e.target.value)}
               className='text-4xl font-bold bg-gray-800/30 text-white rounded px-2 py-1 w-full'
             />
           ) : (
-            <h1 className='text-4xl font-bold text-white animate-fade-in-down'>
-              {guide.title}
-            </h1>
+            <h1 className='text-4xl font-bold text-white animate-fade-in-down'>{guide.title}</h1>
           )}
-          <button 
+          <button
             className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg 
             transition-all duration-300 flex items-center gap-2
             shadow-md hover:shadow-lg hover:shadow-blue-500/30
@@ -212,9 +154,7 @@ export const Guides = () => {
             group'
             onClick={isEditing ? handleSaveGuide : handleEditGuide}
           >
-            <span className="text-base group-hover:rotate-12 transition-transform duration-300">
-              {isEditing ? '💾' : '✏️'}
-            </span>
+            <span className='text-base group-hover:rotate-12 transition-transform duration-300'>{isEditing ? '💾' : '✏️'}</span>
             {isEditing ? 'Salvar Alterações' : 'Editar'}
           </button>
         </div>
@@ -227,21 +167,16 @@ export const Guides = () => {
             rows={3}
           />
         ) : (
-          <p className='text-gray-300 mb-12 animate-fade-in-up'>
-            {guide.description}
-          </p>
+          <p className='text-gray-300 mb-12 animate-fade-in-up'>{guide.description}</p>
         )}
 
         <div className='space-y-12'>
-          {guide.steps.map((step, index) => (
-            <div
-              key={index}
-              className='bg-gray-800/30 rounded-lg p-6 transform hover:scale-[1.02] transition-all duration-300 hover:bg-gray-700/30 shadow-lg hover:shadow-xl'
-            >
+          {guide?.steps?.map((step, index) => (
+            <div key={index} className='bg-gray-800/30 rounded-lg p-6 transform hover:scale-[1.02] transition-all duration-300 hover:bg-gray-700/30 shadow-lg hover:shadow-xl'>
               {editingStep === index ? (
                 <div className='space-y-4'>
                   <input
-                    type="text"
+                    type='text'
                     value={step.title}
                     onChange={(e) => handleUpdateStep(index, { ...step, title: e.target.value })}
                     className='text-2xl font-bold bg-gray-700/30 text-white rounded px-2 py-1 w-full'
@@ -253,16 +188,13 @@ export const Guides = () => {
                     rows={3}
                   />
 
-                  {/* Seção de propriedades opcionais */}
                   <div className='border-t border-gray-600 pt-4'>
                     <h4 className='text-white font-bold mb-3'>Propriedades do Passo:</h4>
                     <div className='grid grid-cols-2 gap-3 mb-4'>
                       <button
                         onClick={() => handleToggleStepProperty(index, 'hint')}
                         className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 ${
-                          step.hint !== undefined 
-                            ? 'bg-blue-500 text-white shadow-md' 
-                            : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                          step.hint !== undefined ? 'bg-blue-500 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
                         }`}
                       >
                         💡 Dica {step.hint !== undefined ? '✓' : ''}
@@ -270,9 +202,7 @@ export const Guides = () => {
                       <button
                         onClick={() => handleToggleStepProperty(index, 'item')}
                         className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 ${
-                          step.item !== undefined 
-                            ? 'bg-green-500 text-white shadow-md' 
-                            : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                          step.item !== undefined ? 'bg-green-500 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
                         }`}
                       >
                         🎒 Itens {step.item !== undefined ? '✓' : ''}
@@ -280,9 +210,7 @@ export const Guides = () => {
                       <button
                         onClick={() => handleToggleStepProperty(index, 'note')}
                         className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 ${
-                          step.note !== undefined 
-                            ? 'bg-yellow-500 text-white shadow-md' 
-                            : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                          step.note !== undefined ? 'bg-yellow-500 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
                         }`}
                       >
                         📝 Nota {step.note !== undefined ? '✓' : ''}
@@ -290,9 +218,7 @@ export const Guides = () => {
                       <button
                         onClick={() => handleToggleStepProperty(index, 'benefit')}
                         className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 ${
-                          step.benefit !== undefined 
-                            ? 'bg-green-400 text-white shadow-md' 
-                            : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                          step.benefit !== undefined ? 'bg-green-400 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
                         }`}
                       >
                         ✨ Benefício {step.benefit !== undefined ? '✓' : ''}
@@ -300,9 +226,7 @@ export const Guides = () => {
                       <button
                         onClick={() => handleToggleStepProperty(index, 'advice')}
                         className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 ${
-                          step.advice !== undefined 
-                            ? 'bg-purple-500 text-white shadow-md' 
-                            : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                          step.advice !== undefined ? 'bg-purple-500 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
                         }`}
                       >
                         🔮 Recomendação {step.advice !== undefined ? '✓' : ''}
@@ -310,9 +234,7 @@ export const Guides = () => {
                       <button
                         onClick={() => handleToggleStepProperty(index, 'image_url')}
                         className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 ${
-                          step.image_url !== undefined 
-                            ? 'bg-indigo-500 text-white shadow-md' 
-                            : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                          step.image_url !== undefined ? 'bg-indigo-500 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
                         }`}
                       >
                         🖼️ Imagem {step.image_url !== undefined ? '✓' : ''}
@@ -320,16 +242,15 @@ export const Guides = () => {
                     </div>
                   </div>
 
-                  {/* Campos condicionais baseados nas propriedades ativas */}
                   {step.hint !== undefined && (
                     <div className='bg-blue-900/20 p-3 rounded'>
                       <label className='block text-blue-300 font-medium mb-1'>💡 Dica:</label>
                       <input
-                        type="text"
+                        type='text'
                         value={step.hint}
                         onChange={(e) => handleUpdateStep(index, { ...step, hint: e.target.value })}
                         className='text-blue-200 w-full bg-blue-900/30 rounded p-2'
-                        placeholder="Digite a dica aqui..."
+                        placeholder='Digite a dica aqui...'
                       />
                     </div>
                   )}
@@ -337,10 +258,10 @@ export const Guides = () => {
                   {step.item !== undefined && (
                     <div className='bg-green-900/20 p-3 rounded'>
                       <label className='block text-green-300 font-medium mb-2'>🎒 Itens:</label>
-                      {step.item.map((item, i) => (
-                        <div key={i} className="flex gap-2 mb-2">
+                      {step?.item?.map((item, i) => (
+                        <div key={i} className='flex gap-2 mb-2'>
                           <input
-                            type="text"
+                            type='text'
                             value={item}
                             onChange={(e) => {
                               const newItems = [...step.item!]
@@ -348,12 +269,9 @@ export const Guides = () => {
                               handleUpdateItems(index, newItems)
                             }}
                             className='text-gray-300 flex-1 bg-gray-700/30 rounded p-2'
-                            placeholder="Nome do item..."
+                            placeholder='Nome do item...'
                           />
-                          <button
-                            onClick={() => handleRemoveItem(index, i)}
-                            className='bg-red-500 hover:bg-red-600 text-white px-3 rounded transition-colors'
-                          >
+                          <button onClick={() => handleRemoveItem(index, i)} className='bg-red-500 hover:bg-red-600 text-white px-3 rounded transition-colors'>
                             🗑️
                           </button>
                         </div>
@@ -371,11 +289,11 @@ export const Guides = () => {
                     <div className='bg-yellow-900/20 p-3 rounded'>
                       <label className='block text-yellow-300 font-medium mb-1'>📝 Nota:</label>
                       <input
-                        type="text"
+                        type='text'
                         value={step.note}
                         onChange={(e) => handleUpdateStep(index, { ...step, note: e.target.value })}
                         className='text-yellow-200 w-full bg-yellow-900/30 rounded p-2'
-                        placeholder="Digite a nota aqui..."
+                        placeholder='Digite a nota aqui...'
                       />
                     </div>
                   )}
@@ -384,11 +302,11 @@ export const Guides = () => {
                     <div className='bg-green-900/20 p-3 rounded'>
                       <label className='block text-green-300 font-medium mb-1'>✨ Benefício:</label>
                       <input
-                        type="text"
+                        type='text'
                         value={step.benefit}
                         onChange={(e) => handleUpdateStep(index, { ...step, benefit: e.target.value })}
                         className='text-green-200 w-full bg-green-900/30 rounded p-2'
-                        placeholder="Digite o benefício aqui..."
+                        placeholder='Digite o benefício aqui...'
                       />
                     </div>
                   )}
@@ -397,11 +315,11 @@ export const Guides = () => {
                     <div className='bg-purple-900/20 p-3 rounded'>
                       <label className='block text-purple-300 font-medium mb-1'>🔮 Recomendação:</label>
                       <input
-                        type="text"
+                        type='text'
                         value={step.advice}
                         onChange={(e) => handleUpdateStep(index, { ...step, advice: e.target.value })}
                         className='text-purple-200 w-full bg-purple-900/30 rounded p-2'
-                        placeholder="Digite a recomendação aqui..."
+                        placeholder='Digite a recomendação aqui...'
                       />
                     </div>
                   )}
@@ -410,20 +328,17 @@ export const Guides = () => {
                     <div className='bg-indigo-900/20 p-3 rounded'>
                       <label className='block text-indigo-300 font-medium mb-1'>🖼️ URL da Imagem:</label>
                       <input
-                        type="text"
+                        type='text'
                         value={step.image_url || ''}
                         onChange={(e) => handleUpdateStep(index, { ...step, image_url: e.target.value })}
                         className='text-indigo-200 w-full bg-indigo-900/30 rounded p-2'
-                        placeholder="https://exemplo.com/imagem.jpg"
+                        placeholder='https://exemplo.com/imagem.jpg'
                       />
                     </div>
                   )}
 
                   <div className='flex gap-2 pt-4 border-t border-gray-600'>
-                    <button
-                      onClick={() => setEditingStep(null)}
-                      className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors'
-                    >
+                    <button onClick={() => setEditingStep(null)} className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors'>
                       ✅ Concluir Edição
                     </button>
                     <button
@@ -443,32 +358,22 @@ export const Guides = () => {
               ) : (
                 <>
                   <h2 className='text-2xl font-bold text-white mb-4 flex items-center'>
-                    <span className='bg-blue-500 rounded-full w-8 h-8 flex items-center justify-center mr-3 text-lg'>
-                      {index + 1}
-                    </span>
+                    <span className='bg-blue-500 rounded-full w-8 h-8 flex items-center justify-center mr-3 text-lg'>{index + 1}</span>
                     {step.title}
                     {isEditing && (
                       <div className='ml-auto flex gap-2'>
-                        <button
-                          onClick={() => handleEditStep(index)}
-                          className='text-blue-400 hover:text-blue-300 flex items-center'
-                        >
-                          <span className="mr-1">Editar</span>
+                        <button onClick={() => handleEditStep(index)} className='text-blue-400 hover:text-blue-300 flex items-center'>
+                          <span className='mr-1'>Editar</span>
                           <span>✏️</span>
                         </button>
-                        <button
-                          onClick={() => handleRemoveStep(index)}
-                          className='text-red-400 hover:text-red-300 flex items-center'
-                        >
-                          <span className="mr-1">Excluir</span>
+                        <button onClick={() => handleRemoveStep(index)} className='text-red-400 hover:text-red-300 flex items-center'>
+                          <span className='mr-1'>Excluir</span>
                           <span>🗑️</span>
                         </button>
                       </div>
                     )}
                   </h2>
-                  <p className='text-gray-300 mb-4 leading-relaxed'>
-                    {step.description}
-                  </p>
+                  <p className='text-gray-300 mb-4 leading-relaxed'>{step.description}</p>
 
                   {step.hint && (
                     <div className='bg-blue-900/30 rounded p-4 mb-4 transform hover:translate-x-2 transition-transform duration-300'>
@@ -482,11 +387,8 @@ export const Guides = () => {
                     <div className='bg-gray-700/30 rounded p-4 mb-4 hover:bg-gray-600/30 transition-colors duration-300'>
                       <p className='font-bold text-white mb-2'>🎒 Itens:</p>
                       <ul className='list-disc list-inside text-gray-300 space-y-1'>
-                        {step.item.map((item, i) => (
-                          <li
-                            key={i}
-                            className='hover:text-white transition-colors duration-200'
-                          >
+                        {step?.item?.map((item, i) => (
+                          <li key={i} className='hover:text-white transition-colors duration-200'>
                             {item}
                           </li>
                         ))}
@@ -505,8 +407,7 @@ export const Guides = () => {
                   {step.benefit && (
                     <div className='bg-green-900/30 rounded p-4 mb-4 transform hover:translate-x-2 transition-transform duration-300'>
                       <p className='text-green-200 flex items-center'>
-                        <span className='font-bold mr-2'>✨ Benefício:</span>{' '}
-                        {step.benefit}
+                        <span className='font-bold mr-2'>✨ Benefício:</span> {step.benefit}
                       </p>
                     </div>
                   )}
@@ -514,19 +415,14 @@ export const Guides = () => {
                   {step.advice && (
                     <div className='bg-purple-900/30 rounded p-4 mb-4 transform hover:translate-x-2 transition-transform duration-300'>
                       <p className='text-purple-200 flex items-center'>
-                        <span className='font-bold mr-2'>Recomendação:</span>{' '}
-                        {step.advice}
+                        <span className='font-bold mr-2'>Recomendação:</span> {step.advice}
                       </p>
                     </div>
                   )}
 
                   {step.image_url && (
                     <div className='mt-4 overflow-hidden rounded-lg'>
-                      <img
-                        src={step.image_url}
-                        alt={step.title}
-                        className='w-full hover:scale-105 transition-transform duration-500 rounded-lg shadow-lg'
-                      />
+                      <img src={step.image_url} alt={step.title} className='w-full hover:scale-105 transition-transform duration-500 rounded-lg shadow-lg' />
                     </div>
                   )}
                 </>
@@ -558,26 +454,20 @@ export const Guides = () => {
             rows={2}
           />
         ) : (
-          <div className='text-center mt-12 text-gray-400 italic'>
-            {guide.footer_text}
-          </div>
+          <div className='text-center mt-12 text-gray-400 italic'>{guide.footer_text}</div>
         )}
       </div>
 
-      {/* Footer */}
-      <Footer/>
+      <Footer />
 
-      {/* Botão flutuante */}
-      <button 
+      <button
         className='fixed bottom-8 right-8 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full 
         transition-all duration-300 shadow-lg hover:shadow-xl
         transform hover:scale-110 hover:-translate-y-1 active:translate-y-0
         focus:outline-none focus:ring-2 focus:ring-blue-500/50'
         onClick={isEditing ? handleSaveGuide : handleEditGuide}
       >
-        <span className="text-2xl">
-          {isEditing ? '💾' : '✏️'}
-        </span>
+        <span className='text-2xl'>{isEditing ? '💾' : '✏️'}</span>
       </button>
     </div>
   )
