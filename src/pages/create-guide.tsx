@@ -79,9 +79,9 @@ export const CreateGuide = () => {
     }
 
     try {
-      const response = await Api.post('/guides', guide)
+      const response = await Api.post<GuidesApiTypes.GuideCreateResponse>('/guides', guide)
       alert('Guia criado com sucesso!')
-      navigate(`/guides/${response.data.id}`)
+      navigate(`/guides/${response.data.guideId}`)
     } catch (error) {
       alert('Erro ao criar guia: \n' + JSON.stringify(error))
     }
