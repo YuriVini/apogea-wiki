@@ -1,10 +1,9 @@
 import { useParams, useNavigate } from 'react-router'
 import { Footer } from '../components/footer'
 import { useEffect, useState } from 'react'
-import { ApiNoAuth } from '../@api/axios'
+import { Api, ApiNoAuth } from '../@api/axios'
 import { Header } from '../components/header'
-import { Trash2 } from 'lucide-react';
-
+import { Trash2 } from 'lucide-react'
 
 export const Guides = () => {
   const { guideId } = useParams()
@@ -41,10 +40,10 @@ export const Guides = () => {
 
   const handleDeleteGuide = async () => {
     const confirmDelete = window.confirm('Tem certeza que deseja excluir este guia? Esta ação não pode ser desfeita.')
-    
+
     if (confirmDelete) {
       try {
-        await ApiNoAuth.delete(`/guides/${guideId}`)
+        await Api.delete(`/guides/${guideId}`)
         alert('Guia excluído com sucesso!')
         navigate('/guides')
       } catch (error) {
@@ -126,7 +125,7 @@ export const Guides = () => {
 
   return (
     <div>
-    <Header />
+      <Header />
 
       <div className='max-w-4xl mx-auto p-8'>
         <div className='flex justify-between items-center mb-6'>

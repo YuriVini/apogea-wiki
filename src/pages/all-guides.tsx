@@ -1,9 +1,9 @@
 import { Header } from '../components/header'
 import { Footer } from '../components/footer'
 import { useState, useEffect } from 'react'
-import { ApiNoAuth } from '../@api/axios'
+import { Api, ApiNoAuth } from '../@api/axios'
 import { Link } from 'react-router'
-import { Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react'
 
 export const AllGuides = () => {
   const [guides, setGuides] = useState<GuidesApiTypes.Guide[]>([])
@@ -23,7 +23,7 @@ export const AllGuides = () => {
   const handleDeleteGuide = async (guideId: string) => {
     if (window.confirm('Tem certeza que deseja excluir este guia? Esta ação não pode ser desfeita.')) {
       try {
-        await ApiNoAuth.delete(`/guides/${guideId}`)
+        await Api.delete(`/guides/${guideId}`)
         setGuides(guides.filter((guide) => guide.id !== guideId))
         alert('Guia excluído com sucesso!')
       } catch (error) {
@@ -79,8 +79,7 @@ export const AllGuides = () => {
           )}
 
           {!loading && guides.length === 0 && (
-            <div className='text-center py-12'>
-              <div className='text-gray-400 text-xl mb-4'>Nenhum guia encontrado</div>
+            <div className='text-center py-3'>
               <Link to='/create-guide' className='inline-block px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200'>
                 Criar Primeiro Guia
               </Link>
