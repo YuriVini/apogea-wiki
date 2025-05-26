@@ -51,6 +51,28 @@ export class ApiNoAuth {
     };
   }
 
+  static async delete(path: string): Promise<HttpResponse> {
+    const response = await this.clientApiNoAuth
+      .delete(path)
+      .then((res: { data: any }) => res.data)
+      .catch((err: { response: { data: any } }) => {
+        const data = err?.response?.data;
+        const message =
+          data?.reason || data?.message || "Ocorreu um erro ao processar a solicitação";
+        throw new Error(message);
+      });
+
+    return {
+      data: response,
+      meta: response?.meta,
+      reason: response?.reason,
+      statusCode: response?.statusCode || 500,
+      status: response?.status || "Server Error",
+      message: response?.message || "Ocorreu um erro ao processar a solicitação",
+    };
+  }
+
+
   static getConfigs(body: any) {
     if (body instanceof FormData) {
       return {
@@ -75,6 +97,30 @@ export class ApiNoAuth {
 
     return {
       data: response,
+      meta: response?.meta,
+      reason: response?.reason,
+      statusCode: response?.statusCode || 500,
+      status: response?.status || "Server Error",
+      message: response?.message || "Ocorreu um erro ao processar a solicitação",
+    };
+  }
+  
+  static async put<Data = any, MetaData = any>(
+    path: string,
+    body: any = {}
+  ): Promise<HttpResponse<Data, MetaData>> {
+    const response = await this.clientApiNoAuth
+      .put(path, body, Api.getConfigs(body))
+      .then((res: { data: any }) => res.data)
+      .catch((err: { response: { data: any } }) => {
+        const data = err?.response?.data;
+        const message =
+          data?.reason || data?.message || "Ocorreu um erro ao processar a solicitação";
+        throw new Error(message);
+      });
+
+    return {
+      data: response?.data,
       meta: response?.meta,
       reason: response?.reason,
       statusCode: response?.statusCode || 500,
