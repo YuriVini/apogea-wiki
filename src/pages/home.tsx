@@ -18,6 +18,8 @@ import SpellsIcon from '/spells/Spell23.webp'
 import FoodIcon from '/food/Bread_loaf.webp'
 import { Link } from 'react-router'
 import { Footer } from '../components/footer'
+import { useEffect, useState, Suspense } from 'react'
+import { ApiNoAuth } from '../@api/axios'
 
 const highlightQuest = [
   {
@@ -122,8 +124,22 @@ const other = [
 ]
 
 export const Home = () => {
+  const [guides, setGuides] = useState<GuidesApiTypes.Guide[]>([])
+  const  fetchGuides = async () => {
+    try {
+      const response = await ApiNoAuth.get('/guides')
+      setGuides(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    fetchGuides()
+  }, [])
+
   return (
     <div>
+      <Suspense fallback={<div>Loading...</div>}>
       {/* Header */}
       <header className='bg-gray-800/50 p-4 shadow-lg'>
         <div className='max-w-7xl mx-auto flex justify-between items-center'>
@@ -154,19 +170,13 @@ export const Home = () => {
               Guias em Destaque
             </h2>
             <ul className='space-y-3'>
-              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                <Link to='/guides/primeiros-passos'>
-                  Primeiros Passos em Apogea
-                </Link>
-              </li>
-              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                <Link to='/guides/sistema-combate'>Sistema de Combate</Link>
-              </li>
-              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                <Link to='/guides/progressao-personagem'>
-                  Progressão de Personagem
-                </Link>
-              </li>
+              {guides?.map((guide, index) => (
+                <li key={index} className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
+                  <Link to={`/guides/${guide?.id}`}>
+                    {guide?.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -281,6 +291,8 @@ export const Home = () => {
           </div>
         </div>
 
+
+
         {/* Video Section */}
         <div className='flex justify-center mb-10'>
           <div className='max-w-4xl w-full'>
@@ -302,6 +314,7 @@ export const Home = () => {
 
       {/* Footer */}
       <Footer />
+    </Suspense>
     </div>
   )
 }
