@@ -53,7 +53,7 @@ export const Login = () => {
             </div>
 
             <div className='mt-4 text-center'>
-              <a href='#' className='text-sm text-gray-400 hover:text-gray-300 transition-colors duration-300'>
+              <a href='/forgot-password' className='text-sm text-gray-400 hover:text-gray-300 transition-colors duration-300'>
                 Esqueceu sua senha?
               </a>
             </div>

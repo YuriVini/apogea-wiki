@@ -35,12 +35,22 @@ export const Header = () => {
               Login
             </Link>
           )}
-          <button
-            onClick={() => logOut()}
-            className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block bg-purple-500/20 px-3 py-1 rounded-lg border border-purple-400/30 hover:bg-purple-500/30 hover:border-purple-300/50 shadow-md hover:shadow-purple-500/20'
-          >
-            Logout
-          </button>
+            {isLoggedIn && (
+              <Link
+                to='/profile'
+                className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block bg-purple-500/20 px-3 py-1 rounded-lg border border-purple-400/30 hover:bg-purple-500/30 hover:border-purple-300/50 shadow-md hover:shadow-purple-500/20'
+              >
+                Perfil
+              </Link>
+            )}
+          {isLoggedIn && (
+            <button
+              onClick={() => logOut()}
+              className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block bg-purple-500/20 px-3 py-1 rounded-lg border border-purple-400/30 hover:bg-purple-500/30 hover:border-purple-300/50 shadow-md hover:shadow-purple-500/20'
+            >
+              Logout
+            </button>
+          )}
         </nav>
       </div>
     </header>

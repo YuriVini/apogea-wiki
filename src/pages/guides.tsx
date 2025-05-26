@@ -2,6 +2,7 @@ import { useParams } from 'react-router'
 import { Footer } from '../components/footer'
 import { useEffect, useState } from 'react'
 import { ApiNoAuth } from '../@api/axios'
+import { Header } from '../components/header'
 
 export const Guides = () => {
   const { guideId } = useParams()
@@ -108,27 +109,7 @@ export const Guides = () => {
 
   return (
     <div>
-      <header className='bg-gray-800/50 p-4 shadow-lg'>
-        <div className='max-w-7xl mx-auto flex justify-between items-center'>
-          <h1 onClick={() => (window.location.href = '/')} className='text-3xl font-bold text-white hover:text-blue-400 transition-colors duration-300 cursor-pointer'>
-            Apogea Wiki
-          </h1>
-          <nav className='space-x-6'>
-            <a href='#' className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block'>
-              Guia Inicial
-            </a>
-            <a href='#' className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block'>
-              Classes
-            </a>
-            <a href='#' className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block'>
-              Dungeons
-            </a>
-            <a href='#' className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block'>
-              Crafting
-            </a>
-          </nav>
-        </div>
-      </header>
+    <Header />
 
       <div className='max-w-4xl mx-auto p-8'>
         <div className='flex justify-between items-center mb-6'>

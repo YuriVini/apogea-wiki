@@ -1,14 +1,24 @@
 import { Footer } from '../components/footer'
-import { useState } from 'react'
-import { ApiNoAuth } from '../@api/axios'
+import { useState, useEffect } from 'react'
+import { Api } from '../@api/axios'
 import { Header } from '../components/header'
+import { useAuth } from '../context/auth'
+import { useNavigate } from 'react-router'
 
 export const CreateGuide = () => {
+  const { isLoggedIn } = useAuth()
+  const navigate = useNavigate()
   const [guide, setGuide] = useState<GuidesApiTypes.Guide>({
     title: '',
     description: '',
     steps: [{ title: '', description: '' }]
   } as GuidesApiTypes.Guide)
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/login')
+    }
+  }, [isLoggedIn, navigate])
 
   const handleUpdateGuide = (field: keyof GuidesApiTypes.Guide, value: string) => {
     setGuide({ ...guide, [field]: value })
@@ -77,7 +87,7 @@ export const CreateGuide = () => {
     }
 
     try {
-      const response = await ApiNoAuth.post('/guides', guide)
+      const response = await Api.post('/guides', guide)
       alert('Guia criado com sucesso!')
       window.location.href = `/guides/${response.data.id}`
     } catch (error) {
@@ -85,28 +95,17 @@ export const CreateGuide = () => {
     }
   }
 
+  if (!isLoggedIn) {
+    return null
+  }
+
   return (
     <div>
      <Header />
 
       <div className='max-w-4xl mx-auto p-8'>
-        <div className='flex justify-between items-center mb-6'>
+        <div className='mb-6'>
           <h1 className='text-4xl font-bold text-white animate-fade-in-down'>Criar Novo Guia</h1>
-          <button
-            className='bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg 
-            transition-all duration-300 flex items-center gap-2
-            shadow-md hover:shadow-lg hover:shadow-green-500/30
-            transform hover:scale-103 hover:-translate-y-0.5 active:translate-y-0
-            font-medium text-xs
-            border border-green-400/30 hover:border-green-300/40
-            backdrop-blur-sm bg-opacity-90
-            focus:outline-none focus:ring-2 focus:ring-green-500/50
-            group'
-            onClick={handleCreateGuide}
-          >
-            <span className='text-base group-hover:rotate-12 transition-transform duration-300'>💾</span>
-            Criar Guia
-          </button>
         </div>
 
         <div className='mb-6'>
@@ -331,6 +330,23 @@ export const CreateGuide = () => {
           </button>
         </div>
       </div>
+
+      {/* Botão flutuante para criar guia */}
+      <button
+        className='fixed bottom-8 right-8 bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-full 
+        transition-all duration-300 flex items-center gap-2
+        shadow-lg hover:shadow-xl hover:shadow-green-500/30
+        transform hover:scale-110 hover:-translate-y-1 active:translate-y-0
+        font-medium text-sm
+        border border-green-400/30 hover:border-green-300/40
+        backdrop-blur-sm bg-opacity-90
+        focus:outline-none focus:ring-2 focus:ring-green-500/50
+        group z-50'
+        onClick={handleCreateGuide}
+      >
+        <span className='text-lg group-hover:rotate-12 transition-transform duration-300'>💾</span>
+        Criar Guia
+      </button>
 
       <Footer />
     </div>
