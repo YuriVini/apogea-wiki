@@ -26,22 +26,19 @@ const highlightQuest = [
     title: 'A Ameaça das Cavernas Cristalinas',
     level: '25+',
     rewards: '1000 ouro, Cristal Ancestral, XP',
-    description:
-      'Explore as Cavernas Cristalinas e derrote o Guardião de Cristal que ameaça a região.',
+    description: 'Explore as Cavernas Cristalinas e derrote o Guardião de Cristal que ameaça a região.',
   },
   {
     title: 'O Segredo da Floresta Ancestral',
     level: '30+',
     rewards: '1500 ouro, Pergaminho Místico, XP',
-    description:
-      'Descubra os mistérios escondidos na Floresta Ancestral e encontre o artefato perdido.',
+    description: 'Descubra os mistérios escondidos na Floresta Ancestral e encontre o artefato perdido.',
   },
   {
     title: 'A Forja do Destino',
     level: '20+',
     rewards: '800 ouro, Martelo do Artesão, XP',
-    description:
-      'Ajude o ferreiro local a criar uma arma lendária reunindo materiais raros.',
+    description: 'Ajude o ferreiro local a criar uma arma lendária reunindo materiais raros.',
   },
 ]
 
@@ -125,7 +122,8 @@ const other = [
 
 export const Home = () => {
   const [guides, setGuides] = useState<GuidesApiTypes.Guide[]>([])
-  const  fetchGuides = async () => {
+
+  const fetchGuides = async () => {
     try {
       const response = await ApiNoAuth.get('/guides')
       setGuides(response.data)
@@ -140,181 +138,132 @@ export const Home = () => {
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
-      {/* Header */}
-      <header className='bg-gray-800/50 p-4 shadow-lg'>
-        <div className='max-w-7xl mx-auto flex justify-between items-center'>
-          <h1 className='text-3xl font-bold text-white'>Apogea Wiki</h1>
-          <nav className='space-x-6'>
-            <a href='#' className='text-gray-300 hover:text-white'>
-              Guia Inicial
-            </a>
-            <a href='#' className='text-gray-300 hover:text-white'>
-              Classes
-            </a>
-            <a href='#' className='text-gray-300 hover:text-white'>
-              Dungeons
-            </a>
-            <a href='#' className='text-gray-300 hover:text-white'>
-              Crafting
-            </a>
-          </nav>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className='max-w-7xl mx-auto p-6'>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {/* Featured Guides */}
-          <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
-            <h2 className='text-xl font-bold text-white mb-4'>
-              Guias em Destaque
-            </h2>
-            <ul className='space-y-3'>
-              {guides?.map((guide, index) => (
-                <li key={index} className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                  <Link to={`/guides/${guide?.id}`}>
-                    {guide?.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+        <header className='bg-gray-800/50 p-4 shadow-lg'>
+          <div className='max-w-7xl mx-auto flex justify-between items-center'>
+            <h1 className='text-3xl font-bold text-white'>Apogea Wiki</h1>
+            <nav className='space-x-6'>
+              <a href='#' className='text-gray-300 hover:text-white'>
+                Guia Inicial
+              </a>
+              <a href='#' className='text-gray-300 hover:text-white'>
+                Classes
+              </a>
+              <a href='#' className='text-gray-300 hover:text-white'>
+                Dungeons
+              </a>
+              <a href='#' className='text-gray-300 hover:text-white'>
+                Crafting
+              </a>
+            </nav>
           </div>
+        </header>
 
-          {/* Classes */}
-          <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
-            <h2 className='text-xl font-bold text-white mb-4'>Classes</h2>
-            <ul className='space-y-3'>
-              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                Knight
-              </li>
-              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                Mage
-              </li>
-              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                Rogue
-              </li>
-              <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                Squire
-              </li>
-            </ul>
-          </div>
-
-          {/* Latest Updates */}
-          <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
-            <h2 className='text-xl font-bold text-white mb-4'>
-              Últimas Atualizações
-            </h2>
-            <div className='space-y-4'>
-              <div>
-                <p className='text-sm text-gray-400'>22/03/2024</p>
-                <p className='text-gray-300 transition-colors duration-200 hover:text-white'>
-                  Novo Dungeon: Cavernas Cristalinas
-                </p>
-              </div>
-              <div>
-                <p className='text-sm text-gray-400'>20/03/2024</p>
-                <p className='text-gray-300 transition-colors duration-200 hover:text-white'>
-                  Atualização do Sistema de Crafting
-                </p>
-              </div>
-              <div>
-                <p className='text-sm text-gray-400'>18/03/2024</p>
-                <p className='text-gray-300 transition-colors duration-200 hover:text-white'>
-                  Nova Região: Floresta Ancestral
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Quests Section */}
-          <div className='mb-10'>
-            <h2 className='text-2xl font-bold text-white mb-6 text-center'>
-              Quests em Destaque
-            </h2>
-            <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto'>
-              <div className='space-y-6'>
-                {highlightQuest.map((quest, index) => (
-                  <HighlightQuest {...quest} key={index} />
+        <main className='max-w-7xl mx-auto p-6'>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+            <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
+              <h2 className='text-xl font-bold text-white mb-4'>Guias em Destaque</h2>
+              <ul className='space-y-3'>
+                {guides?.map((guide, index) => (
+                  <li key={index} className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
+                    <Link to={`/guides/${guide?.id}`}>{guide?.title}</Link>
+                  </li>
                 ))}
+              </ul>
+            </div>
+
+            <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
+              <h2 className='text-xl font-bold text-white mb-4'>Classes</h2>
+              <ul className='space-y-3'>
+                <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>Knight</li>
+                <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>Mage</li>
+                <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>Rogue</li>
+                <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>Squire</li>
+              </ul>
+            </div>
+
+            <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
+              <h2 className='text-xl font-bold text-white mb-4'>Últimas Atualizações</h2>
+              <div className='space-y-4'>
+                <div>
+                  <p className='text-sm text-gray-400'>22/03/2024</p>
+                  <p className='text-gray-300 transition-colors duration-200 hover:text-white'>Novo Dungeon: Cavernas Cristalinas</p>
+                </div>
+                <div>
+                  <p className='text-sm text-gray-400'>20/03/2024</p>
+                  <p className='text-gray-300 transition-colors duration-200 hover:text-white'>Atualização do Sistema de Crafting</p>
+                </div>
+                <div>
+                  <p className='text-sm text-gray-400'>18/03/2024</p>
+                  <p className='text-gray-300 transition-colors duration-200 hover:text-white'>Nova Região: Floresta Ancestral</p>
+                </div>
               </div>
-              <div className='text-center mt-6'>
-                <a
-                  href='#'
-                  className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'
-                >
-                  Ver Mais Quests
-                </a>
+            </div>
+
+            <div className='mb-10'>
+              <h2 className='text-2xl font-bold text-white mb-6 text-center'>Quests em Destaque</h2>
+              <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto'>
+                <div className='space-y-6'>
+                  {highlightQuest.map((quest, index) => (
+                    <HighlightQuest {...quest} key={index} />
+                  ))}
+                </div>
+                <div className='text-center mt-6'>
+                  <a href='#' className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'>
+                    Ver Mais Quests
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className='mb-10'>
+              <h2 className='text-2xl font-bold text-white mb-6 text-center'>Armas e Equipamentos</h2>
+              <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
+                <div className='grid grid-cols-3 gap-4'>
+                  {weapons.map((weapon, index) => (
+                    <div key={index} className='transition-transform duration-300 hover:scale-125'>
+                      <Link to='/weapons'>
+                        <WeaponBox {...weapon} />
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+                <div className='text-center mt-6'></div>
+              </div>
+            </div>
+
+            <div className='mb-10'>
+              <h2 className='text-2xl font-bold text-white mb-6 text-center'>Outros</h2>
+              <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
+                <div className='grid grid-cols-3 gap-4'>
+                  {other.map((item, index) => (
+                    <div key={index} className='transition-transform duration-300 hover:scale-125'>
+                      <OtherBox {...item} />
+                    </div>
+                  ))}
+                </div>
+                <div className='text-center mt-6'></div>
               </div>
             </div>
           </div>
 
-          {/* Weapons Section */}
-          <div className='mb-10'>
-            <h2 className='text-2xl font-bold text-white mb-6 text-center'>
-              Armas e Equipamentos
-            </h2>
-            <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
-              <div className='grid grid-cols-3 gap-4'>
-                {weapons.map((weapon, index) => (
-                  <div
-                    key={index}
-                    className='transition-transform duration-300 hover:scale-125'
-                  >
-                    <Link to='/weapons'>
-                      <WeaponBox {...weapon} />
-                    </Link>
-                  </div>
-                ))}
+          <div className='flex justify-center mb-10'>
+            <div className='max-w-4xl w-full'>
+              <h2 className='text-2xl font-bold text-white mb-6 text-center'>Conheça Apogea</h2>
+              <div className='relative pt-[56.25%] w-full'>
+                <iframe
+                  className='absolute top-0 left-0 w-full h-full rounded-lg shadow-lg'
+                  src='https://www.youtube.com/embed/_Qlm2aAbS6w'
+                  title='Apogea Game Trailer'
+                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                  allowFullScreen
+                ></iframe>
               </div>
-              <div className='text-center mt-6'></div>
             </div>
           </div>
+        </main>
 
-          {/* Others Section */}
-          <div className='mb-10'>
-            <h2 className='text-2xl font-bold text-white mb-6 text-center'>
-              Outros
-            </h2>
-            <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
-              <div className='grid grid-cols-3 gap-4'>
-                {other.map((item, index) => (
-                  <div
-                    key={index}
-                    className='transition-transform duration-300 hover:scale-125'
-                  >
-                    <OtherBox {...item} />
-                  </div>
-                ))}
-              </div>
-              <div className='text-center mt-6'></div>
-            </div>
-          </div>
-        </div>
-
-
-
-        {/* Video Section */}
-        <div className='flex justify-center mb-10'>
-          <div className='max-w-4xl w-full'>
-            <h2 className='text-2xl font-bold text-white mb-6 text-center'>
-              Conheça Apogea
-            </h2>
-            <div className='relative pt-[56.25%] w-full'>
-              <iframe
-                className='absolute top-0 left-0 w-full h-full rounded-lg shadow-lg'
-                src='https://www.youtube.com/embed/_Qlm2aAbS6w'
-                title='Apogea Game Trailer'
-                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                allowFullScreen
-              ></iframe>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      {/* Footer */}
-      <Footer />
-    </Suspense>
+        <Footer />
+      </Suspense>
     </div>
   )
 }
