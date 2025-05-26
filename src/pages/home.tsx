@@ -153,7 +153,7 @@ export const Home = () => {
                 ))}
               </ul>
               <div className='mt-4 text-center'>
-                <Link to='/all-guides' className='inline-block px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-sm'>
+                <Link to='/guides' className='inline-block px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-sm'>
                   Ver Todos os Guias
                 </Link>
               </div>
