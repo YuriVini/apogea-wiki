@@ -153,10 +153,7 @@ export const Home = () => {
                 ))}
               </ul>
               <div className='mt-4 text-center'>
-                <Link 
-                  to='/all-guides' 
-                  className='inline-block px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-sm'
-                >
+                <Link to='/all-guides' className='inline-block px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-sm'>
                   Ver Todos os Guias
                 </Link>
               </div>
@@ -166,7 +163,7 @@ export const Home = () => {
               <h2 className='text-xl font-bold text-white mb-4'>Classes</h2>
               <ul className='space-y-3'>
                 <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                  <Link to='/knight'>Knight</Link>
+                  <Link to='/character-class/knight'>Knight</Link>
                 </li>
                 <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>Mage</li>
                 <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>Rogue</li>

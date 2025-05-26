@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router'
 import { Home } from './pages/home'
-import { Guides } from './pages/guides'
+import { Guide } from './pages/guide'
 import { Weapons } from './pages/weapons'
 import { Armor } from './pages/armor'
 import { CreateGuide } from './pages/create-guide'
@@ -11,13 +11,13 @@ import { ForgotPassword } from './pages/forgot-password'
 import { ResetPassword } from './pages/reset-password'
 import { AllGuides } from './pages/all-guides'
 import { Class } from './pages/class'
-import { Knight } from './pages/knight'
+import { CharacterClass } from './pages/character-class'
 
 export const AppRoutes = () => {
   return (
     <Routes>
       <Route path='/' element={<Home />} />
-      <Route path='/guides/:guideId' element={<Guides />} />
+      <Route path='/guides/:guideId' element={<Guide />} />
       <Route path='/weapons' element={<Weapons />} />
       <Route path='/armor' element={<Armor />} />
       <Route path='/create-guide' element={<CreateGuide />} />
@@ -28,7 +28,7 @@ export const AppRoutes = () => {
       <Route path='/reset-password' element={<ResetPassword />} />
       <Route path='/guides' element={<AllGuides />} />
       <Route path='/class' element={<Class />} />
-      <Route path='/knight' element={<Knight />} />
+      <Route path='/character-class/:className' element={<CharacterClass />} />
     </Routes>
   )
 }

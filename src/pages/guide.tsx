@@ -5,7 +5,7 @@ import { Api, ApiNoAuth } from '../@api/axios'
 import { Header } from '../components/header'
 import { Trash2 } from 'lucide-react'
 
-export const Guides = () => {
+export const Guide = () => {
   const { guideId } = useParams()
   const navigate = useNavigate()
 
