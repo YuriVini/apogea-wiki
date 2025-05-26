@@ -10,7 +10,7 @@ interface AuthContextProps {
   user: User
   logIn: (data: { email: string; password: string }) => Promise<void>
   logOut: () => Promise<void> | void
-  updateProfile: (data: { name: string; avatar_url:string }) => Promise<void>
+  updateProfile: (data: { name: string; avatar_url: string }) => Promise<void>
   changePassword: (data: { currentPassword: string; newPassword: string }) => Promise<void>
   recoverPassword: (data: { email: string }) => Promise<void>
 }
@@ -45,8 +45,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
       await loadUser()
       navigate('/')
     } catch (error) {
-      console.error('Erro no login:', error)
-      alert('Erro de conexão com o servidor')
+      alert('Erro ao fazer login \n' + JSON.stringify(error))
     }
   }
 
@@ -74,8 +73,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
         isLoggedIn: true,
       })
     } catch (error) {
-      console.error('Erro ao atualizar perfil:', error)
-      alert('Erro de conexão com o servidor')
+      alert('Erro ao atualizar perfil \n' + JSON.stringify(error))
     }
   }
 
@@ -86,8 +84,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
         new_password: newPassword,
       })
     } catch (error) {
-      console.error('Erro ao alterar senha:', error)
-      throw error
+      alert('Erro ao alterar senha \n' + JSON.stringify(error))
     }
   }
 
@@ -97,8 +94,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
         email: email,
       })
     } catch (error) {
-      console.error('Erro ao recuperar senha:', error)
-      throw error
+      alert('Erro ao recuperar senha \n' + JSON.stringify(error))
     }
   }
 
@@ -116,8 +112,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
           })
         }
       } catch (error) {
-        console.error('Erro ao carregar usuário:', error)
-        logOut()
+        alert('Erro ao carregar usuário \n' + JSON.stringify(error))
       }
     }
   }
@@ -126,11 +121,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     loadUser()
   }, [])
 
-  return (
-    <AuthContext.Provider value={{ isLoggedIn, user, logIn, logOut, updateProfile, changePassword, recoverPassword }}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={{ isLoggedIn, user, logIn, logOut, updateProfile, changePassword, recoverPassword }}>{children}</AuthContext.Provider>
 }
 
 export const useAuth = () => useContext(AuthContext)
