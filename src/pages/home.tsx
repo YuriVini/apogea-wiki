@@ -154,6 +154,15 @@ export const Home = () => {
               <a href='#' className='text-gray-300 hover:text-white'>
                 Crafting
               </a>
+              <a href='/create-guide' className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block bg-blue-500/20 px-3 py-1 rounded-lg border border-blue-400/30 hover:bg-blue-500/30 hover:border-blue-300/50 shadow-md hover:shadow-blue-500/20'>
+                ✨ Criar Guia
+              </a>
+              <a href='/register' className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block bg-green-500/20 px-3 py-1 rounded-lg border border-green-400/30 hover:bg-green-500/30 hover:border-green-300/50 shadow-md hover:shadow-green-500/20'>
+                Registrar
+              </a>
+              <a href='/login' className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block bg-purple-500/20 px-3 py-1 rounded-lg border border-purple-400/30 hover:bg-purple-500/30 hover:border-purple-300/50 shadow-md hover:shadow-purple-500/20'>
+                Login
+              </a>
             </nav>
           </div>
         </header>
