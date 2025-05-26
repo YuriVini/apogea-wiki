@@ -165,7 +165,9 @@ export const Home = () => {
             <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
               <h2 className='text-xl font-bold text-white mb-4'>Classes</h2>
               <ul className='space-y-3'>
-                <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>Knight</li>
+                <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
+                  <Link to='/knight'>Knight</Link>
+                </li>
                 <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>Mage</li>
                 <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>Rogue</li>
                 <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>Squire</li>

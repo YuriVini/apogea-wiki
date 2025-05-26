@@ -12,7 +12,7 @@ export const Header = () => {
           <Link to='/' className='text-gray-300 hover:text-white'>
             Guia Inicial
           </Link>
-          <Link to='#' className='text-gray-300 hover:text-white'>
+          <Link to='/class' className='text-gray-300 hover:text-white'>
             Classes
           </Link>
           <Link to='#' className='text-gray-300 hover:text-white'>
