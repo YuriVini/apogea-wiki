@@ -2,10 +2,12 @@
 import { useState, useEffect, createContext, useMemo, useContext } from 'react'
 import { USER_TOKEN } from '../@api/storage'
 import { useNavigate } from 'react-router'
+import { Api, ApiNoAuth } from '../@api/axios'
+import { isEqual } from 'lodash'
 
 interface AuthContextProps {
   isLoggedIn: boolean
-  logIn: () => Promise<void> | void
+  logIn: (data: { email: string; password: string }) => Promise<void>
   logOut: () => Promise<void> | void
 }
 
@@ -23,13 +25,19 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
 
   const isLoggedIn = useMemo(() => !!user?.isLoggedIn, [user])
 
-  const logIn = () => {
-    localStorage.setItem(USER_TOKEN, 'true')
-    setUser({
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      isLoggedIn: true,
-    })
+  const logIn = async ({ email, password }: { email: string; password: string }) => {
+    try {
+      const response = await ApiNoAuth.post('/login', {
+        email: email,
+        password: password,
+      })
+      localStorage.setItem(USER_TOKEN, response.data.token)
+      await loadUser()
+      navigate('/')
+    } catch (error) {
+      console.error('Erro no login:', error)
+      alert('Erro de conexão com o servidor')
+    }
   }
 
   const logOut = () => {
@@ -39,17 +47,25 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
       email: '',
       isLoggedIn: false,
     })
-    navigate('/auth')
+    navigate('/')
   }
 
-  const loadUser = () => {
+  const loadUser = async () => {
     const token = localStorage.getItem(USER_TOKEN)
     if (token) {
-      setUser({
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        isLoggedIn: true,
-      })
+      try {
+        const response = await Api.get('/me')
+        if (!isEqual(response.data, user)) {
+          setUser({
+            name: response.data.name,
+            email: response.data.email,
+            isLoggedIn: true,
+          })
+        }
+      } catch (error) {
+        console.error('Erro ao carregar usuário:', error)
+        logOut()
+      }
     }
   }
 

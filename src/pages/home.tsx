@@ -20,6 +20,7 @@ import { Link } from 'react-router'
 import { Footer } from '../components/footer'
 import { useEffect, useState, Suspense } from 'react'
 import { ApiNoAuth } from '../@api/axios'
+import { Header } from '../components/header'
 
 const highlightQuest = [
   {
@@ -138,34 +139,7 @@ export const Home = () => {
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
-        <header className='bg-gray-800/50 p-4 shadow-lg'>
-          <div className='max-w-7xl mx-auto flex justify-between items-center'>
-            <h1 className='text-3xl font-bold text-white'>Apogea Wiki</h1>
-            <nav className='space-x-6'>
-              <a href='#' className='text-gray-300 hover:text-white'>
-                Guia Inicial
-              </a>
-              <a href='#' className='text-gray-300 hover:text-white'>
-                Classes
-              </a>
-              <a href='#' className='text-gray-300 hover:text-white'>
-                Dungeons
-              </a>
-              <a href='#' className='text-gray-300 hover:text-white'>
-                Crafting
-              </a>
-              <a href='/create-guide' className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block bg-blue-500/20 px-3 py-1 rounded-lg border border-blue-400/30 hover:bg-blue-500/30 hover:border-blue-300/50 shadow-md hover:shadow-blue-500/20'>
-                ✨ Criar Guia
-              </a>
-              <a href='/register' className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block bg-green-500/20 px-3 py-1 rounded-lg border border-green-400/30 hover:bg-green-500/30 hover:border-green-300/50 shadow-md hover:shadow-green-500/20'>
-                Registrar
-              </a>
-              <a href='/login' className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block bg-purple-500/20 px-3 py-1 rounded-lg border border-purple-400/30 hover:bg-purple-500/30 hover:border-purple-300/50 shadow-md hover:shadow-purple-500/20'>
-                Login
-              </a>
-            </nav>
-          </div>
-        </header>
+        <Header />
 
         <main className='max-w-7xl mx-auto p-6'>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
