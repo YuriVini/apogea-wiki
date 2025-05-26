@@ -9,6 +9,7 @@ import { Login } from './pages/login'
 import { Profile } from './pages/profile'
 import { ForgotPassword } from './pages/forgot-password'
 import { ResetPassword } from './pages/reset-password'
+import { AllGuides } from './pages/all-guides'
 export const AppRoutes = () => {
   return (
     <Routes>
@@ -22,6 +23,7 @@ export const AppRoutes = () => {
       <Route path='/profile' element={<Profile />} />
       <Route path='/forgot-password' element={<ForgotPassword />} />
       <Route path='/reset-password' element={<ResetPassword />} />
+      <Route path='/all-guides' element={<AllGuides />} />
     </Routes>
   )
 }

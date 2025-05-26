@@ -146,12 +146,20 @@ export const Home = () => {
             <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
               <h2 className='text-xl font-bold text-white mb-4'>Guias em Destaque</h2>
               <ul className='space-y-3'>
-                {guides?.map((guide, index) => (
+                {guides?.slice(0, 4).map((guide, index) => (
                   <li key={index} className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
                     <Link to={`/guides/${guide?.id}`}>{guide?.title}</Link>
                   </li>
                 ))}
               </ul>
+              <div className='mt-4 text-center'>
+                <Link 
+                  to='/all-guides' 
+                  className='inline-block px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-sm'
+                >
+                  Ver Todos os Guias
+                </Link>
+              </div>
             </div>
 
             <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>

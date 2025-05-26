@@ -1,24 +1,14 @@
 import { Footer } from '../components/footer'
-import { useState, useEffect } from 'react'
-import { Api } from '../@api/axios'
+import { useState } from 'react'
+import { ApiNoAuth } from '../@api/axios'
 import { Header } from '../components/header'
-import { useAuth } from '../context/auth'
-import { useNavigate } from 'react-router'
 
 export const CreateGuide = () => {
-  const { isLoggedIn } = useAuth()
-  const navigate = useNavigate()
   const [guide, setGuide] = useState<GuidesApiTypes.Guide>({
     title: '',
     description: '',
-    steps: [{ title: '', description: '' }],
+    steps: [{ title: '', description: '' }]
   } as GuidesApiTypes.Guide)
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate('/login')
-    }
-  }, [isLoggedIn, navigate])
 
   const handleUpdateGuide = (field: keyof GuidesApiTypes.Guide, value: string) => {
     setGuide({ ...guide, [field]: value })
@@ -33,7 +23,7 @@ export const CreateGuide = () => {
   const handleAddStep = () => {
     setGuide({
       ...guide,
-      steps: [...guide.steps, { title: '', description: '' }],
+      steps: [...guide.steps, { title: '', description: '' }]
     })
   }
 
@@ -81,27 +71,23 @@ export const CreateGuide = () => {
       return
     }
 
-    if (guide.steps.some((step) => !step.title.trim() || !step.description.trim())) {
+    if (guide.steps.some(step => !step.title.trim() || !step.description.trim())) {
       alert('Por favor, preencha o título e a descrição de todos os passos.')
       return
     }
 
     try {
-      const { data } = await Api.post<GuidesApiTypes.GuideCreateResponse>('/guides', guide)
+      const response = await ApiNoAuth.post('/guides', guide)
       alert('Guia criado com sucesso!')
-      navigate(`/guides/${data.guideId}`)
+      window.location.href = `/guides/${response.data.id}`
     } catch (error) {
       alert('Erro ao criar guia: \n' + JSON.stringify(error))
     }
   }
 
-  if (!isLoggedIn) {
-    return null
-  }
-
   return (
     <div>
-      <Header />
+     <Header />
 
       <div className='max-w-4xl mx-auto p-8'>
         <div className='mb-6'>
@@ -137,7 +123,10 @@ export const CreateGuide = () => {
                 <div className='flex justify-between items-center'>
                   <h3 className='text-xl font-semibold text-white'>Passo {index + 1}</h3>
                   {guide.steps.length > 1 && (
-                    <button onClick={() => handleRemoveStep(index)} className='bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition-colors'>
+                    <button
+                      onClick={() => handleRemoveStep(index)}
+                      className='bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition-colors'
+                    >
                       🗑️ Remover Passo
                     </button>
                   )}
@@ -328,6 +317,7 @@ export const CreateGuide = () => {
         </div>
       </div>
 
+      {/* Botão flutuante para criar guia */}
       <button
         className='fixed bottom-8 right-8 bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-full 
         transition-all duration-300 flex items-center gap-2
