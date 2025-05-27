@@ -1,50 +1,123 @@
-import { SkillSlot } from './skill-slot';
-import { EQUIPMENT_DATABASE } from './equipment';
+import { useState } from 'react'
+import { SkillSlot } from './skill-slot'
+import Helme3 from '/helmet/Helmet3.webp'
+import RingIcon from '/ring/Crystal_Ring.webp'
+import LegsIcon from '/legs/Leather_Cuisse.webp'
+import BootsIcon from '/boots/Boots1.webp'
+import ChestIcon from '/armor/Brass_armor.webp'
+import BackpackIcon from '/backpack/Backpack_blue.webp'
+import AccessoryIcon from '/necklace/Silver_amulet.webp'
+import LeftHandIcon from '/swords/Broadsword.webp'
+import RightHandIcon from '/swords/Broadsword.webp'
+import { EQUIPMENT_DATABASE, Equipment } from './equipment'
 
+const initialBuildGrid = {
+  accessory: {
+    name: 'Accessory',
+    imageUrl: AccessoryIcon,
+    type: 'accessory',
+    category: 'ring',
+  } as Equipment,
+  leftHand: {
+    name: 'Left Hand',
+    imageUrl: LeftHandIcon,
+    type: 'weapon',
+    category: 'sword',
+  } as Equipment,
+  rightHand: {
+    name: 'Right Hand',
+    imageUrl: RightHandIcon,
+    type: 'weapon',
+    category: 'sword',
+  } as Equipment,
+  chest: {
+    name: 'Chest',
+    imageUrl: ChestIcon,
+    type: 'armor',
+    category: 'chest',
+  } as Equipment,
+  legs: {
+    name: 'Legs',
+    imageUrl: LegsIcon,
+    type: 'armor',
+    category: 'leg',
+  } as Equipment,
+  boots: {
+    name: 'Boots',
+    imageUrl: BootsIcon,
+    type: 'armor',
+    category: 'boot',
+  } as Equipment,
+  helmet: {
+    name: 'Helmet',
+    imageUrl: Helme3,
+    type: 'armor',
+    category: 'helmet',
+  } as Equipment,
+  ring: {
+    name: 'Ring',
+    imageUrl: RingIcon,
+    type: 'accessory',
+    category: 'ring',
+  } as Equipment,
+  backpack: {
+    name: 'Backpack',
+    imageUrl: BackpackIcon,
+    type: 'accessory',
+    category: 'backpack',
+  } as Equipment,
+}
 
 export const SkillsGrid = () => {
+  const [buildGrid, setBuildGrid] = useState(initialBuildGrid)
   const initialEquipment = {
-    preparation: EQUIPMENT_DATABASE.find(e => e.name === 'Preparation'),
-    penetratingShot: EQUIPMENT_DATABASE.find(e => e.name === 'Penetrating Shot'),
-    shadowClone: EQUIPMENT_DATABASE.find(e => e.name === 'Shadow Clone'),
-  };
+    sword: EQUIPMENT_DATABASE.find((e) => e.name === 'Sword'),
+    cutlass: EQUIPMENT_DATABASE.find((e) => e.name === 'Cutlass Sword'),
+  }
+
+  const updateEquipment = (slot: keyof typeof buildGrid, equipment: Equipment) => {
+    setBuildGrid((prev) => ({
+      ...prev,
+      [slot]: equipment,
+    }))
+  }
 
   return (
-    <div className="relative">
-      <div className="border-2 border-gray-700 rounded-lg bg-gray-900/50 p-3 relative">
-        <div className="absolute top-5 right-8 text-4xl text-gray-400 font-medieval">
-          Rogue
-        </div>
+    <div className='relative'>
+      <div className='border-2 border-gray-700 rounded-lg bg-gray-900/50 p-3 relative'>
+        <div className='absolute top-5 right-8 text-4xl text-gray-400 font-medieval'>Rogue</div>
 
-        <div className="grid grid-cols-3 gap-4 max-w-xl mx-auto">
-          <div className="space-y-4">
-            <SkillSlot type="backpack" rarity="legendary" color="purple" initialEquipment={initialEquipment.preparation} />
-            <SkillSlot type="weapon" rarity="rare" color="blue" initialEquipment={initialEquipment.penetratingShot} />
-            <SkillSlot type="accessory" rarity="magic" color="green" initialEquipment={initialEquipment.shadowClone} />
-            <SkillSlot type="boots" rarity="common" color="gray" />
-            <SkillSlot type="gloves" rarity="common" color="gray" />
+        <div className='flex justify-center gap-6'>
+          <div className='space-y-4 self-center'>
+            <SkillSlot type='armor' category='ring' equipment={buildGrid.ring} onChange={(equipment) => updateEquipment('ring', equipment)} />
+            <SkillSlot
+              type='weapon'
+              category='weapon-staff-bow-dagger-shield-glove'
+              equipment={initialEquipment.sword}
+              onChange={(equipment) => updateEquipment('leftHand', equipment)}
+            />
+            <SkillSlot type='armor' category='chest' equipment={buildGrid.chest} onChange={(equipment) => updateEquipment('chest', equipment)} />
           </div>
 
-          <div className="space-y-4">
-            <SkillSlot type="helmet" rarity="magic" color="green" />
-            <SkillSlot type="chest" rarity="rare" color="blue" />
-            <SkillSlot type="pants" rarity="magic" color="green" />
-            <SkillSlot type="weapon" rarity="rare" color="blue" />
-            <SkillSlot type="accessory" rarity="legendary" color="purple" />
+          <div className='space-y-4 self-center'>
+            <SkillSlot type='armor' category='helmet' equipment={buildGrid.helmet} onChange={(equipment) => updateEquipment('helmet', equipment)} />
+            <SkillSlot type='armor' category='chest' equipment={buildGrid.chest} onChange={(equipment) => updateEquipment('chest', equipment)} />
+            <SkillSlot type='armor' category='leg' equipment={buildGrid.legs} onChange={(equipment) => updateEquipment('legs', equipment)} />
+            <SkillSlot type='armor' category='boot' equipment={buildGrid.boots} onChange={(equipment) => updateEquipment('boots', equipment)} />
           </div>
 
-          <div className="space-y-4">
-            <SkillSlot type="weapon" rarity="rare" color="blue" />
-            <SkillSlot type="backpack" rarity="legendary" color="purple" />
-            <SkillSlot type="accessory" rarity="magic" color="green" />
-            <SkillSlot type="boots" rarity="common" color="gray" filled={false} />
-            <div className="flex justify-end space-x-2">
-              <SkillSlot type="gloves" rarity="rare" color="blue" size="small" />
-              <SkillSlot type="helmet" rarity="legendary" color="purple" size="small" />
-            </div>
+          <div className='space-y-4 self-center'>
+            <SkillSlot type='accessory' category='backpack' equipment={buildGrid.backpack} onChange={(equipment) => updateEquipment('backpack', equipment)} />
+            <SkillSlot
+              type='weapon'
+              category='weapon-staff-bow-dagger-shield-glove'
+              equipment={initialEquipment.cutlass}
+              onChange={(equipment) => updateEquipment('rightHand', equipment)}
+            />
+            <SkillSlot type='armor' category='ring' equipment={buildGrid.accessory} onChange={(equipment) => updateEquipment('accessory', equipment)} />
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
