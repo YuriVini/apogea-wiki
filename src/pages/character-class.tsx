@@ -7,20 +7,54 @@ const knightData = {
   description: 'Guerreiro resistente especializado em combate corpo a corpo e proteção de aliados',
   stats: [
     {
-      title: 'Vida',
-      value: 5 / 6,
+      title: 'Skill',
+      value: 125,
+      color: 'text-green-400',
     },
     {
-      title: 'Dano',
-      value: 3 / 6,
+      title: 'Magic',
+      value: 50,
+      color: 'text-red-400',
     },
     {
-      title: 'Defesa',
-      value: 5 / 6,
+      title: 'Armor',
+      value: 150,
+      color: 'text-green-400',
     },
     {
-      title: 'Velocidade',
-      value: 2 / 6,
+      title: 'Defense',
+      value: 150,
+      color: 'text-green-400',
+    },
+    {
+      title: 'Health',
+      value: 200,
+      color: 'text-green-400',
+    },
+    {
+      title: 'Mana',
+      value: 50,
+      color: 'text-red-400',
+    },
+    {
+      title: 'Capacity',
+      value: 150,
+      color: 'text-green-400',
+    },
+    {
+      title: 'Hp Regen',
+      value: 125,
+      color: 'text-green-400',
+    },
+    {
+      title: 'Mp Regen',
+      value: 50,
+      color: 'text-red-400',
+    },
+    {
+      title: 'Attack Speed',
+      value: 100,
+      color: 'text-yellow-400',
     },
   ],
   playstyle: [
@@ -231,28 +265,14 @@ export const CharacterClass = () => {
           <>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12'>
               <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg'>
-                <h2 className='text-2xl font-bold text-white mb-4'>📊 Estatísticas</h2>
-                <div className='space-y-3'>
+                <h2 className='text-2xl font-bold text-white mb-4'>📊 Status do Knight</h2>
+                <div className='space-y-2'>
                   {knightData.stats.map((stat, index) => (
                     <div key={index} className='flex justify-between items-center'>
                       <span className='text-gray-300'>{stat.title}:</span>
-                      <div className='flex items-center gap-2'>
-                        <div className='w-32 bg-gray-700 rounded-full h-3'>
-                          <div
-                            className={`${
-                              stat.title === 'Vida' ? 'bg-green-500' : stat.title === 'Dano' ? 'bg-yellow-500' : stat.title === 'Defesa' ? 'bg-blue-500' : 'bg-red-500'
-                            } h-3 rounded-full`}
-                            style={{ width: `${stat.value * 100}%` }}
-                          ></div>
-                        </div>
-                        <span
-                          className={`${
-                            stat.title === 'Vida' ? 'text-green-400' : stat.title === 'Dano' ? 'text-yellow-400' : stat.title === 'Defesa' ? 'text-blue-400' : 'text-red-400'
-                          } font-bold w-[60px] text-center`}
-                        >
-                          {Math.round(stat.value * 6)}/6
-                        </span>
-                      </div>
+                      <span className={`${stat.color} font-bold`}>
+                        {stat.value}%
+                      </span>
                     </div>
                   ))}
                 </div>

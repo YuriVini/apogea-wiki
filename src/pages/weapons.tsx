@@ -1,5 +1,12 @@
 import { Header } from '../components/header'
 import { Footer } from '../components/footer'
+import { WeaponBox } from '../components/weapon-box'
+import DaggerIcon from '/daggers/Silver_Dagger.webp'
+import Rusty_sword from '/swords/Rusty_sword.webp'
+import Ironsword from '/swords/Ironsword.webp'
+import Longsword from '/swords/Longsword.webp'
+import Broadsword from '/swords/Broadsword.webp'
+import Cutlass from '/swords/Cutlass_sword.webp'
 
 interface WeaponData {
   item: string
@@ -11,12 +18,14 @@ interface WeaponData {
   attributes: string
   size: string
   weight: string
-  url_image: string
+  dropBy: string
+  buyFrom: string
+  sellTo: string
 }
 
 const meleeWeaponsData: WeaponData[] = [
   {
-    item: '🗡️',
+    item: DaggerIcon,
     name: 'Knife',
     damage: '+3',
     attackSpeed: '+3',
@@ -25,10 +34,12 @@ const meleeWeaponsData: WeaponData[] = [
     attributes: '',
     size: '2/10',
     weight: '8 oz',
-    url_image: '/weapons/Knife.webp'
+    dropBy: 'Goblin',
+    buyFrom: 'Blacksmith',
+    sellTo: '50 gp'
   },
   {
-    item: '⚔️',
+    item: Rusty_sword,
     name: 'Rusty Sword',
     damage: '+8',
     attackSpeed: '+2',
@@ -37,10 +48,12 @@ const meleeWeaponsData: WeaponData[] = [
     attributes: '',
     size: '6/10',
     weight: '30 oz',
-    url_image: '/weapons/Rusty_sword.webp'
+    dropBy: 'Skeleton',
+    buyFrom: 'Weapon Shop',
+    sellTo: '75 gp'
   },
   {
-    item: '🗡️',
+    item: Ironsword,
     name: 'Ironsword',
     damage: '+15',
     attackSpeed: '+4',
@@ -49,10 +62,12 @@ const meleeWeaponsData: WeaponData[] = [
     attributes: '',
     size: '6/10',
     weight: '36 oz',
-    url_image: '/weapons/Ironsword.webp'
+    dropBy: 'Orc Warrior',
+    buyFrom: 'Blacksmith',
+    sellTo: '150 gp'
   },
   {
-    item: '⚔️',
+    item: Longsword,
     name: 'Longsword',
     damage: '+40',
     attackSpeed: '+1',
@@ -61,10 +76,12 @@ const meleeWeaponsData: WeaponData[] = [
     attributes: '',
     size: '8/10',
     weight: '98 oz',
-    url_image: '/weapons/Longsword.webp'
+    dropBy: 'Knight',
+    buyFrom: 'Royal Armory',
+    sellTo: '500 gp'
   },
   {
-    item: '⚔️',
+    item: Broadsword,
     name: 'Broadsword',
     damage: '+30',
     attackSpeed: '-2',
@@ -73,10 +90,12 @@ const meleeWeaponsData: WeaponData[] = [
     attributes: '',
     size: '8/10',
     weight: '75 oz',
-    url_image: '/weapons/Broadsword.webp'
+    dropBy: 'Troll',
+    buyFrom: 'Weapon Master',
+    sellTo: '350 gp'
   },
   {
-    item: '🗡️',
+    item: Cutlass,
     name: 'Cutlass',
     damage: '+25',
     attackSpeed: '+3',
@@ -84,7 +103,10 @@ const meleeWeaponsData: WeaponData[] = [
     defense: '+3',
     attributes: '',
     size: '6/10',
-    weight: '45 oz'
+    weight: '45 oz',
+    dropBy: 'Pirate',
+    buyFrom: 'Harbor Shop',
+    sellTo: '250 gp'
   }
 ]
 
@@ -107,13 +129,20 @@ const WeaponTable = ({ title, weapons }: { title: string; weapons: WeaponData[] 
                 <th className="text-left p-3 border-r border-gray-600">Defense</th>
                 <th className="text-left p-3 border-r border-gray-600">Attributes</th>
                 <th className="text-left p-3 border-r border-gray-600">Size</th>
-                <th className="text-left p-3">Weight</th>
+                <th className="text-left p-3 border-r border-gray-600">Weight</th>
+                <th className="text-left p-3 border-r border-gray-600">Drop by</th>
+                <th className="text-left p-3 border-r border-gray-600">Buy From</th>
+                <th className="text-left p-3">Sell To</th>
               </tr>
             </thead>
             <tbody>
               {weapons.map((weapon, index) => (
                 <tr key={index} className="border-b border-gray-700 hover:bg-gray-700/30 transition-colors">
-                  <td className="p-3 border-r border-gray-600 text-center text-lg">{weapon.item}</td>
+                  <td className="p-3 border-r border-gray-600 text-center">
+                    <div className="flex justify-center">
+                      <WeaponBox title={weapon.name} imageUrl={weapon.item} />
+                    </div>
+                  </td>
                   <td className="p-3 border-r border-gray-600 text-yellow-400 font-medium">{weapon.name}</td>
                   <td className="p-3 border-r border-gray-600 text-green-400">{weapon.damage}</td>
                   <td className="p-3 border-r border-gray-600 text-blue-400">{weapon.attackSpeed}</td>
@@ -121,7 +150,10 @@ const WeaponTable = ({ title, weapons }: { title: string; weapons: WeaponData[] 
                   <td className="p-3 border-r border-gray-600 text-purple-400">{weapon.defense}</td>
                   <td className="p-3 border-r border-gray-600 text-gray-300">{weapon.attributes}</td>
                   <td className="p-3 border-r border-gray-600 text-gray-300">{weapon.size}</td>
-                  <td className="p-3 text-gray-300">{weapon.weight}</td>
+                  <td className="p-3 border-r border-gray-600 text-gray-300">{weapon.weight}</td>
+                  <td className="p-3 border-r border-gray-600 text-red-400">{weapon.dropBy}</td>
+                  <td className="p-3 border-r border-gray-600 text-cyan-400">{weapon.buyFrom}</td>
+                  <td className="p-3 text-green-300">{weapon.sellTo}</td>
                 </tr>
               ))}
             </tbody>
@@ -143,7 +175,7 @@ export const Weapons = () => {
             Weapons Database
           </h1>
           <p className="text-gray-300 text-center max-w-3xl mx-auto">
-            Complete database of all weapons available in Apogea, including their stats, requirements, and attributes.
+            Banco de dados completo de todas as armas disponíveis no Apogea, incluindo suas estatísticas, requisitos e atributos.
           </p>
         </div>
 
