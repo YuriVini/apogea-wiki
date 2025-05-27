@@ -16,6 +16,9 @@ import NecklaceIcon from '/necklace/Silver_amulet.webp'
 import AbilitiesIcon from '/abilities/Ability2.webp'
 import SpellsIcon from '/spells/Spell23.webp'
 import FoodIcon from '/food/Bread_loaf.webp'
+import HelmetIcon from '/helmet/Spanghen_helmet.webp'
+import PantsIcon from '/legs/Leather_cuisse_legs.webp'
+import BootsIcon from '/boots/Boots1.webp'
 import { Link } from 'react-router'
 import { Footer } from '../components/footer'
 import { useEffect, useState, Suspense } from 'react'
@@ -69,8 +72,20 @@ const weapons = [
     imageUrl: ShieldIcon,
   },
   {
+    title: 'Elmo',
+    imageUrl: HelmetIcon,
+  },
+  {
     title: 'Armaduras',
     imageUrl: ArmorIcon,
+  },
+  {
+    title: 'Pernas',
+    imageUrl: PantsIcon,
+  },
+  {
+    title: 'Botas',
+    imageUrl: BootsIcon,
   },
   {
     title: 'Anel',
@@ -84,20 +99,16 @@ const weapons = [
     title: 'Container',
     imageUrl: BackpackIcon,
   },
-  {
-    title: 'Drop de Criaturas',
-    imageUrl: CreatureDropsIcon,
-  },
-  {
-    title: 'Itens de Quest',
-    imageUrl: QuestItensIcon,
-  },
 ]
 
 const other = [
   {
     title: 'Monstros',
     imageUrl: QuestItensIcon,
+  },
+  {
+    title: 'Drop de Criaturas',
+    imageUrl: CreatureDropsIcon,
   },
   {
     title: 'Habilidades',
@@ -117,6 +128,10 @@ const other = [
   },
   {
     title: 'NPCs',
+    imageUrl: QuestItensIcon,
+  },
+  {
+    title: 'Itens de Quest',
     imageUrl: QuestItensIcon,
   },
 ]
