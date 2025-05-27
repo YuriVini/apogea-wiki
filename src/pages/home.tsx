@@ -190,7 +190,7 @@ export const Home = () => {
             </div>
 
             <div className='mb-10'>
-              <h2 className='text-2xl font-bold text-white mb-6 text-center'>Quests em Destaque</h2>
+              <h2 className='text-2xl font-bold text-white mb-6 text-center'>Builds em Destaque</h2>
               <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto'>
                 <div className='space-y-6'>
                   {highlightQuest.map((quest, index) => (

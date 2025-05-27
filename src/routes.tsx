@@ -12,6 +12,7 @@ import { ResetPassword } from './pages/reset-password'
 import { AllGuides } from './pages/all-guides'
 import { Class } from './pages/class'
 import { CharacterClass } from './pages/character-class'
+import { Builds } from './pages/build'
 
 export const AppRoutes = () => {
   return (
@@ -29,6 +30,7 @@ export const AppRoutes = () => {
       <Route path='/guides' element={<AllGuides />} />
       <Route path='/class' element={<Class />} />
       <Route path='/character-class/:className' element={<CharacterClass />} />
+      <Route path='/build' element={<Builds />} />
     </Routes>
   )
 }

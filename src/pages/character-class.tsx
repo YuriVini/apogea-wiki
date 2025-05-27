@@ -376,7 +376,7 @@ export const CharacterClass = () => {
                       </div>
                     ))}
                   </div>
-                  <button className='w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg transition-colors duration-200'>Ver Build Completa</button>
+                  <button onClick={() => window.location.href = '/build'} className='w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg transition-colors duration-200'>Ver Build Completa</button>
                 </div>
               ))}
             </div>
