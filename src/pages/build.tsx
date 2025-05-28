@@ -2,15 +2,29 @@ import { Header } from '../components/header'
 import { Footer } from '../components/footer'
 import { useState } from 'react'
 import { SkillsGrid } from '../components/skill-grid'
+import { Trash2, Plus, Minus } from 'lucide-react'
+
 interface BuildData {
     title: string;
     overview: string;
-    attributes: string[];
     equipment: string[];
     requirements: string[];
     mainSkills: string[];
     supportSkills: string[];
     strategy: string[];
+    
+    characterStats: {
+        level: number;
+        health: number;
+        mana: number;
+        magic: number;
+        weaponSkill: number;
+        hpRegen: number;
+        mpRegen: number;
+        capacity: number;
+        pvpStatus: string;
+        class: string;
+    };
 }
 
 export const Builds = () => {
@@ -18,7 +32,6 @@ export const Builds = () => {
     const [buildData, setBuildData] = useState<BuildData>({
         title: "Penetrating Shot Rogue",
         overview: "A build Penetrating Shot Rogue é focada em maximizar o dano à distância com arco, utilizando a habilidade Penetrating Shot para atingir múltiplos inimigos em linha. Esta build é ideal para jogadores que preferem eliminar inimigos rapidamente à distância.",
-        attributes: ["Destreza: 40", "Força: 25", "Vitalidade: 20", "Resistência: 15"],
         equipment: ["Composite Bow +5", "Bodkin Arrows", "Leather Armor +3", "Ring of Archery", "Amulet of Dexterity"],
         requirements: ["Trickshot", "Bow Mastery", "Quick Draw"],
         mainSkills: ["Penetrating Shot", "Multishot", "Aimed Shot", "Power Shot"],
@@ -27,7 +40,19 @@ export const Builds = () => {
             "Mantenha distância dos inimigos, use terreno elevado quando possível e posicione-se para alinhar múltiplos inimigos.",
             "Use Penetrating Shot para atingir grupos de inimigos, Aimed Shot para alvos únicos importantes e Stealth para reposicionamento.",
             "Mantenha sempre um estoque grande de flechas, use Multishot em grupos densos e combine Critical Strike com Power Shot para máximo dano."
-        ]
+        ],
+        characterStats: {
+            level: 0,
+            health: 150,
+            mana: 0,
+            magic: 15,
+            weaponSkill: 0,
+            hpRegen: 0,
+            mpRegen: 0,
+            capacity: 0,
+            pvpStatus: "Off",
+            class: "Squire"
+        }
     })
 
     const handleInputChange = (field: keyof BuildData, value: string) => {
@@ -37,21 +62,51 @@ export const Builds = () => {
         }))
     }
 
-    const handleArrayInputChange = (field: keyof Pick<BuildData, 'attributes' | 'equipment' | 'requirements' | 'mainSkills' | 'supportSkills' | 'strategy'>, index: number, value: string) => {
+    const handleStatsChange = (field: keyof BuildData['characterStats'], value: string | number) => {
+        setBuildData(prev => ({
+            ...prev,
+            characterStats: {
+                ...prev.characterStats,
+                [field]: value
+            }
+        }))
+    }
+
+    const incrementStat = (field: keyof BuildData['characterStats']) => {
+        setBuildData(prev => ({
+            ...prev,
+            characterStats: {
+                ...prev.characterStats,
+                [field]: (prev.characterStats[field] as number) + 1
+            }
+        }))
+    }
+
+    const decrementStat = (field: keyof BuildData['characterStats']) => {
+        setBuildData(prev => ({
+            ...prev,
+            characterStats: {
+                ...prev.characterStats,
+                [field]: Math.max(0, (prev.characterStats[field] as number) - 1)
+            }
+        }))
+    }
+
+    const handleArrayInputChange = (field: keyof Pick<BuildData,  'equipment' | 'requirements' | 'mainSkills' | 'supportSkills' | 'strategy'>, index: number, value: string) => {
         setBuildData(prev => ({
             ...prev,
             [field]: (prev[field] as string[]).map((item, i) => i === index ? value : item)
         }))
     }
 
-    const handleArrayItemDelete = (field: keyof Pick<BuildData, 'attributes' | 'equipment' | 'requirements' | 'mainSkills' | 'supportSkills' | 'strategy'>, index: number) => {
+    const handleArrayItemDelete = (field: keyof Pick<BuildData, 'equipment' | 'requirements' | 'mainSkills' | 'supportSkills' | 'strategy'>, index: number) => {
         setBuildData(prev => ({
             ...prev,
             [field]: (prev[field] as string[]).filter((_, i) => i !== index)
         }))
     }
 
-    const handleArrayItemAdd = (field: keyof Pick<BuildData, 'attributes' | 'equipment' | 'requirements' | 'mainSkills' | 'supportSkills' | 'strategy'>) => {
+    const handleArrayItemAdd = (field: keyof Pick<BuildData, 'equipment' | 'requirements' | 'mainSkills' | 'supportSkills' | 'strategy'>) => {
         setBuildData(prev => ({
             ...prev,
             [field]: [...(prev[field] as string[]), ""]
@@ -103,133 +158,240 @@ export const Builds = () => {
                         )}
                     </div>
 
-                    <SkillsGrid />
-                    <br />
-
-                    <div className="grid lg:grid-cols-3 gap-6 mb-8">
-                        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-                            <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-xl font-semibold text-green-400">Atributos Principais</h3>
-                                {isEditing && (
-                                    <button
-                                        onClick={() => handleArrayItemAdd('attributes')}
-                                        className="text-green-400 hover:text-green-300 text-sm"
-                                    >
-                                        ➕
-                                    </button>
-                                )}
-                            </div>
-                            <ul className="space-y-2 text-gray-300">
-                                {buildData.attributes.map((attribute, index) => (
-                                    <li key={index} className="flex items-center justify-between">
-                                        <div className="flex items-center flex-1">
-                                            <span className="text-yellow-400 mr-2">📊</span>
-                                            {isEditing ? (
-                                                <input
-                                                    type="text"
-                                                    value={attribute}
-                                                    onChange={(e) => handleArrayInputChange('attributes', index, e.target.value)}
-                                                    className="bg-gray-700 border border-gray-600 rounded px-2 py-1 flex-1"
-                                                />
-                                            ) : (
-                                                <span>{attribute}</span>
-                                            )}
-                                        </div>
-                                        {isEditing && (
-                                            <button
-                                                onClick={() => handleArrayItemDelete('attributes', index)}
-                                                className="ml-2 text-red-400 hover:text-red-300 text-sm"
-                                            >
-                                                🗑️
-                                            </button>
+                    {/* Character Stats Table */}
+                    <div className="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+                        <h2 className="text-2xl font-semibold mb-4 text-purple-400">Pontos de Skill</h2>
+                        <div className="flex justify-evenly bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <div className="w-1/4 space-y-2">
+                                {/* Level */}
+                                <div className="flex justify-between items-center py-1 border-b border-gray-700">
+                                    <span className="text-white font-semibold">Level:</span>
+                                    <div className="flex items-center gap-2">
+                                        {isEditing ? (
+                                            <input
+                                                type="number"
+                                                value={buildData.characterStats.level}
+                                                onChange={(e) => handleStatsChange('level', parseInt(e.target.value) || 0)}
+                                                className="bg-gray-700 border border-gray-600 rounded px-2 py-1 w-20 text-white"
+                                                min="1"
+                                                max="100"
+                                            />
+                                        ) : (
+                                            <span className="text-white">{buildData.characterStats.level}</span>
                                         )}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-                            <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-xl font-semibold text-purple-400">Equipamentos</h3>
-                                {isEditing && (
-                                    <button
-                                        onClick={() => handleArrayItemAdd('equipment')}
-                                        className="text-green-400 hover:text-green-300 text-sm"
-                                    >
-                                        ➕
-                                    </button>
-                                )}
-                            </div>
-                            <ul className="space-y-2 text-gray-300">
-                                {buildData.equipment.map((equipment, index) => (
-                                    <li key={index} className="flex items-center justify-between">
-                                        <div className="flex items-center flex-1">
-                                            <span className="text-blue-400 mr-2">⚔️</span>
-                                            {isEditing ? (
-                                                <input
-                                                    type="text"
-                                                    value={equipment}
-                                                    onChange={(e) => handleArrayInputChange('equipment', index, e.target.value)}
-                                                    className="bg-gray-700 border border-gray-600 rounded px-2 py-1 flex-1"
-                                                />
-                                            ) : (
-                                                <span>{equipment}</span>
-                                            )}
-                                        </div>
                                         {isEditing && (
-                                            <button
-                                                onClick={() => handleArrayItemDelete('equipment', index)}
-                                                className="ml-2 text-red-400 hover:text-red-300 text-sm"
-                                            >
-                                                🗑️
-                                            </button>
+                                            <>
+                                                <button
+                                                    onClick={() => incrementStat('level')}
+                                                    className="bg-green-600 hover:bg-green-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Plus size={14} />
+                                                </button>
+                                                <button
+                                                    onClick={() => decrementStat('level')}
+                                                    className="bg-red-600 hover:bg-red-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Minus size={14} />
+                                                </button>
+                                            </>
                                         )}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                                    </div>
+                                </div>
+                        
+                                
+                                
 
-                        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-                            <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-xl font-semibold text-cyan-400">Requisitos</h3>
-                                {isEditing && (
-                                    <button
-                                        onClick={() => handleArrayItemAdd('requirements')}
-                                        className="text-green-400 hover:text-green-300 text-sm"
-                                    >
-                                        ➕
-                                    </button>
-                                )}
-                            </div>
-                            <ul className="space-y-2 text-gray-300">
-                                {buildData.requirements.map((req, index) => (
-                                    <li key={index} className="flex items-center justify-between">
-                                        <div className="flex items-center flex-1">
-                                            <span className="text-red-400 mr-2">🎯</span>
-                                            {isEditing ? (
-                                                <input
-                                                    type="text"
-                                                    value={req}
-                                                    onChange={(e) => handleArrayInputChange('requirements', index, e.target.value)}
-                                                    className="bg-gray-700 border border-gray-600 rounded px-2 py-1 flex-1"
-                                                />
-                                            ) : (
-                                                <span>{req}</span>
-                                            )}
-                                        </div>
+                                {/* Health */}
+                                <div className="flex justify-between items-center py-1 border-b border-gray-700">
+                                    <span className="text-white font-semibold">Health:</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-white">{buildData.characterStats.health}</span>
                                         {isEditing && (
-                                            <button
-                                                onClick={() => handleArrayItemDelete('requirements', index)}
-                                                className="ml-2 text-red-400 hover:text-red-300 text-sm"
-                                            >
-                                                🗑️
-                                            </button>
+                                            <>
+                                                <button
+                                                    onClick={() => incrementStat('health')}
+                                                    className="bg-green-600 hover:bg-green-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Plus size={14} />
+                                                </button>
+                                                <button
+                                                    onClick={() => decrementStat('health')}
+                                                    className="bg-red-600 hover:bg-red-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Minus size={14} />
+                                                </button>
+                                            </>
                                         )}
-                                    </li>
-                                ))}
-                            </ul>
+                                    </div>
+                                </div>
+
+                                {/* Mana */}
+                                <div className="flex justify-between items-center py-1 border-b border-gray-700">
+                                    <span className="text-white font-semibold">Mana:</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-white">{buildData.characterStats.mana}</span>
+                                        {isEditing && (
+                                            <>
+                                                <button
+                                                    onClick={() => incrementStat('mana')}
+                                                    className="bg-green-600 hover:bg-green-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Plus size={14} />
+                                                </button>
+                                                <button
+                                                    onClick={() => decrementStat('mana')}
+                                                    className="bg-red-600 hover:bg-red-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Minus size={14} />
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Magic */}
+                                <div className="flex justify-between items-center py-1 border-b border-gray-700">
+                                    <span className="text-white font-semibold">Magic:</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-white">{buildData.characterStats.magic}</span>
+                                        {isEditing && (
+                                            <>
+                                                <button
+                                                    onClick={() => incrementStat('magic')}
+                                                    className="bg-green-600 hover:bg-green-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Plus size={14} />
+                                                </button>
+                                                <button
+                                                    onClick={() => decrementStat('magic')}
+                                                    className="bg-red-600 hover:bg-red-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Minus size={14} />
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Weapon Skill */}
+                                <div className="flex justify-between items-center py-1 border-b border-gray-700">
+                                    <span className="text-white font-semibold">Weapon Skill:</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-white">{buildData.characterStats.weaponSkill}</span>
+                                        {isEditing && (
+                                            <>
+                                                <button
+                                                    onClick={() => incrementStat('weaponSkill')}
+                                                    className="bg-green-600 hover:bg-green-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Plus size={14} />
+                                                </button>
+                                                <button
+                                                    onClick={() => decrementStat('weaponSkill')}
+                                                    className="bg-red-600 hover:bg-red-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Minus size={14} />
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                                {/* HP Regen */}
+                                <div className="flex justify-between items-center py-1 border-b border-gray-700">
+                                    <span className="text-white font-semibold">HP Regen:</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-white">{buildData.characterStats.hpRegen}</span>
+                                        {isEditing && (
+                                            <>
+                                                <button
+                                                    onClick={() => incrementStat('hpRegen')}
+                                                    className="bg-green-600 hover:bg-green-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Plus size={14} />
+                                                </button>
+                                                <button
+                                                    onClick={() => decrementStat('hpRegen')}
+                                                    className="bg-red-600 hover:bg-red-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Minus size={14} />
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* MP Regen */}
+                                <div className="flex justify-between items-center py-1 border-b border-gray-700">
+                                    <span className="text-white font-semibold">MP Regen:</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-white">{buildData.characterStats.mpRegen}</span>
+                                        {isEditing && (
+                                            <>
+                                                <button
+                                                    onClick={() => incrementStat('mpRegen')}
+                                                    className="bg-green-600 hover:bg-green-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Plus size={14} />
+                                                </button>
+                                                <button
+                                                    onClick={() => decrementStat('mpRegen')}
+                                                    className="bg-red-600 hover:bg-red-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Minus size={14} />
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Capacity */}
+                                <div className="flex justify-between items-center py-1 border-b border-gray-700">
+                                    <span className="text-white font-semibold">Capacity:</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-white">{buildData.characterStats.capacity}</span>
+                                        {isEditing && (
+                                            <>
+                                                <button
+                                                    onClick={() => incrementStat('capacity')}
+                                                    className="bg-green-600 hover:bg-green-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Plus size={14} />
+                                                </button>
+                                                <button
+                                                    onClick={() => decrementStat('capacity')}
+                                                    className="bg-red-600 hover:bg-red-700 text-white rounded px-2 py-1 text-sm flex items-center"
+                                                >
+                                                    <Minus size={14} />
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Your Class */}
+                                <div className="flex justify-between items-center py-1">
+                                    <span className="text-white font-semibold">Your Class:</span>
+                                    {isEditing ? (
+                                        <select
+                                            value={buildData.characterStats.class}
+                                            onChange={(e) => handleStatsChange('class', e.target.value)}
+                                            className="bg-gray-700 border border-gray-600 rounded px-2 py-1 w-32 text-white"
+                                        >
+                                            <option value="Squire">Squire</option>
+                                            <option value="Knight">Knight</option>
+                                            <option value="Mage">Mage</option>
+                                            <option value="Rogue">Rogue</option>
+                                        </select>
+                                    ) : (
+                                        <span className="text-white">{buildData.characterStats.class}</span>
+                                    )}
+                                </div>
+                            </div>
+                            <SkillsGrid />
                         </div>
                     </div>
+
+                    <br />
 
                     <div className="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
                         <h3 className="text-xl font-semibold mb-4 text-red-400">Habilidades Recomendadas</h3>
@@ -266,7 +428,7 @@ export const Builds = () => {
                                                     onClick={() => handleArrayItemDelete('mainSkills', index)}
                                                     className="ml-2 text-red-400 hover:text-red-300 text-sm"
                                                 >
-                                                    🗑️
+                                                    <Trash2 />
                                                 </button>
                                             )}
                                         </li>
@@ -305,7 +467,7 @@ export const Builds = () => {
                                                     onClick={() => handleArrayItemDelete('supportSkills', index)}
                                                     className="ml-2 text-red-400 hover:text-red-300 text-sm"
                                                 >
-                                                    🗑️
+                                                    <Trash2 />
                                                 </button>
                                             )}
                                         </li>
@@ -347,7 +509,7 @@ export const Builds = () => {
                                             onClick={() => handleArrayItemDelete('strategy', index)}
                                             className="ml-2 text-red-400 hover:text-red-300 text-sm"
                                         >
-                                            🗑️
+                                            <Trash2 />
                                         </button>
                                     )}
                                 </li>

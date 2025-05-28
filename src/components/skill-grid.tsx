@@ -84,8 +84,8 @@ export const SkillsGrid = () => {
 
   return (
     <div className='relative'>
-      <div className='border-2 border-gray-700 rounded-lg bg-gray-900/50 p-3 relative'>
-        <div className='absolute top-5 right-8 text-4xl text-gray-400 font-medieval'>Rogue</div>
+      <div className='rounded-lg bg-gray-900/50 p-3 relative'>
+        <div className='absolute top-5 right-8 text-4xl text-gray-400 font-medieval'></div>
 
         <div className='flex justify-center gap-6'>
           <div className='space-y-4 self-center'>
