@@ -17,8 +17,8 @@ import { Other } from './domains/customer/pages/other'
 import { usePrefetchQuery } from '@tanstack/react-query'
 import { EQUIPMENTS_QUERY_KEY } from './services/equipments'
 import { queryClient } from './app'
-import { AdminEquipments } from './domains/admin/equipments'
-
+import { Equipments } from './domains/admin/pages/equipments'
+import { Edit } from './domains/admin/pages/edit-equipment'
 export const AppRoutes = () => {
   usePrefetchQuery({ queryKey: [EQUIPMENTS_QUERY_KEY] }, queryClient)
 
@@ -41,7 +41,8 @@ export const AppRoutes = () => {
       <Route path='/other/:otherCategory' element={<Other />} />
 
       {/* Admin Routes */}
-      <Route path='/admin/equipments' element={<AdminEquipments />} />
+      <Route path='/admin/edit/:name' element={<Edit />} />
+      <Route path='/admin/equipments' element={<Equipments />} />
     </Routes>
   )
 }
