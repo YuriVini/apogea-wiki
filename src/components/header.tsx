@@ -18,12 +18,6 @@ export const Header = () => {
           <Link to='/class' className='text-gray-300 hover:text-white'>
             Classes
           </Link>
-          <Link to='#' className='text-gray-300 hover:text-white'>
-            Dungeons
-          </Link>
-          <Link to='#' className='text-gray-300 hover:text-white'>
-            Crafting
-          </Link>
           <Link
             to='/create-guide'
             className='text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 inline-block bg-blue-500/20 px-3 py-1 rounded-lg border border-blue-400/30 hover:bg-blue-500/30 hover:border-blue-300/50 shadow-md hover:shadow-blue-500/20'
