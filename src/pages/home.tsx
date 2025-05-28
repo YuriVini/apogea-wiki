@@ -24,6 +24,7 @@ import { Footer } from '../components/footer'
 import { useEffect, useState, Suspense } from 'react'
 import { ApiNoAuth } from '../@api/axios'
 import { Header } from '../components/header'
+import { CategoryType } from '../components/equipment'
 
 const highlightQuest = [
   {
@@ -46,58 +47,77 @@ const highlightQuest = [
   },
 ]
 
-const weapons = [
+interface Weapon {
+  title: string
+  imageUrl: string
+  category: CategoryType
+}
+
+const weapons: Weapon[] = [
   {
     title: 'Espadas',
     imageUrl: SwordIcon,
+    category: 'sword',
   },
   {
     title: 'Arcos',
     imageUrl: BowIcon,
+    category: 'bow',
   },
   {
     title: 'Cajados',
     imageUrl: StaffIcon,
+    category: 'staff',
   },
   {
     title: 'Adagas',
     imageUrl: DaggerIcon,
+    category: 'dagger',
   },
   {
     title: 'Luvas',
     imageUrl: GlovesIcon,
+    category: 'glove',
   },
   {
     title: 'Escudos',
     imageUrl: ShieldIcon,
+    category: 'shield',
   },
   {
     title: 'Elmo',
     imageUrl: HelmetIcon,
+    category: 'helmet',
   },
   {
     title: 'Armaduras',
     imageUrl: ArmorIcon,
+    category: 'chest',
   },
   {
     title: 'Pernas',
     imageUrl: PantsIcon,
+    category: 'leg',
   },
   {
     title: 'Botas',
     imageUrl: BootsIcon,
+    category: 'boot',
   },
   {
     title: 'Anel',
     imageUrl: RingIcon,
+    category: 'ring',
   },
   {
     title: 'Colar',
     imageUrl: NecklaceIcon,
+    category: 'necklace',
   },
   {
     title: 'Container',
     imageUrl: BackpackIcon,
+    category: 'backpack',
   },
 ]
 
@@ -226,7 +246,7 @@ export const Home = () => {
                 <div className='grid grid-cols-3 gap-4'>
                   {weapons.map((weapon, index) => (
                     <div key={index} className='transition-transform duration-300 hover:scale-125'>
-                      <Link to='/weapons'>
+                      <Link to={`/weapons/${weapon.category}`}>
                         <WeaponBox {...weapon} />
                       </Link>
                     </div>
