@@ -4,11 +4,7 @@ interface HighlightQuestProps {
   description: string
 }
 
-export const HighlightQuest = ({
-  title,
-  rewards,
-  description,
-}: HighlightQuestProps) => {
+export const HighlightQuest = ({ title, rewards, description }: HighlightQuestProps) => {
   return (
     <div className='p-6 rounded-xl hover:bg-gray-700/30 cursor-pointer transition-all duration-300 hover:scale-105'>
       <a href='#' className='block'>

@@ -1,5 +1,6 @@
 import { SkillIcon } from './skill-icon'
-import { Equipment, SlotType, CategoryType, EQUIPMENT_DATABASE } from './equipment'
+import { Equipment, SlotType, CategoryType } from './equipment'
+import { useEquipments } from '../services/equipments'
 
 interface SkillSelectorProps {
   isOpen: boolean
@@ -10,13 +11,17 @@ interface SkillSelectorProps {
 }
 
 export const SkillSelector = ({ isOpen, onClose, onSelect, slotType, category }: SkillSelectorProps) => {
+  const { data: equipments = [], isLoading } = useEquipments()
+
   if (!isOpen) return null
 
-  const compatibleEquipment = EQUIPMENT_DATABASE.filter((item) => {
-    return item.type === slotType && category.includes(item.category as CategoryType)
+  const compatibleEquipment = equipments?.filter((item) => {
+    return item.type === slotType && category?.includes(item.category as CategoryType)
   })
 
   const categoryLabel = category.length === 1 ? category[0].charAt(0).toUpperCase() + category[0].slice(1) : 'Equipment'
+
+  if (isLoading) return <div>Loading...</div>
 
   return (
     <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'>
@@ -29,9 +34,9 @@ export const SkillSelector = ({ isOpen, onClose, onSelect, slotType, category }:
             ✕
           </button>
         </div>
-        {compatibleEquipment.length > 0 ? (
+        {compatibleEquipment?.length > 0 ? (
           <div className='grid grid-cols-2 gap-4'>
-            {compatibleEquipment.map((equipment) => (
+            {compatibleEquipment?.map((equipment) => (
               <button
                 key={equipment.name}
                 onClick={() => {

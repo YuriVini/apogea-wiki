@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { SkillSlot } from './skill-slot'
-
-import { EQUIPMENT_DATABASE, Equipment } from './equipment'
+import { useEquipments } from '../services/equipments'
+import { Equipment } from './equipment'
 
 export const SkillsGrid = ({ initialBuildGrid }: { initialBuildGrid: Record<string, Equipment> }) => {
+  const { data: equipments } = useEquipments()
   const [buildGrid, setBuildGrid] = useState(initialBuildGrid)
   const initialEquipment = {
-    sword: EQUIPMENT_DATABASE.find((e) => e.name === 'Sword'),
-    cutlass: EQUIPMENT_DATABASE.find((e) => e.name === 'Cutlass Sword'),
+    sword: equipments?.find((e) => e.name === 'Sword'),
+    cutlass: equipments?.find((e) => e.name === 'Cutlass Sword'),
   }
 
   const updateEquipment = (slot: keyof typeof buildGrid, equipment: Equipment) => {
@@ -20,8 +21,6 @@ export const SkillsGrid = ({ initialBuildGrid }: { initialBuildGrid: Record<stri
   return (
     <div className='relative'>
       <div className='rounded-lg bg-gray-900/50 p-3 relative'>
-        <div className='absolute top-5 right-8 text-4xl text-gray-400 font-medieval'></div>
-
         <div className='flex justify-center gap-6'>
           <div className='space-y-4 self-center'>
             <SkillSlot type='armor' category='ring' equipment={buildGrid.ring} onChange={(equipment) => updateEquipment('ring', equipment)} />
