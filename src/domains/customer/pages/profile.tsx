@@ -1,6 +1,6 @@
-import { Header } from '../components/header'
-import { Footer } from '../components/footer'
-import { useAuth } from '../context/auth'
+import { Header } from '../../../components/header'
+import { Footer } from '../../../components/footer'
+import { useAuth } from '../../../context/auth'
 import { useState, useRef, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -8,17 +8,19 @@ import { z } from 'zod'
 
 const profileSchema = z.object({
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
-  avatar_url: z.string().url('URL do avatar deve ser válida').optional().or(z.literal(''))
+  avatar_url: z.string().url('URL do avatar deve ser válida').optional().or(z.literal('')),
 })
 
-const passwordSchema = z.object({
-  currentPassword: z.string().min(1, 'Senha atual é obrigatória'),
-  newPassword: z.string().min(6, 'Nova senha deve ter pelo menos 6 caracteres'),
-  confirmPassword: z.string().min(1, 'Confirmação de senha é obrigatória')
-}).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "Senhas não coincidem",
-  path: ["confirmPassword"]
-})
+const passwordSchema = z
+  .object({
+    currentPassword: z.string().min(1, 'Senha atual é obrigatória'),
+    newPassword: z.string().min(6, 'Nova senha deve ter pelo menos 6 caracteres'),
+    confirmPassword: z.string().min(1, 'Confirmação de senha é obrigatória'),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: 'Senhas não coincidem',
+    path: ['confirmPassword'],
+  })
 
 type ProfileFormData = z.infer<typeof profileSchema>
 type PasswordFormData = z.infer<typeof passwordSchema>
@@ -36,29 +38,29 @@ export const Profile = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset
+    reset,
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       name: user?.name || '',
-      avatar_url: user?.avatar_url || ''
-    }
+      avatar_url: user?.avatar_url || '',
+    },
   })
 
   const {
     register: registerPassword,
     handleSubmit: handleSubmitPassword,
     formState: { errors: passwordErrors, isSubmitting: isSubmittingPassword },
-    reset: resetPassword
+    reset: resetPassword,
   } = useForm<PasswordFormData>({
-    resolver: zodResolver(passwordSchema)
+    resolver: zodResolver(passwordSchema),
   })
 
   const onSubmit = async (data: ProfileFormData) => {
     try {
       await updateProfile({
         name: data.name,
-        avatar_url: data.avatar_url || ''
+        avatar_url: data.avatar_url || '',
       })
       setIsEditing(false)
       alert('Perfil atualizado com sucesso!')
@@ -72,7 +74,7 @@ export const Profile = () => {
     try {
       await changePassword({
         currentPassword: data.currentPassword,
-        newPassword: data.newPassword
+        newPassword: data.newPassword,
       })
       setIsChangingPassword(false)
       resetPassword()
@@ -90,7 +92,7 @@ export const Profile = () => {
     setIsEditing(true)
     reset({
       name: user?.name || '',
-      avatar_url: user?.avatar_url || ''
+      avatar_url: user?.avatar_url || '',
     })
   }
 
@@ -124,14 +126,14 @@ export const Profile = () => {
       <main className='max-w-4xl mx-auto p-6'>
         <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg'>
           <h1 className='text-3xl font-bold text-white mb-8 text-center'>Meu Perfil</h1>
-          
+
           <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
             {/* Informações do Usuário */}
             <div className='bg-gray-700/30 rounded-lg p-6'>
               <div className='flex justify-between items-center mb-4'>
                 <h2 className='text-xl font-bold text-white'>Informações Pessoais</h2>
                 {!isEditing && (
-                  <button 
+                  <button
                     onClick={handleEditClick}
                     className='bg-blue-500/20 text-blue-300 p-2 rounded border border-blue-400/30 hover:bg-blue-500/30 hover:border-blue-300/50 transition-all duration-300 hover:scale-105'
                   >
@@ -149,21 +151,15 @@ export const Profile = () => {
                       className='w-full bg-gray-600/30 rounded-lg p-3 text-white border border-gray-500/30 focus:border-blue-400/50 focus:outline-none'
                       placeholder='Digite seu nome'
                     />
-                    {errors.name && (
-                      <p className='text-red-400 text-sm mt-1'>{errors.name.message}</p>
-                    )}
+                    {errors.name && <p className='text-red-400 text-sm mt-1'>{errors.name.message}</p>}
                   </div>
                   <div>
                     <label className='block text-gray-300 text-sm font-medium mb-2'>Email</label>
-                    <div className='bg-gray-600/30 rounded-lg p-3 text-gray-400'>
-                      {user?.email || 'Email não informado'} (não editável)
-                    </div>
+                    <div className='bg-gray-600/30 rounded-lg p-3 text-gray-400'>{user?.email || 'Email não informado'} (não editável)</div>
                   </div>
                   <div>
                     <label className='block text-gray-300 text-sm font-medium mb-2'>Membro desde</label>
-                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>
-                      Março 2024
-                    </div>
+                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>Março 2024</div>
                   </div>
                   <div className='flex space-x-2 pt-4'>
                     <button
@@ -186,21 +182,15 @@ export const Profile = () => {
                 <div className='space-y-4'>
                   <div>
                     <label className='block text-gray-300 text-sm font-medium mb-2'>Nome</label>
-                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>
-                      {user?.name || 'Nome não informado'}
-                    </div>
+                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>{user?.name || 'Nome não informado'}</div>
                   </div>
                   <div>
                     <label className='block text-gray-300 text-sm font-medium mb-2'>Email</label>
-                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>
-                      {user?.email || 'Email não informado'}
-                    </div>
+                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>{user?.email || 'Email não informado'}</div>
                   </div>
                   <div>
                     <label className='block text-gray-300 text-sm font-medium mb-2'>Membro desde</label>
-                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>
-                      Março 2024
-                    </div>
+                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>Março 2024</div>
                   </div>
                 </div>
               )}
@@ -252,9 +242,7 @@ export const Profile = () => {
                       {showCurrentPassword ? '👁️' : '👁️‍🗨️'}
                     </button>
                   </div>
-                  {passwordErrors.currentPassword && (
-                    <p className='text-red-400 text-sm mt-1'>{passwordErrors.currentPassword.message}</p>
-                  )}
+                  {passwordErrors.currentPassword && <p className='text-red-400 text-sm mt-1'>{passwordErrors.currentPassword.message}</p>}
                 </div>
                 <div>
                   <label className='block text-gray-300 text-sm font-medium mb-2'>Nova Senha</label>
@@ -273,9 +261,7 @@ export const Profile = () => {
                       {showNewPassword ? '👁️' : '👁️‍🗨️'}
                     </button>
                   </div>
-                  {passwordErrors.newPassword && (
-                    <p className='text-red-400 text-sm mt-1'>{passwordErrors.newPassword.message}</p>
-                  )}
+                  {passwordErrors.newPassword && <p className='text-red-400 text-sm mt-1'>{passwordErrors.newPassword.message}</p>}
                 </div>
                 <div>
                   <label className='block text-gray-300 text-sm font-medium mb-2'>Confirmar Nova Senha</label>
@@ -294,9 +280,7 @@ export const Profile = () => {
                       {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
                     </button>
                   </div>
-                  {passwordErrors.confirmPassword && (
-                    <p className='text-red-400 text-sm mt-1'>{passwordErrors.confirmPassword.message}</p>
-                  )}
+                  {passwordErrors.confirmPassword && <p className='text-red-400 text-sm mt-1'>{passwordErrors.confirmPassword.message}</p>}
                 </div>
                 <div className='flex space-x-2 pt-4'>
                   <button
@@ -328,27 +312,19 @@ export const Profile = () => {
                   <p className='text-gray-400 text-sm'>Criado em 15/03/2024 • 234 visualizações</p>
                 </div>
                 <div className='flex space-x-2'>
-                  <button className='bg-blue-500/20 text-blue-300 px-3 py-1 rounded border border-blue-400/30 hover:bg-blue-500/30 transition-colors'>
-                    Editar
-                  </button>
-                  <button className='bg-red-500/20 text-red-300 px-3 py-1 rounded border border-red-400/30 hover:bg-red-500/30 transition-colors'>
-                    Excluir
-                  </button>
+                  <button className='bg-blue-500/20 text-blue-300 px-3 py-1 rounded border border-blue-400/30 hover:bg-blue-500/30 transition-colors'>Editar</button>
+                  <button className='bg-red-500/20 text-red-300 px-3 py-1 rounded border border-red-400/30 hover:bg-red-500/30 transition-colors'>Excluir</button>
                 </div>
               </div>
-              
+
               <div className='bg-gray-600/30 rounded-lg p-4 flex justify-between items-center'>
                 <div>
                   <h3 className='text-white font-medium'>Melhores Builds para Mage</h3>
                   <p className='text-gray-400 text-sm'>Criado em 10/03/2024 • 156 visualizações</p>
                 </div>
                 <div className='flex space-x-2'>
-                  <button className='bg-blue-500/20 text-blue-300 px-3 py-1 rounded border border-blue-400/30 hover:bg-blue-500/30 transition-colors'>
-                    Editar
-                  </button>
-                  <button className='bg-red-500/20 text-red-300 px-3 py-1 rounded border border-red-400/30 hover:bg-red-500/30 transition-colors'>
-                    Excluir
-                  </button>
+                  <button className='bg-blue-500/20 text-blue-300 px-3 py-1 rounded border border-blue-400/30 hover:bg-blue-500/30 transition-colors'>Editar</button>
+                  <button className='bg-red-500/20 text-red-300 px-3 py-1 rounded border border-red-400/30 hover:bg-red-500/30 transition-colors'>Excluir</button>
                 </div>
               </div>
             </div>
@@ -357,7 +333,7 @@ export const Profile = () => {
           {/* Ações */}
           <div className='mt-8 flex justify-center space-x-4'>
             {!isChangingPassword && (
-              <button 
+              <button
                 onClick={handleChangePasswordClick}
                 className='bg-gray-500/20 text-gray-300 px-6 py-2 rounded-lg border border-gray-400/30 hover:bg-gray-500/30 hover:border-gray-300/50 transition-all duration-300 hover:scale-105'
               >

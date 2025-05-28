@@ -1,11 +1,11 @@
-import { Footer } from '../components/footer'
-import { TextInput } from '../components/text-input'
+import { Footer } from '../../../components/footer'
+import { TextInput } from '../../../components/text-input'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ApiNoAuth } from '../@api/axios'
+import { ApiNoAuth } from '../../../@api/axios'
 import { Link, useNavigate } from 'react-router'
-import { Header } from '../components/header'
+import { Header } from '../../../components/header'
 
 const validationSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
@@ -15,7 +15,7 @@ const validationSchema = z.object({
     .min(6, 'A senha deve ter no mínimo 6 caracteres')
     .regex(/[a-z]/, 'A senha deve conter pelo menos uma letra minúscula')
     .regex(/[A-Z]/, 'A senha deve conter pelo menos uma letra maiúscula')
-    .regex(/[0-9]/, 'A senha deve conter pelo menos um número')
+    .regex(/[0-9]/, 'A senha deve conter pelo menos um número'),
 })
 
 export const Register = () => {

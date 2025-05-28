@@ -1,22 +1,23 @@
 import { Route, Routes } from 'react-router'
-import { Home } from './pages/home'
-import { Guide } from './pages/guide'
-import { Weapons } from './pages/weapons'
-import { Armor } from './pages/armor'
-import { CreateGuide } from './pages/create-guide'
-import { Register } from './pages/register'
-import { Login } from './pages/login'
-import { Profile } from './pages/profile'
-import { ForgotPassword } from './pages/forgot-password'
-import { ResetPassword } from './pages/reset-password'
-import { AllGuides } from './pages/all-guides'
-import { Class } from './pages/class'
-import { CharacterClass } from './pages/character-class'
-import { Builds } from './pages/build'
-import { Other } from './pages/other'
+import { Home } from './domains/customer/pages/home'
+import { Guide } from './domains/customer/pages/guide'
+import { Weapons } from './domains/customer/pages/weapons'
+import { Armor } from './domains/customer/pages/armor'
+import { CreateGuide } from './domains/customer/pages/create-guide'
+import { Register } from './domains/customer/pages/register'
+import { Login } from './domains/customer/pages/login'
+import { Profile } from './domains/customer/pages/profile'
+import { ForgotPassword } from './domains/customer/pages/forgot-password'
+import { ResetPassword } from './domains/customer/pages/reset-password'
+import { AllGuides } from './domains/customer/pages/all-guides'
+import { Class } from './domains/customer/pages/class'
+import { CharacterClass } from './domains/customer/pages/character-class'
+import { Builds } from './domains/customer/pages/build'
+import { Other } from './domains/customer/pages/other'
 import { usePrefetchQuery } from '@tanstack/react-query'
 import { EQUIPMENTS_QUERY_KEY } from './services/equipments'
 import { queryClient } from './app'
+import { AdminEquipments } from './domains/admin/equipments'
 
 export const AppRoutes = () => {
   usePrefetchQuery({ queryKey: [EQUIPMENTS_QUERY_KEY] }, queryClient)
@@ -38,6 +39,9 @@ export const AppRoutes = () => {
       <Route path='/character-class/:className' element={<CharacterClass />} />
       <Route path='/build' element={<Builds />} />
       <Route path='/other/:otherCategory' element={<Other />} />
+
+      {/* Admin Routes */}
+      <Route path='/admin/equipments' element={<AdminEquipments />} />
     </Routes>
   )
 }

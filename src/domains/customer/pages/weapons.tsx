@@ -1,8 +1,8 @@
-import { Header } from '../components/header'
-import { Footer } from '../components/footer'
-import { WeaponTable } from '../components/weapon-table'
+import { Header } from '../../../components/header'
+import { Footer } from '../../../components/footer'
+import { WeaponTable } from '../../../components/weapon-table'
 import { useParams } from 'react-router'
-import { useEquipments } from '../services/equipments'
+import { useEquipments } from '../../../services/equipments'
 
 export const Weapons = () => {
   const { weaponCategory } = useParams()

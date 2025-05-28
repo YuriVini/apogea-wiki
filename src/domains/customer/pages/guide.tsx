@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from 'react-router'
-import { Footer } from '../components/footer'
+import { Footer } from '../../../components/footer'
 import { useEffect, useState } from 'react'
-import { Api, ApiNoAuth } from '../@api/axios'
-import { Header } from '../components/header'
+import { Api, ApiNoAuth } from '../../../@api/axios'
+import { Header } from '../../../components/header'
 import { Trash2 } from 'lucide-react'
 
 export const Guide = () => {

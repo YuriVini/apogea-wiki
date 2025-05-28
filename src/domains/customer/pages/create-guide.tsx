@@ -1,7 +1,7 @@
-import { Footer } from '../components/footer'
+import { Footer } from '../../../components/footer'
 import { useState } from 'react'
-import { Api } from '../@api/axios'
-import { Header } from '../components/header'
+import { Api } from '../../../@api/axios'
+import { Header } from '../../../components/header'
 import { useNavigate } from 'react-router'
 
 export const CreateGuide = () => {

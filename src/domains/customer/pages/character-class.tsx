@@ -1,5 +1,5 @@
-import { Header } from '../components/header'
-import { Footer } from '../components/footer'
+import { Header } from '../../../components/header'
+import { Footer } from '../../../components/footer'
 import { useState } from 'react'
 
 const knightData = {
@@ -270,9 +270,7 @@ export const CharacterClass = () => {
                   {knightData.stats.map((stat, index) => (
                     <div key={index} className='flex justify-between items-center'>
                       <span className='text-gray-300'>{stat.title}:</span>
-                      <span className={`${stat.color} font-bold`}>
-                        {stat.value}%
-                      </span>
+                      <span className={`${stat.color} font-bold`}>{stat.value}%</span>
                     </div>
                   ))}
                 </div>
@@ -396,7 +394,12 @@ export const CharacterClass = () => {
                       </div>
                     ))}
                   </div>
-                  <button onClick={() => window.location.href = '/build'} className='w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg transition-colors duration-200'>Ver Build Completa</button>
+                  <button
+                    onClick={() => (window.location.href = '/build')}
+                    className='w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg transition-colors duration-200'
+                  >
+                    Ver Build Completa
+                  </button>
                 </div>
               ))}
             </div>

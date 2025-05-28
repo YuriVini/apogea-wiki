@@ -1,10 +1,10 @@
-import { Footer } from '../components/footer'
-import { Header } from '../components/header'
-import { TextInput } from '../components/text-input'
+import { Footer } from '../../../components/footer'
+import { Header } from '../../../components/header'
+import { TextInput } from '../../../components/text-input'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useAuth } from '../context/auth'
+import { useAuth } from '../../../context/auth'
 
 const validationSchema = z.object({
   email: z.string().email('Email inválido'),
