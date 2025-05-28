@@ -1,74 +1,9 @@
 import { useState } from 'react'
 import { SkillSlot } from './skill-slot'
-import Helme3 from '/helmet/Helmet3.webp'
-import RingIcon from '/ring/Crystal_Ring.webp'
-import LegsIcon from '/legs/Leather_Cuisse.webp'
-import BootsIcon from '/boots/Boots1.webp'
-import ChestIcon from '/armor/Brass_armor.webp'
-import BackpackIcon from '/backpack/Backpack_blue.webp'
-import AccessoryIcon from '/necklace/Silver_amulet.webp'
-import LeftHandIcon from '/swords/Broadsword.webp'
-import RightHandIcon from '/swords/Broadsword.webp'
+
 import { EQUIPMENT_DATABASE, Equipment } from './equipment'
 
-const initialBuildGrid = {
-  accessory: {
-    name: 'Accessory',
-    imageUrl: AccessoryIcon,
-    type: 'accessory',
-    category: 'ring',
-  } as Equipment,
-  leftHand: {
-    name: 'Left Hand',
-    imageUrl: LeftHandIcon,
-    type: 'weapon',
-    category: 'sword',
-  } as Equipment,
-  rightHand: {
-    name: 'Right Hand',
-    imageUrl: RightHandIcon,
-    type: 'weapon',
-    category: 'sword',
-  } as Equipment,
-  chest: {
-    name: 'Chest',
-    imageUrl: ChestIcon,
-    type: 'armor',
-    category: 'chest',
-  } as Equipment,
-  legs: {
-    name: 'Legs',
-    imageUrl: LegsIcon,
-    type: 'armor',
-    category: 'leg',
-  } as Equipment,
-  boots: {
-    name: 'Boots',
-    imageUrl: BootsIcon,
-    type: 'armor',
-    category: 'boot',
-  } as Equipment,
-  helmet: {
-    name: 'Helmet',
-    imageUrl: Helme3,
-    type: 'armor',
-    category: 'helmet',
-  } as Equipment,
-  ring: {
-    name: 'Ring',
-    imageUrl: RingIcon,
-    type: 'accessory',
-    category: 'ring',
-  } as Equipment,
-  backpack: {
-    name: 'Backpack',
-    imageUrl: BackpackIcon,
-    type: 'accessory',
-    category: 'backpack',
-  } as Equipment,
-}
-
-export const SkillsGrid = () => {
+export const SkillsGrid = ({ initialBuildGrid }: { initialBuildGrid: Record<string, Equipment> }) => {
   const [buildGrid, setBuildGrid] = useState(initialBuildGrid)
   const initialEquipment = {
     sword: EQUIPMENT_DATABASE.find((e) => e.name === 'Sword'),
