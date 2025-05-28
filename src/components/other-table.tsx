@@ -47,8 +47,11 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Item</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Nome</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Peso</th>
-                    <th className='text-left p-4 font-semibold'>Drop Por</th>
+                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Drop Por</th>
+                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Tempo de Saciedade</th>
+                    <th className='text-left p-4 font-semibold'>Buffs</th>
                   </>
+
                 ) : isRecipeType ? (
                   <>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Item</th>
@@ -145,7 +148,11 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                       <td className='p-4 border-r border-gray-600 text-gray-300 font-semibold'>
                         <span className='bg-gray-900/30 px-2 py-1 rounded'>{item.weight || '-'}</span>
                       </td>
-                      <td className='p-4 text-red-400 text-sm'>{item.dropBy || 'Não informado'}</td>
+                      <td className='p-4 border-r border-gray-600 text-red-400 text-sm'>{item.dropBy || 'Não informado'}</td>
+                      <td className='p-4 border-r border-gray-600 text-green-400 font-semibold'>
+                        <span className='bg-green-900/30 px-2 py-1 rounded'>{item.satiateTime || '-'}</span>
+                      </td>
+                      <td className='p-4 text-purple-400 text-sm'>{item.buffs || 'Nenhum buff'}</td>
                     </>
                   ) : isRecipeType ? (
                     <>
