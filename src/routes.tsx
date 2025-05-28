@@ -14,7 +14,13 @@ import { Class } from './pages/class'
 import { CharacterClass } from './pages/character-class'
 import { Builds } from './pages/build'
 import { Other } from './pages/other'
+import { usePrefetchQuery } from '@tanstack/react-query'
+import { EQUIPMENTS_QUERY_KEY } from './services/equipments'
+import { queryClient } from './app'
+
 export const AppRoutes = () => {
+  usePrefetchQuery({ queryKey: [EQUIPMENTS_QUERY_KEY] }, queryClient)
+
   return (
     <Routes>
       <Route path='/' element={<Home />} />
