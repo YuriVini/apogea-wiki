@@ -26,6 +26,10 @@ import { useEffect, useState, Suspense } from 'react'
 import { ApiNoAuth } from '../../../@api/axios'
 import { Header } from '../../../components/header'
 import { CategoryType } from '../../../components/equipment'
+import KnightIcon from '/caracter-classes/knight-icon.png'
+import MageIcon from '/caracter-classes/mage-icon.png'
+import RogueIcon from '/caracter-classes/rogue-icon.png'
+import SquireIcon from '/caracter-classes/squire-icon.png'
 
 const highlightQuest = [
   {
@@ -170,6 +174,29 @@ const other = [
   },
 ]
 
+const caracterClasses = [
+  {
+    title: 'Knight',
+    imageUrl: KnightIcon,
+    type: 'knight',
+  },
+  {
+    title: 'Mage',
+    imageUrl: MageIcon,
+    type: 'mage',
+  },
+  {
+    title: 'Rogue',
+    imageUrl: RogueIcon,
+    type: 'rogue',
+  },
+  {
+    title: 'Squire',
+    imageUrl: SquireIcon,
+    type: 'squire',
+  },
+]
+
 export const Home = () => {
   const [guides, setGuides] = useState<GuidesApiTypes.Guide[]>([])
 
@@ -209,14 +236,16 @@ export const Home = () => {
             </div>
 
             <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
-              <h2 className='text-xl font-bold text-white mb-4'>Classes</h2>
-              <ul className='space-y-3'>
-                <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
-                  <Link to='/character-class/knight'>Knight</Link>
-                </li>
-                <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>Mage</li>
-                <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>Rogue</li>
-                <li className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>Squire</li>
+              <h2 className='text-xl font-bold text-white'>Classes</h2>
+              <ul className='grid grid-cols-2 h-full'>
+                {caracterClasses.map((caracterClass, index) => (
+                  <li key={index} className='flex justify-center cursor-pointer transition-colors duration-200'>
+                    <Link to={`/character-class/${caracterClass.type}`} className='flex flex-col items-center'>
+                      <img src={caracterClass.imageUrl} alt={caracterClass.title} className='w-[70px] h-[70px] rounded-lg' />
+                      <span className='text-gray-300 w-full text-center'>{caracterClass.title}</span>
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
