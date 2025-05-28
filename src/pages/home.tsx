@@ -19,6 +19,7 @@ import FoodIcon from '/food/Bread_loaf.webp'
 import HelmetIcon from '/helmet/Spanghen_helmet.webp'
 import PantsIcon from '/legs/Leather_Cuisse.webp'
 import BootsIcon from '/boots/Boots1.webp'
+import RecipesIcon from '/recipes/Apple_Pie.webp'
 import { Link } from 'react-router'
 import { Footer } from '../components/footer'
 import { useEffect, useState, Suspense } from 'react'
@@ -125,34 +126,47 @@ const other = [
   {
     title: 'Monstros',
     imageUrl: QuestItensIcon,
+    type: 'monster',
   },
   {
     title: 'Drop de Criaturas',
     imageUrl: CreatureDropsIcon,
+    type: 'drop_creatures',
   },
   {
     title: 'Habilidades',
     imageUrl: AbilitiesIcon,
+    type: 'abilities',
   },
   {
     title: 'Feitiços',
     imageUrl: SpellsIcon,
+    type: 'spells',
   },
   {
     title: 'Livros',
     imageUrl: QuestItensIcon,
+    type: 'book',
   },
   {
     title: 'Comidas',
     imageUrl: FoodIcon,
+    type: 'food',
   },
   {
     title: 'NPCs',
     imageUrl: QuestItensIcon,
+    type: 'npc',
   },
   {
     title: 'Itens de Quest',
     imageUrl: QuestItensIcon,
+    type: 'itens_quest',
+  },
+  {
+    title: 'Receitas',
+    imageUrl: RecipesIcon,
+    type: 'recipes',
   },
 ]
 
@@ -262,7 +276,9 @@ export const Home = () => {
                 <div className='grid grid-cols-3 gap-4'>
                   {other.map((item, index) => (
                     <div key={index} className='transition-transform duration-300 hover:scale-125'>
-                      <OtherBox {...item} />
+                      <Link to={`/other/${item.type}`}>
+                        <OtherBox {...item} />
+                      </Link>
                     </div>
                   ))}
                 </div>
