@@ -13,7 +13,7 @@ import { AllGuides } from './pages/all-guides'
 import { Class } from './pages/class'
 import { CharacterClass } from './pages/character-class'
 import { Builds } from './pages/build'
-
+import { Other } from './pages/other'
 export const AppRoutes = () => {
   return (
     <Routes>
@@ -31,6 +31,7 @@ export const AppRoutes = () => {
       <Route path='/class' element={<Class />} />
       <Route path='/character-class/:className' element={<CharacterClass />} />
       <Route path='/build' element={<Builds />} />
+      <Route path='/other/:otherCategory' element={<Other />} />
     </Routes>
   )
 }
