@@ -1,13 +1,16 @@
 import { Link } from 'react-router'
 import { useAuth } from '../context/auth'
+import logo from '/logo.png'
 
 export const Header = () => {
   const { isLoggedIn, logOut } = useAuth()
 
   return (
-    <header className='bg-gray-800/50 p-4 shadow-lg'>
+    <header className='bg-gray-800/50 shadow-lg'>
       <div className='max-w-7xl mx-auto flex justify-between items-center'>
-        <h1 className='text-3xl font-bold text-white'>Apogea Wiki</h1>
+        <Link to='/'>
+          <img src={logo} alt='Apogea Wiki Logo' className='object-contain w-24 h-24' />
+        </Link>
         <nav className='space-x-6'>
           <Link to='/' className='text-gray-300 hover:text-white'>
             Guia Inicial
