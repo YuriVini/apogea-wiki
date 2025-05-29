@@ -1,7 +1,6 @@
-import { Equipment } from '../constants/equipment'
 import { WeaponBox } from './weapon-box'
 
-export const WeaponTable = ({ title, weapons }: { title: string; weapons: Equipment[] }) => {
+export const WeaponTable = ({ title, weapons }: { title: string; weapons: EquipmentsApiTypes.Equipment[] }) => {
   return (
     <div className='mb-8'>
       <h2 className='text-2xl font-bold text-white mb-4 bg-purple-900/50 p-3 rounded-t-lg'>{title}</h2>

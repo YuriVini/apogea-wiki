@@ -25,7 +25,6 @@ import { Footer } from '../../../components/footer'
 import { useEffect, useState, Suspense } from 'react'
 import { ApiNoAuth } from '../../../@api/axios'
 import { Header } from '../../../components/header'
-import { CategoryType } from '../../../constants/equipment'
 import KnightIcon from '/caracter-classes/knight-icon.png'
 import MageIcon from '/caracter-classes/mage-icon.png'
 import RogueIcon from '/caracter-classes/rogue-icon.png'
@@ -55,7 +54,7 @@ const highlightQuest = [
 interface Weapon {
   title: string
   imageUrl: string
-  category: CategoryType
+  category: EquipmentsApiTypes.CategoryType
 }
 
 const weapons: Weapon[] = [
@@ -107,7 +106,7 @@ const weapons: Weapon[] = [
   {
     title: 'Botas',
     imageUrl: BootsIcon,
-    category: 'boot',
+    category: 'boots',
   },
   {
     title: 'Anel',

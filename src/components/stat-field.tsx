@@ -10,7 +10,7 @@ export const StatField = ({
   isEditing,
 }: {
   label: string
-  value: number
+  value: number | string
   onIncrement?: () => void
   onDecrement?: () => void
   isEditing: boolean

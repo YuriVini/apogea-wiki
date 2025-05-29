@@ -12,7 +12,7 @@ import { ResetPassword } from './domains/customer/pages/reset-password'
 import { AllGuides } from './domains/customer/pages/all-guides'
 import { Class } from './domains/customer/pages/class'
 import { CharacterClass } from './domains/customer/pages/character-class'
-import { Builds } from './domains/customer/pages/build'
+import { BuildsDetails } from './domains/customer/pages/build-details'
 import { Other } from './domains/customer/pages/other'
 import { usePrefetchQuery } from '@tanstack/react-query'
 import { EQUIPMENTS_QUERY_KEY } from './services/equipments'
@@ -37,7 +37,7 @@ export const AppRoutes = () => {
       <Route path='/guides' element={<AllGuides />} />
       <Route path='/class' element={<Class />} />
       <Route path='/character-class/:className' element={<CharacterClass />} />
-      <Route path='/build' element={<Builds />} />
+      <Route path='/builds/:buildId' element={<BuildsDetails />} />
       <Route path='/other/:otherCategory' element={<Other />} />
 
       {/* Admin Routes */}

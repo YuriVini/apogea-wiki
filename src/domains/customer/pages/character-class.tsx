@@ -1,6 +1,8 @@
 import { Header } from '../../../components/header'
 import { Footer } from '../../../components/footer'
 import { useState } from 'react'
+import { useBuilds } from '../../../services/builds'
+import { useNavigate } from 'react-router'
 
 const knightData = {
   title: 'Knight - O Guardião de Apogea',
@@ -143,91 +145,11 @@ const knightData = {
       description: 'Combine todas as habilidades e lidere grupos em dungeons avançadas',
     },
   ],
-  builds: [
-    {
-      name: 'Tank Supremo',
-      author: 'GameMaster',
-      rating: 4.8,
-      description: 'Build focada em máxima defesa e controle de grupo. Ideal para dungeons difíceis e raids.',
-      skills: [
-        {
-          label: 'Shield Bash',
-          level: 10,
-        },
-        {
-          label: 'Guardian Stance',
-          level: 10,
-        },
-        {
-          label: 'Taunt',
-          level: 8,
-        },
-      ],
-    },
-    {
-      name: 'Guerreiro Híbrido',
-      author: 'WarriorPro',
-      rating: 4.5,
-      description: 'Equilibrio entre dano e defesa. Perfeita para jogadores solo e grupos pequenos.',
-      skills: [
-        {
-          label: 'Heavy Strike',
-          level: 10,
-        },
-        {
-          label: 'Shield Bash',
-          level: 7,
-        },
-        {
-          label: 'Guardian Stance',
-          level: 10,
-        },
-      ],
-    },
-    {
-      name: 'Protetor de Grupo',
-      author: 'GuildLeader',
-      rating: 4.7,
-      description: 'Especializada em proteger aliados e controlar battlefield. Ideal para PvP em grupo.',
-      skills: [
-        {
-          label: 'Taunt',
-          level: 10,
-        },
-        {
-          label: 'Guardian Stance',
-          level: 9,
-        },
-        {
-          label: 'Shield Bash',
-          level: 8,
-        },
-      ],
-    },
-    {
-      name: 'Destruidor',
-      author: 'DamageDealer',
-      rating: 4.3,
-      description: 'Foco máximo em dano. Para Knights que querem surpreender com poder ofensivo.',
-      skills: [
-        {
-          label: 'Heavy Strike',
-          level: 10,
-        },
-        {
-          label: 'Shield Bash',
-          level: 9,
-        },
-        {
-          label: 'Taunt',
-          level: 5,
-        },
-      ],
-    },
-  ],
 }
 
 export const CharacterClass = () => {
+  const navigate = useNavigate()
+  const { data: builds = [] } = useBuilds()
   const [activeTab, setActiveTab] = useState<'overview' | 'builds'>('overview')
 
   return (
@@ -397,29 +319,20 @@ export const CharacterClass = () => {
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
-              {knightData.builds.map((build, index) => (
+              {builds?.map((build, index) => (
                 <div key={index} className='bg-gray-800/30 rounded-lg p-6 shadow-lg hover:bg-gray-700/30 transition-all duration-300 transform hover:scale-105'>
                   <div className='flex justify-between items-start mb-4'>
                     <div>
-                      <h3 className='text-xl font-bold text-white mb-2'>{build.name}</h3>
-                      <p className='text-gray-400 text-sm'>Por: {build.author}</p>
+                      <h3 className='text-xl font-bold text-white mb-2'>{build.title}</h3>
                     </div>
                     <div className='flex items-center gap-1'>
                       <span className='text-yellow-400'>⭐</span>
-                      <span className='text-white font-bold'>{build.rating}</span>
+                      <span className='text-white font-bold'>{build?.rating}</span>
                     </div>
                   </div>
-                  <p className='text-gray-300 mb-4'>{build.description}</p>
-                  <div className='space-y-2 mb-4'>
-                    {build.skills?.map((skill, skillIndex) => (
-                      <div key={skillIndex} className='flex justify-between'>
-                        <span className='text-gray-400'>{skill.label}:</span>
-                        <span className={`text-${skill.level >= 10 ? 'red' : skill.level >= 8 ? 'blue' : 'green'}-400`}>Nível {skill.level}</span>
-                      </div>
-                    ))}
-                  </div>
+                  <p className='text-gray-300 mb-4'>{build.overview}</p>
                   <button
-                    onClick={() => (window.location.href = '/build')}
+                    onClick={() => navigate(`/builds/${build?.id}`)}
                     className='w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg transition-colors duration-200'
                   >
                     Ver Build Completa

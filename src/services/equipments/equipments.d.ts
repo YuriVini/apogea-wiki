@@ -1,9 +1,13 @@
+export as namespace EquipmentsApiTypes
+
 export type SlotType = 
   | 'weapon'   
   | 'armor'    
   | 'accessory'
   | 'spell'
   | 'ability'
+  | 'leftHand'
+  | 'rightHand'
 
 export type CategoryType = 
   | 'sword'
@@ -12,7 +16,7 @@ export type CategoryType =
   | 'staff'
   | 'shield'
   | 'glove'
-  | 'boot'
+  | 'boots'
   | 'leg'
   | 'chest'
   | 'helmet'
@@ -23,13 +27,16 @@ export type CategoryType =
   | 'class-abilities'
   | 'weapon-staff-bow-dagger-shield-glove'
 
+ 
+
+
 export interface Equipment {
+  id: string;
   name: string;
   rarity?: 'common' | 'magic' | 'rare' | 'legendary';
   imageUrl: string;
   type: SlotType;
   category: CategoryType;
-
   damage?: string;
   attackSpeed?: string;
   range?: string;
@@ -41,4 +48,3 @@ export interface Equipment {
   buyFrom?: string;
   sellTo?: string;
 }
-
