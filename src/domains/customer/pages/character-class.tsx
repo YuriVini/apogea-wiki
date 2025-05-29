@@ -276,7 +276,6 @@ export const CharacterClass = () => {
                           <span className='text-gray-300'>{stat.title}:</span>
                           <span className={`${stat.color} font-bold`}>{stat.value}%</span>
                         </div>
-                        <div className='w-full h-px bg-gray-600 mt-1'></div>
                       </div>
                     ))}
                   </div>
@@ -293,13 +292,13 @@ export const CharacterClass = () => {
             </div>
 
             <div className='mb-12'>
-              <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-700'>
-                <h2 className='text-3xl font-bold text-white mb-6 text-center'>🎯 Estilo de Jogo</h2>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+              <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300'>
+                <h2 className='text-2xl font-bold text-white mb-4'>🎯 Estilo de Jogo</h2>
+                <div className='space-y-4'>
                   {knightData.playstyle.map((style, index) => (
-                    <div key={index} className={`bg-gradient-to-br from-${index === 0 ? 'blue' : 'green'}-500/10 to-${index === 0 ? 'blue' : 'green'}-500/30 rounded-lg p-6 border border-${index === 0 ? 'blue' : 'green'}-400/50 hover:shadow-lg hover:scale-105 transition-all duration-300`}>
-                      <h3 className={`text-${index === 0 ? 'blue' : 'green'}-300 font-bold text-xl mb-3`}>{style.title}</h3>
-                      <p className='text-gray-300 text-base leading-relaxed'>{style.description}</p>
+                    <div key={index} className={`bg-${index === 0 ? 'blue' : 'green'}-500/20 rounded-lg p-4 border border-${index === 0 ? 'blue' : 'green'}-400/30 hover:bg-${index === 0 ? 'blue' : 'green'}-500/30 transition-all duration-300`}>
+                      <h3 className={`text-${index === 0 ? 'blue' : 'green'}-300 font-bold mb-2`}>{style.title}</h3>
+                      <p className='text-gray-300 text-sm'>{style.description}</p>
                     </div>
                   ))}
                 </div>
