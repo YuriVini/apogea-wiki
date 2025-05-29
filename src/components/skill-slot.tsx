@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { SkillSelector } from './skill-selector'
-import { SlotType, Equipment, CategoryType } from './equipment'
+import { SlotType, Equipment, CategoryType } from '../constants/equipment'
 
 interface SkillSlotProps {
   type: SlotType

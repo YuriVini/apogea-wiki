@@ -1,4 +1,4 @@
-import { Equipment } from './equipment'
+import { Equipment } from '../constants/equipment'
 
 interface SkillIconProps {
   className?: string

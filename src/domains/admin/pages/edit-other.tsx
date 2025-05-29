@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router'
 import { useState, useEffect } from 'react'
 import { Header } from '../../../components/header'
 import { Footer } from '../../../components/footer'
-import { OTHER_DATABASE, OtherDatabaseType } from '../../../components/other-database'
+import { OTHER_DATABASE, OtherDatabaseType } from '../../../constants/other-database'
 
 export const EditOther = () => {
     const { name } = useParams<{ name: string }>()

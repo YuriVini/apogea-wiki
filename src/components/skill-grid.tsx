@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { SkillSlot } from './skill-slot'
 import { useEquipments } from '../services/equipments'
-import { Equipment } from './equipment'
+import { Equipment } from '../constants/equipment'
 
 export const SkillsGrid = ({ initialBuildGrid }: { initialBuildGrid: Record<string, Equipment> }) => {
   const { data: equipments } = useEquipments()

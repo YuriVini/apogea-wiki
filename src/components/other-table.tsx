@@ -1,4 +1,4 @@
-import { OtherDatabaseType } from './other-database'
+import { OtherDatabaseType } from '../constants/other-database'
 import { OtherBox } from './other-box'
 import { Link } from 'react-router'
 

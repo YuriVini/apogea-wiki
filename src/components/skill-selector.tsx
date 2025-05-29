@@ -1,5 +1,5 @@
 import { SkillIcon } from './skill-icon'
-import { Equipment, SlotType, CategoryType } from './equipment'
+import { Equipment, SlotType, CategoryType } from '../constants/equipment'
 import { useEquipments } from '../services/equipments'
 
 interface SkillSelectorProps {

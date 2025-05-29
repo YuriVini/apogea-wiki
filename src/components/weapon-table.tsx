@@ -1,4 +1,4 @@
-import { Equipment } from './equipment'
+import { Equipment } from '../constants/equipment'
 import { WeaponBox } from './weapon-box'
 
 export const WeaponTable = ({ title, weapons }: { title: string; weapons: Equipment[] }) => {

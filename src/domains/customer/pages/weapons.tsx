@@ -3,7 +3,7 @@ import { Footer } from '../../../components/footer'
 import { WeaponBox } from '../../../components/weapon-box'
 import { useParams, Link } from 'react-router'
 import { useEquipments } from '../../../services/equipments'
-import { Equipment } from '../../../components/equipment'
+import { Equipment } from '../../../constants/equipment'
 
 export const Weapons = () => {
   const { weaponCategory } = useParams<{ weaponCategory: string }>()

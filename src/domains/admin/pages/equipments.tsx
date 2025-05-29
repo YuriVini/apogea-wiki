@@ -1,4 +1,4 @@
-import { Equipment } from '../../../components/equipment'
+import { Equipment } from '../../../constants/equipment'
 import { WeaponTable } from '../../../components/weapon-table'
 import { useEquipments } from '../../../services/equipments'
 import { Footer } from '../../../components/footer'

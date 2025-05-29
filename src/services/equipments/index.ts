@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Equipment } from '../../components/equipment'
+import { Equipment } from '../../constants/equipment'
 import { ApiNoAuth } from '../../@api/axios'
 
 export const EQUIPMENTS_QUERY_KEY = 'equipments'

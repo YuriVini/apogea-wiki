@@ -1,7 +1,7 @@
 import { Header } from '../../../components/header'
 import { Footer } from '../../../components/footer'
 import { useParams } from 'react-router'
-import { OTHER_DATABASE } from '../../../components/other-database'
+import { OTHER_DATABASE } from '../../../constants/other-database'
 import { OtherTable } from '../../../components/other-table'
 
 export const Other = () => {
