@@ -240,48 +240,66 @@ export const CharacterClass = () => {
           <p className='text-gray-300 text-center text-lg'>{knightData.description}</p>
         </div>
 
-        <div className='mb-8'>
-          <div className='flex justify-center space-x-4'>
-            <button
-              onClick={() => setActiveTab('overview')}
-              className={`px-6 py-3 rounded-lg font-bold transition-all duration-300 ${
-                activeTab === 'overview' ? 'bg-blue-500 text-white shadow-lg' : 'bg-gray-800/30 text-gray-300 hover:bg-gray-700/30 hover:text-white'
-              }`}
-            >
-              📖 Visão Geral
-            </button>
-            <button
-              onClick={() => setActiveTab('builds')}
-              className={`px-6 py-3 rounded-lg font-bold transition-all duration-300 ${
-                activeTab === 'builds' ? 'bg-blue-500 text-white shadow-lg' : 'bg-gray-800/30 text-gray-300 hover:bg-gray-700/30 hover:text-white'
-              }`}
-            >
-              ⚔️ Builds
-            </button>
-          </div>
+        <div className='mb-8 flex justify-center'>
+          <button
+            onClick={() => setActiveTab('overview')}
+            className={`px-6 py-3 rounded-lg font-bold transition-all duration-300 ${
+              activeTab === 'overview' 
+                ? 'bg-blue-500 text-white shadow-lg transform scale-105' 
+                : 'bg-gray-800/30 text-gray-300 hover:bg-gray-700/30 hover:text-white hover:scale-105'
+            }`}
+          >
+            📖 Visão Geral
+          </button>
+          <button
+            onClick={() => setActiveTab('builds')}
+            className={`px-6 py-3 rounded-lg font-bold transition-all duration-300 ${
+              activeTab === 'builds' 
+                ? 'bg-blue-500 text-white shadow-lg transform scale-105' 
+                : 'bg-gray-800/30 text-gray-300 hover:bg-gray-700/30 hover:text-white hover:scale-105'
+            }`}
+          >
+            ⚔️ Builds
+          </button>
         </div>
 
         {activeTab === 'overview' && (
           <>
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12'>
-              <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg'>
-                <h2 className='text-2xl font-bold text-white mb-4'>📊 Status do Knight</h2>
-                <div className='space-y-2'>
-                  {knightData.stats.map((stat, index) => (
-                    <div key={index} className='flex justify-between items-center'>
-                      <span className='text-gray-300'>{stat.title}:</span>
-                      <span className={`${stat.color} font-bold`}>{stat.value}%</span>
-                    </div>
-                  ))}
+            <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 mb-12'>
+              <div className='flex flex-col lg:flex-row items-center gap-8'>
+                <div className='lg:w-1/2'>
+                  <h2 className='text-2xl font-bold text-white mb-4'>📊 Status do Knight</h2>
+                  <div className='space-y-2'>
+                    {knightData.stats.map((stat, index) => (
+                      <div key={index} className='flex flex-col'>
+                        <div className='flex justify-between items-center'>
+                          <span className='text-gray-300'>{stat.title}:</span>
+                          <span className={`${stat.color} font-bold`}>{stat.value}%</span>
+                        </div>
+                        <div className='w-full h-px bg-gray-600 mt-1'></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className='lg:w-1/2 flex justify-center items-center'>
+                  <img 
+                    src='/caracter-classes/knight.png' 
+                    alt='Knight' 
+                    className='rounded-lg shadow-lg max-w-full h-auto transition-all duration-300 hover:scale-105 hover:shadow-xl'
+                    style={{maxHeight: '400px', objectFit: 'cover'}}
+                  />
                 </div>
               </div>
-              <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg'>
-                <h2 className='text-2xl font-bold text-white mb-4'>🎯 Estilo de Jogo</h2>
-                <div className='space-y-4'>
+            </div>
+
+            <div className='mb-12'>
+              <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-700'>
+                <h2 className='text-3xl font-bold text-white mb-6 text-center'>🎯 Estilo de Jogo</h2>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                   {knightData.playstyle.map((style, index) => (
-                    <div key={index} className={`bg-${index === 0 ? 'blue' : 'green'}-500/20 rounded-lg p-4 border border-${index === 0 ? 'blue' : 'green'}-400/30`}>
-                      <h3 className={`text-${index === 0 ? 'blue' : 'green'}-300 font-bold mb-2`}>{style.title}</h3>
-                      <p className='text-gray-300 text-sm'>{style.description}</p>
+                    <div key={index} className={`bg-gradient-to-br from-${index === 0 ? 'blue' : 'green'}-500/10 to-${index === 0 ? 'blue' : 'green'}-500/30 rounded-lg p-6 border border-${index === 0 ? 'blue' : 'green'}-400/50 hover:shadow-lg hover:scale-105 transition-all duration-300`}>
+                      <h3 className={`text-${index === 0 ? 'blue' : 'green'}-300 font-bold text-xl mb-3`}>{style.title}</h3>
+                      <p className='text-gray-300 text-base leading-relaxed'>{style.description}</p>
                     </div>
                   ))}
                 </div>
@@ -293,7 +311,7 @@ export const CharacterClass = () => {
               <h2 className='text-3xl font-bold text-white mb-6 text-center'>⚔️ Habilidades</h2>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                 {knightData.abilities.map((ability, index) => (
-                  <div key={index} className='bg-gray-800/30 rounded-lg p-6 shadow-lg hover:bg-gray-700/30 transition-all duration-300'>
+                  <div key={index} className='bg-gray-800/30 rounded-lg p-6 shadow-lg hover:bg-gray-700/30 transition-all duration-300 transform hover:scale-105'>
                     <div className='flex items-center gap-3 mb-3'>
                       <span className='text-2xl'>{ability.icon}</span>
                       <h3 className='text-xl font-bold text-white'>{ability.name}</h3>
@@ -309,7 +327,7 @@ export const CharacterClass = () => {
               <h2 className='text-3xl font-bold text-white mb-6 text-center'>🎒 Equipamentos Recomendados</h2>
               <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
                 {knightData.recommendedEquipment.map((equipment, index) => (
-                  <div key={index} className='bg-gray-800/30 rounded-lg p-6 shadow-lg text-center'>
+                  <div key={index} className='bg-gray-800/30 rounded-lg p-6 shadow-lg text-center hover:bg-gray-700/30 transition-all duration-300 transform hover:scale-105'>
                     <span className='text-4xl mb-3 block'>{equipment.icon}</span>
                     <h3 className='text-lg font-bold text-white mb-2'>{equipment.name}</h3>
                     <p className='text-gray-300 text-sm'>{equipment.description}</p>
@@ -320,13 +338,13 @@ export const CharacterClass = () => {
 
             <div className='mb-12'>
               <h2 className='text-3xl font-bold text-white mb-6 text-center'>💡 Dicas de Estratégia</h2>
-              <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg'>
+              <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300'>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
                   <div>
                     <h3 className='text-xl font-bold text-green-400 mb-4'>✅ Faça</h3>
                     <ul className='space-y-2 text-gray-300'>
                       {knightData.strategy.do.map((tip, index) => (
-                        <li key={index}>• {tip}</li>
+                        <li key={index} className='hover:text-green-300 transition-colors duration-200'>• {tip}</li>
                       ))}
                     </ul>
                   </div>
@@ -334,7 +352,7 @@ export const CharacterClass = () => {
                     <h3 className='text-xl font-bold text-red-400 mb-4'>❌ Evite</h3>
                     <ul className='space-y-2 text-gray-300'>
                       {knightData.strategy.dont.map((tip, index) => (
-                        <li key={index}>• {tip}</li>
+                        <li key={index} className='hover:text-red-300 transition-colors duration-200'>• {tip}</li>
                       ))}
                     </ul>
                   </div>
@@ -344,10 +362,10 @@ export const CharacterClass = () => {
 
             <div className='mb-12'>
               <h2 className='text-3xl font-bold text-white mb-6 text-center'>📈 Progressão Recomendada</h2>
-              <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg'>
+              <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300'>
                 <div className='space-y-6'>
                   {knightData.progression.map((stage, index) => (
-                    <div key={index} className='flex items-center gap-4'>
+                    <div key={index} className='flex items-center gap-4 hover:bg-gray-700/30 p-4 rounded-lg transition-all duration-200'>
                       <div className='bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold'>{index + 1}</div>
                       <div>
                         <h3 className='text-white font-bold'>
@@ -374,7 +392,7 @@ export const CharacterClass = () => {
 
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
               {knightData.builds.map((build, index) => (
-                <div key={index} className='bg-gray-800/30 rounded-lg p-6 shadow-lg hover:bg-gray-700/30 transition-all duration-300'>
+                <div key={index} className='bg-gray-800/30 rounded-lg p-6 shadow-lg hover:bg-gray-700/30 transition-all duration-300 transform hover:scale-105'>
                   <div className='flex justify-between items-start mb-4'>
                     <div>
                       <h3 className='text-xl font-bold text-white mb-2'>{build.name}</h3>
