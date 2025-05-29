@@ -240,12 +240,12 @@ export const CharacterClass = () => {
           <p className='text-gray-300 text-center text-lg'>{knightData.description}</p>
         </div>
 
-        <div className='mb-8 flex justify-center'>
+        <div className='mb-8 gap-6 flex justify-center'>
           <button
             onClick={() => setActiveTab('overview')}
             className={`px-6 py-3 rounded-lg font-bold transition-all duration-300 ${
-              activeTab === 'overview' 
-                ? 'bg-blue-500 text-white shadow-lg transform scale-105' 
+              activeTab === 'overview'
+                ? 'bg-blue-500 text-white shadow-lg transform scale-105'
                 : 'bg-gray-800/30 text-gray-300 hover:bg-gray-700/30 hover:text-white hover:scale-105'
             }`}
           >
@@ -254,9 +254,7 @@ export const CharacterClass = () => {
           <button
             onClick={() => setActiveTab('builds')}
             className={`px-6 py-3 rounded-lg font-bold transition-all duration-300 ${
-              activeTab === 'builds' 
-                ? 'bg-blue-500 text-white shadow-lg transform scale-105' 
-                : 'bg-gray-800/30 text-gray-300 hover:bg-gray-700/30 hover:text-white hover:scale-105'
+              activeTab === 'builds' ? 'bg-blue-500 text-white shadow-lg transform scale-105' : 'bg-gray-800/30 text-gray-300 hover:bg-gray-700/30 hover:text-white hover:scale-105'
             }`}
           >
             ⚔️ Builds
@@ -281,11 +279,11 @@ export const CharacterClass = () => {
                   </div>
                 </div>
                 <div className='lg:w-1/2 flex justify-center items-center'>
-                  <img 
-                    src='/caracter-classes/knight.png' 
-                    alt='Knight' 
+                  <img
+                    src='/caracter-classes/knight.png'
+                    alt='Knight'
                     className='rounded-lg shadow-lg max-w-full h-auto transition-all duration-300 hover:scale-105 hover:shadow-xl'
-                    style={{maxHeight: '400px', objectFit: 'cover'}}
+                    style={{ maxHeight: '400px', objectFit: 'cover' }}
                   />
                 </div>
               </div>
@@ -296,7 +294,12 @@ export const CharacterClass = () => {
                 <h2 className='text-2xl font-bold text-white mb-4'>🎯 Estilo de Jogo</h2>
                 <div className='space-y-4'>
                   {knightData.playstyle.map((style, index) => (
-                    <div key={index} className={`bg-${index === 0 ? 'blue' : 'green'}-500/20 rounded-lg p-4 border border-${index === 0 ? 'blue' : 'green'}-400/30 hover:bg-${index === 0 ? 'blue' : 'green'}-500/30 transition-all duration-300`}>
+                    <div
+                      key={index}
+                      className={`bg-${index === 0 ? 'blue' : 'green'}-500/20 rounded-lg p-4 border border-${index === 0 ? 'blue' : 'green'}-400/30 hover:bg-${
+                        index === 0 ? 'blue' : 'green'
+                      }-500/30 transition-all duration-300`}
+                    >
                       <h3 className={`text-${index === 0 ? 'blue' : 'green'}-300 font-bold mb-2`}>{style.title}</h3>
                       <p className='text-gray-300 text-sm'>{style.description}</p>
                     </div>
@@ -343,7 +346,9 @@ export const CharacterClass = () => {
                     <h3 className='text-xl font-bold text-green-400 mb-4'>✅ Faça</h3>
                     <ul className='space-y-2 text-gray-300'>
                       {knightData.strategy.do.map((tip, index) => (
-                        <li key={index} className='hover:text-green-300 transition-colors duration-200'>• {tip}</li>
+                        <li key={index} className='hover:text-green-300 transition-colors duration-200'>
+                          • {tip}
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -351,7 +356,9 @@ export const CharacterClass = () => {
                     <h3 className='text-xl font-bold text-red-400 mb-4'>❌ Evite</h3>
                     <ul className='space-y-2 text-gray-300'>
                       {knightData.strategy.dont.map((tip, index) => (
-                        <li key={index} className='hover:text-red-300 transition-colors duration-200'>• {tip}</li>
+                        <li key={index} className='hover:text-red-300 transition-colors duration-200'>
+                          • {tip}
+                        </li>
                       ))}
                     </ul>
                   </div>

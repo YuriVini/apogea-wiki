@@ -3,7 +3,6 @@ import { Footer } from '../../../components/footer'
 import { useState } from 'react'
 import { SkillsGrid } from '../../../components/skill-grid'
 import { Trash2 } from 'lucide-react'
-import { SkillList } from '../../../components/skill-list'
 import { StatField } from '../../../components/stat-field'
 import { Equipment } from '../../../constants/equipment'
 import Helme3 from '/helmet/Helmet3.webp'
@@ -20,9 +19,6 @@ interface BuildData {
   title: string
   overview: string
   equipment: Record<string, Equipment>
-  requirements: string[]
-  mainSkills: string[]
-  supportSkills: string[]
   strategy: string[]
   characterStats: {
     level: number
@@ -100,9 +96,6 @@ const initialBuildData: BuildData = {
   overview:
     'A build Penetrating Shot Rogue é focada em maximizar o dano à distância com arco, utilizando a habilidade Penetrating Shot para atingir múltiplos inimigos em linha. Esta build é ideal para jogadores que preferem eliminar inimigos rapidamente à distância.',
   equipment: initialBuildGrid,
-  requirements: ['Trickshot', 'Bow Mastery', 'Quick Draw'],
-  mainSkills: ['Penetrating Shot', 'Multishot', 'Aimed Shot', 'Power Shot'],
-  supportSkills: ['Stealth', 'Dodge Roll', 'Critical Strike', 'Weapon Focus: Bow'],
   strategy: [
     'Mantenha distância dos inimigos, use terreno elevado quando possível e posicione-se para alinhar múltiplos inimigos.',
     'Use Penetrating Shot para atingir grupos de inimigos, Aimed Shot para alvos únicos importantes e Stealth para reposicionamento.',
@@ -153,12 +146,7 @@ export const Builds = () => {
     }))
   }
 
-  const handleArrayUpdate = (
-    field: keyof Pick<BuildData, 'equipment' | 'requirements' | 'mainSkills' | 'supportSkills' | 'strategy'>,
-    action: 'add' | 'delete' | 'edit',
-    index?: number,
-    value?: string
-  ) => {
+  const handleArrayUpdate = (field: keyof Pick<BuildData, 'equipment' | 'strategy'>, action: 'add' | 'delete' | 'edit', index?: number, value?: string) => {
     setBuildData((prev) => {
       const array = prev[field] as string[]
       switch (action) {
@@ -239,7 +227,7 @@ export const Builds = () => {
                   />
                 ))}
 
-                <div className='flex justify-between items-center py-1'>
+                <div className='flex  flex-1 justify-between items-center py-1'>
                   <span className='text-white font-semibold'>Your Class:</span>
                   {isEditing ? (
                     <select
@@ -259,31 +247,9 @@ export const Builds = () => {
                 </div>
               </div>
 
-              <SkillsGrid initialBuildGrid={buildData.equipment} />
-            </div>
-          </div>
-
-          <br />
-
-          <div className='bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700'>
-            <h3 className='text-xl font-semibold mb-4 text-red-400'>Habilidades Recomendadas</h3>
-            <div className='grid md:grid-cols-2 gap-4'>
-              <SkillList
-                title='Principais'
-                skills={buildData.mainSkills}
-                onAdd={() => handleArrayUpdate('mainSkills', 'add')}
-                onDelete={(index) => handleArrayUpdate('mainSkills', 'delete', index)}
-                onEdit={(index, value) => handleArrayUpdate('mainSkills', 'edit', index, value)}
-                isEditing={isEditing}
-              />
-              <SkillList
-                title='Suporte'
-                skills={buildData.supportSkills}
-                onAdd={() => handleArrayUpdate('supportSkills', 'add')}
-                onDelete={(index) => handleArrayUpdate('supportSkills', 'delete', index)}
-                onEdit={(index, value) => handleArrayUpdate('supportSkills', 'edit', index, value)}
-                isEditing={isEditing}
-              />
+              <div className='flex flex-1 justify-center'>
+                <SkillsGrid initialBuildGrid={buildData.equipment} />
+              </div>
             </div>
           </div>
 
