@@ -3,6 +3,7 @@ import { Footer } from '../../../components/footer'
 import { WeaponBox } from '../../../components/weapon-box'
 import { useParams, Link } from 'react-router'
 import { useEquipments } from '../../../services/equipments'
+import { Equipment } from '../../../components/equipment'
 
 export const Weapons = () => {
   const { weaponCategory } = useParams<{ weaponCategory: string }>()
@@ -11,6 +12,30 @@ export const Weapons = () => {
   if (isLoading) return <div>Loading...</div>
 
   const filteredWeapons = equipments?.filter((weapon) => weapon.category === weaponCategory) || []
+
+  function renderEditHeader() {
+    return (
+      <th className='text-center px-2 py-4 font-semibold w-16 border-l border-gray-600'>
+        Editar
+      </th>
+    )
+  }
+
+  function renderEditButton(weapon: Equipment) {
+    return (
+      <td className='px-2 py-4 text-center w-16 border-l border-gray-600'>
+        <Link
+          to={`/admin/edit/${weapon.name}`}
+          className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 rounded-full transition-colors text-base shadow-md"
+          title="Editar"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a4 4 0 01-1.414.828l-4.243 1.414 1.414-4.243a4 4 0 01.828-1.414z" />
+          </svg>
+        </Link>
+      </td>
+    )
+  }
 
   return (
     <div className='min-h-screen bg-gray-900'>
@@ -45,7 +70,7 @@ export const Weapons = () => {
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Drop Por</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Comprar De</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Vender Para</th>
-                    <th className='text-left p-4 font-semibold'>Ações</th>
+                    {renderEditHeader()}
                   </tr>
                 </thead>
                 <tbody>
@@ -67,14 +92,7 @@ export const Weapons = () => {
                       <td className='p-4 border-r border-gray-600 text-red-400'>{weapon.dropBy}</td>
                       <td className='p-4 border-r border-gray-600 text-cyan-400'>{weapon.buyFrom}</td>
                       <td className='p-4 border-r border-gray-600 text-green-300'>{weapon.sellTo}</td>
-                      <td className='p-4'>
-                        <Link 
-                          to={`/admin/edit/${weapon.name}`}
-                          className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-all duration-200 font-medium shadow-md hover:shadow-lg hover:scale-105 inline-block'
-                        >
-                          Editar
-                        </Link>
-                      </td>
+                      {renderEditButton(weapon)}
                     </tr>
                   ))}
                 </tbody>

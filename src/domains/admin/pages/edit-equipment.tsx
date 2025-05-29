@@ -3,28 +3,59 @@ import { useParams, Link } from 'react-router'
 import { useState, useEffect } from 'react'
 import { Header } from '../../../components/header'
 import { Footer } from '../../../components/footer'
+import { OTHER_DATABASE, OtherDatabaseType } from '../../../components/other-database'
 
 export const Edit = () => {
     const { name } = useParams<{ name: string }>()
     const { data: equipments, isLoading } = useEquipments()
-    const [formData, setFormData] = useState({
-        name: '',
-        damage: '',
-        attackSpeed: '',
-        range: '',
-        defense: '',
-        attributes: '',
-        size: '',
-        weight: '',
-        dropBy: '',
-        buyFrom: '',
-        sellTo: '',
-        imageUrl: '',
-        category: ''
+
+    // Try to find in OTHER_DATABASE first
+    const otherItem: OtherDatabaseType | undefined = name
+        ? OTHER_DATABASE.find(item => item.name === name)
+        : undefined
+
+    // If found in OTHER_DATABASE, use its keys for fields
+    const otherFields = otherItem
+        ? Object.keys(otherItem).filter(key => otherItem[key as keyof OtherDatabaseType] !== undefined)
+        : []
+
+    // Default equipment fields
+    const equipmentFields = [
+        'name',
+        'damage',
+        'attackSpeed',
+        'range',
+        'defense',
+        'attributes',
+        'size',
+        'weight',
+        'dropBy',
+        'buyFrom',
+        'sellTo',
+        'imageUrl',
+        'category'
+    ]
+
+    // Initial formData based on type
+    const [formData, setFormData] = useState<any>(() => {
+        if (otherItem) {
+            const data: any = {}
+            for (const key of otherFields) {
+                data[key] = otherItem[key as keyof OtherDatabaseType] || ''
+            }
+            return data
+        }
+        return equipmentFields.reduce((acc, key) => ({ ...acc, [key]: '' }), {})
     })
 
     useEffect(() => {
-        if (equipments && name) {
+        if (otherItem) {
+            const data: any = {}
+            for (const key of otherFields) {
+                data[key] = otherItem[key as keyof OtherDatabaseType] || ''
+            }
+            setFormData(data)
+        } else if (equipments && name) {
             const equipment = equipments.find(eq => eq.name === name)
             if (equipment) {
                 setFormData({
@@ -64,49 +95,116 @@ export const Edit = () => {
         console.log('Form submitted:', formData)
     }
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
-        setFormData(prev => ({
+        setFormData((prev: any) => ({
             ...prev,
             [name]: value
         }))
     }
 
-    const categories = ['Sword', 'dagger', 'Axe', 'Mace', 'Bow', 'Staff', 'Gloves', 'Shield', 'Helmet', 'Chest', 'Legs', 'Boots', 'Nacklace', 'Ring', 'Backpack']
+    const categories = [
+        'Sword', 'dagger', 'Axe', 'Mace', 'Bow', 'Staff', 'Gloves', 'Shield', 'Helmet', 'Chest', 'Legs', 'Boots', 'Nacklace', 'Ring', 'Backpack'
+    ]
+
+    const fieldsToShow = otherItem ? otherFields : equipmentFields
+    const fieldLabels: Record<string, string> = {
+        name: 'Nome',
+        damage: 'Dano',
+        attackSpeed: 'Velocidade de Ataque',
+        range: 'Alcance',
+        defense: 'Defesa',
+        attributes: 'Atributos',
+        size: 'Tamanho',
+        weight: 'Peso',
+        dropBy: 'Drop Por',
+        buyFrom: 'Comprar De',
+        sellTo: 'Vender Para',
+        imageUrl: 'URL da Imagem',
+        category: 'Categoria',
+        // OtherDatabaseType fields
+        type: 'Tipo',
+        description: 'Descrição',
+        hp: 'HP',
+        exp: 'EXP',
+        abilities: 'Habilidades',
+        loot: 'Loot',
+        location: 'Localização',
+        author: 'Autor',
+        notes: 'Notas',
+        text: 'Texto',
+        satiateTime: 'Tempo de Saciamento',
+        buffs: 'Buffs',
+        requirements: 'Requisitos'
+    }
+
+    const textareaFields = ['description', 'notes', 'text', 'abilities', 'loot', 'location', 'author', 'buffs', 'requirements']
+    const otherTypes = [
+        'drop_creatures',
+        'itens_quest',
+        'monster',
+        'book',
+        'food',
+        'recipes',
+        'npc'
+    ]
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
             <Header />
             <div className="max-w-4xl mx-auto p-8">
                 <div className="flex items-center justify-center mb-8">
-                    <h1 className="text-4xl font-bold text-white mr-4">Editar {name}</h1>
+                    <h1 className="text-4xl font-bold text-white mr-4">
+                        Editar {formData.name || name}
+                    </h1>
                     {formData.imageUrl && (
-                        <img src={formData.imageUrl} alt={name} className="w-12 h-12 object-contain" />
+                        <img src={formData.imageUrl} alt={formData.name || name} className="w-12 h-12 object-contain" />
                     )}
                 </div>
-                
                 <form onSubmit={handleSubmit} className="bg-gray-800/70 rounded-lg p-8 shadow-lg">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {Object.entries(formData).map(([key, value]) => (
+                        {fieldsToShow.map((key) => (
                             <div key={key}>
-                                <label className="block text-gray-300 mb-2 font-semibold">{key.charAt(0).toUpperCase() + key.slice(1)}</label>
-                                {key === 'category' ? (
+                                <label className="block text-gray-300 mb-2 font-semibold">
+                                    {fieldLabels[key] || key.charAt(0).toUpperCase() + key.slice(1)}
+                                </label>
+                                {key === 'category' && !otherItem ? (
                                     <select
                                         name={key}
-                                        value={value}
+                                        value={formData[key] || ''}
                                         onChange={handleInputChange}
                                         className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
                                     >
-                                        <option value="">Select a category</option>
+                                        <option value="">Selecione a categoria</option>
                                         {categories.map((category) => (
                                             <option key={category} value={category}>{category}</option>
                                         ))}
                                     </select>
+                                ) : key === 'type' && otherItem ? (
+                                    <select
+                                        name={key}
+                                        value={formData[key] || ''}
+                                        onChange={handleInputChange}
+                                        className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
+                                    >
+                                        <option value="">Selecione o tipo</option>
+                                        {otherTypes.map((t) => (
+                                            <option key={t} value={t}>{t}</option>
+                                        ))}
+                                    </select>
+                                ) : textareaFields.includes(key) ? (
+                                    <textarea
+                                        name={key}
+                                        value={formData[key] || ''}
+                                        onChange={handleInputChange}
+                                        className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
+                                        rows={3}
+                                    />
                                 ) : (
                                     <input
                                         type="text"
                                         name={key}
-                                        value={value}
+                                        value={formData[key] || ''}
                                         onChange={handleInputChange}
                                         className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
                                     />
@@ -114,7 +212,6 @@ export const Edit = () => {
                             </div>
                         ))}
                     </div>
-
                     <div className="mt-10 flex justify-end gap-4">
                         <Link
                             to="/admin/equipments"

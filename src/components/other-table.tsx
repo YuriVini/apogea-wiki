@@ -1,5 +1,6 @@
 import { OtherDatabaseType } from './other-database'
 import { OtherBox } from './other-box'
+import { Link } from 'react-router'
 
 export const OtherTable = ({ title, items }: { title: string; items: OtherDatabaseType[] }) => {
   const isMonsterType = items.length > 0 && items[0]?.type === 'monster'
@@ -9,6 +10,31 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
   const isRecipeType = items.length > 0 && items[0]?.type === 'recipes'
   const isNpcType = items.length > 0 && items[0]?.type === 'npc'
   const isItensQuestType = items.length > 0 && items[0]?.type === 'itens_quest'
+
+  // Adiciona borda à esquerda do header e da célula do botão editar
+  function renderEditHeader() {
+    return (
+      <th className='text-center px-2 py-4 font-semibold w-16 border-l border-gray-600'>
+        Editar
+      </th>
+    )
+  }
+
+  function renderEditButton(item: OtherDatabaseType) {
+    return (
+      <td className='px-2 py-4 text-center w-16 border-l border-gray-600'>
+        <Link
+          to={`/admin/edit/${item.name}`}
+          className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 rounded-full transition-colors text-base shadow-md"
+          title="Editar"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a4 4 0 01-1.414.828l-4.243 1.414 1.414-4.243a4 4 0 01.828-1.414z" />
+          </svg>
+        </Link>
+      </td>
+    )
+  }
 
   return (
     <div className='mb-8'>
@@ -25,6 +51,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Experiência</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Habilidades</th>
                     <th className='text-left p-4 font-semibold'>Loot</th>
+                    {renderEditHeader()}
                   </>
                 ) : isDropCreatureType ? (
                   <>
@@ -33,6 +60,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Peso</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Drop Por</th>
                     <th className='text-left p-4 font-semibold'>Preço de Venda</th>
+                    {renderEditHeader()}
                   </>
                 ) : isBookType ? (
                   <>
@@ -41,6 +69,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Autor</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Notas</th>
                     <th className='text-left p-4 font-semibold'>Texto</th>
+                    {renderEditHeader()}
                   </>
                 ) : isFoodType ? (
                   <>
@@ -50,8 +79,8 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Drop Por</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Tempo de Saciedade</th>
                     <th className='text-left p-4 font-semibold'>Buffs</th>
+                    {renderEditHeader()}
                   </>
-
                 ) : isRecipeType ? (
                   <>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Item</th>
@@ -61,12 +90,14 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Peso</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Requisitos</th>
                     <th className='text-left p-4 font-semibold'>Drop Por</th>
+                    {renderEditHeader()}
                   </>
                 ) : isNpcType ? (
                   <>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Nome</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Localização</th>
                     <th className='text-left p-4 font-semibold'>Vende</th>
+                    {renderEditHeader()}
                   </>
                 ) : isItensQuestType ? (
                   <>
@@ -74,6 +105,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Nome</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Peso</th>
                     <th className='text-left p-4 font-semibold'>Descrição</th>
+                    {renderEditHeader()}
                   </>
                 ) : (
                   <>
@@ -94,6 +126,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Requisitos</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Drop Por</th>
                     <th className='text-left p-4 font-semibold'>Vender Para</th>
+                    {renderEditHeader()}
                   </>
                 )}
               </tr>
@@ -112,6 +145,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                       </td>
                       <td className='p-4 border-r border-gray-600 text-purple-400 text-sm'>{item.abilities || 'Nenhuma habilidade especial'}</td>
                       <td className='p-4 text-yellow-400 text-sm'>{item.loot || 'Nenhum loot'}</td>
+                      {renderEditButton(item)}
                     </>
                   ) : isDropCreatureType ? (
                     <>
@@ -126,6 +160,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                       </td>
                       <td className='p-4 border-r border-gray-600 text-red-400 text-sm'>{item.dropBy || 'Não informado'}</td>
                       <td className='p-4 text-green-400 text-sm'>{item.sellTo || 'Não vendável'}</td>
+                      {renderEditButton(item)}
                     </>
                   ) : isBookType ? (
                     <>
@@ -136,6 +171,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                       <td className='p-4 border-r border-gray-600 text-purple-400 text-sm'>{item.author || 'Autor desconhecido'}</td>
                       <td className='p-4 border-r border-gray-600 text-gray-300 text-sm'>{item.notes || 'Sem notas'}</td>
                       <td className='p-4 text-yellow-400 text-sm'>{item.text || 'Sem texto'}</td>
+                      {renderEditButton(item)}
                     </>
                   ) : isFoodType ? (
                     <>
@@ -153,6 +189,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                         <span className='bg-green-900/30 px-2 py-1 rounded'>{item.satiateTime || '-'}</span>
                       </td>
                       <td className='p-4 text-purple-400 text-sm'>{item.buffs || 'Nenhum buff'}</td>
+                      {renderEditButton(item)}
                     </>
                   ) : isRecipeType ? (
                     <>
@@ -171,6 +208,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                       </td>
                       <td className='p-4 border-r border-gray-600 text-yellow-400 text-sm'>{item.requirements || 'Sem requisitos'}</td>
                       <td className='p-4 text-red-400 text-sm'>{item.dropBy || 'Não informado'}</td>
+                      {renderEditButton(item)}
                     </>
                   ) : isNpcType ? (
                     <>
@@ -179,6 +217,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                         <span className='bg-cyan-900/30 px-2 py-1 rounded'>{item.location || '-'}</span>
                       </td>
                       <td className='p-4 text-green-400 text-sm'>{item.sellTo || 'Não vende nada'}</td>
+                      {renderEditButton(item)}
                     </>
                   ) : isItensQuestType ? (
                     <>
@@ -192,6 +231,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                         <span className='bg-gray-900/30 px-2 py-1 rounded'>{item.weight || '-'}</span>
                       </td>
                       <td className='p-4 text-purple-400 text-sm'>{item.description || 'Sem descrição'}</td>
+                      {renderEditButton(item)}
                     </>
                   ) : (
                     <>
@@ -216,6 +256,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                       <td className='p-4 border-r border-gray-600 text-orange-400'>{item.requirements || '-'}</td>
                       <td className='p-4 border-r border-gray-600 text-red-400'>{item.dropBy || '-'}</td>
                       <td className='p-4 text-green-300'>{item.sellTo || '-'}</td>
+                      {renderEditButton(item)}
                     </>
                   )}
                 </tr>
