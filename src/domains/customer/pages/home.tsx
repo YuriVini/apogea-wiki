@@ -99,7 +99,7 @@ const weapons: Weapon[] = [
     category: 'necklace',
   },
   {
-    title: 'Container',
+    title: 'Mochila',
     imageUrl: BackpackIcon,
     category: 'backpack',
   },
