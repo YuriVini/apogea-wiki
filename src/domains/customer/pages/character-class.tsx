@@ -3,6 +3,7 @@ import { Footer } from '../../../components/footer'
 import { useState } from 'react'
 import { useBuilds } from '../../../services/builds'
 import { useNavigate } from 'react-router'
+import { useAuth } from '../../../context/auth'
 
 const knightData = {
   title: 'Knight - O Guardião de Apogea',
@@ -151,6 +152,7 @@ export const CharacterClass = () => {
   const navigate = useNavigate()
   const { data: builds = [] } = useBuilds()
   const [activeTab, setActiveTab] = useState<'overview' | 'builds'>('overview')
+  const { isLoggedIn } = useAuth()
 
   return (
     <div className='min-h-screen bg-gray-900'>
@@ -313,9 +315,6 @@ export const CharacterClass = () => {
           <div className='mb-12'>
             <div className='flex justify-between items-center mb-8'>
               <h2 className='text-3xl font-bold text-white'>⚔️ Builds de Knight</h2>
-              <button className='bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-bold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-blue-500/20'>
-                ✨ Criar Nova Build
-              </button>
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
@@ -324,6 +323,7 @@ export const CharacterClass = () => {
                   <div className='flex justify-between items-start mb-4'>
                     <div>
                       <h3 className='text-xl font-bold text-white mb-2'>{build.title}</h3>
+                      <p className='text-lg text-blue-400 mb-2'>Nível {build.characterStats.level}</p>
                     </div>
                     <div className='flex items-center gap-1'>
                       <span className='text-yellow-400'>⭐</span>
@@ -343,9 +343,13 @@ export const CharacterClass = () => {
 
             <div className='mt-8 text-center'>
               <p className='text-gray-400 mb-4'>Não encontrou a build perfeita?</p>
-              <button className='bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg font-bold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-green-500/20'>
-                🔧 Criar Sua Própria Build
-              </button>
+              {isLoggedIn ? (
+                <button onClick={() => navigate('/create-build')} className='bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg font-bold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-green-500/20'>
+                  🔧 Criar Sua Própria Build
+                </button>
+              ) : (
+                <p className='text-gray-400'>Faça <a href="/login" className="text-blue-400 hover:text-blue-300">login</a> para criar sua própria build</p>
+              )}
             </div>
           </div>
         )}
