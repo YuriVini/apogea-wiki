@@ -8,6 +8,19 @@ import { StatField } from '../../../components/stat-field'
 import { useParams } from 'react-router'
 import { fetchBuildById, useUpdateBuild } from '../../../services/builds'
 import { useBuilder } from '../../../context/builder'
+
+const statLabels: Record<string, string> = {
+  class: '👑 Class',
+  level: '🔝 Level',
+  health: '❤️ Health',
+  mana: '💙 Mana',
+  magic: '🔮 Magic',
+  weaponSkill: '🗡️ Weapon Skill',
+  hpRegen: '💊 HP Regen',
+  mpRegen: '💙 MP Regen',
+  capacity: '💼 Capacity',
+}
+
 export const BuildsDetails = () => {
   const [isLoading, setIsLoading] = useState(true)
   const { buildId } = useParams<{ buildId: string }>()
@@ -56,17 +69,6 @@ export const BuildsDetails = () => {
       }
     })
   }
-
-  const stats = [
-    { label: 'Level', field: 'level' as const },
-    { label: 'Health', field: 'health' as const },
-    { label: 'Mana', field: 'mana' as const },
-    { label: 'Magic', field: 'magic' as const },
-    { label: 'Weapon Skill', field: 'weaponSkill' as const },
-    { label: 'HP Regen', field: 'hpRegen' as const },
-    { label: 'MP Regen', field: 'mpRegen' as const },
-    { label: 'Capacity', field: 'capacity' as const },
-  ]
 
   const handleSaveEditBuild = () => {
     if (isEditing) {
@@ -166,16 +168,19 @@ export const BuildsDetails = () => {
             <h2 className='text-2xl font-semibold mb-4 text-purple-400'>Pontos de Skill</h2>
             <div className='flex justify-evenly bg-gray-900 rounded-lg p-4 border border-gray-600'>
               <div className='w-1/4 space-y-2'>
-                {stats.map(({ label, field }) => (
-                  <StatField
-                    key={field}
-                    label={label}
-                    value={buildData?.characterStats[field]}
-                    onIncrement={() => handleStatUpdate(field, true)}
-                    onDecrement={() => handleStatUpdate(field, false)}
-                    isEditing={isEditing}
-                  />
-                ))}
+                {Object.entries(buildData?.characterStats).map(([field, value]) => {
+                  if (!statLabels[field]) return null
+                  return (
+                    <StatField
+                      key={field}
+                      value={value}
+                      isEditing={isEditing}
+                      label={statLabels[field]}
+                      onIncrement={() => handleStatUpdate(field as keyof BuildsApiTypes.BuildData['characterStats'], true)}
+                      onDecrement={() => handleStatUpdate(field as keyof BuildsApiTypes.BuildData['characterStats'], false)}
+                    />
+                  )
+                })}
 
                 <div className='flex  flex-1 justify-between items-center py-1'>
                   <span className='text-white font-semibold'>Your Class:</span>
