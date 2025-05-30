@@ -1,4 +1,4 @@
-import { HighlightQuest } from '../../../components/highlight-quest'
+import { HighlightBuilds } from '../../../components/highlight-builds'
 import { WeaponBox } from '../../../components/weapon-box'
 import { OtherBox } from '../../../components/other-box'
 import StaffIcon from '/staff/Wooden_staff.webp'
@@ -22,34 +22,14 @@ import BootsIcon from '/boots/Boots1.webp'
 import RecipesIcon from '/recipes/Apple_Pie.webp'
 import { Link } from 'react-router'
 import { Footer } from '../../../components/footer'
-import { useEffect, useState, Suspense } from 'react'
-import { ApiNoAuth } from '../../../@api/axios'
+import { Suspense } from 'react'
 import { Header } from '../../../components/header'
 import KnightIcon from '/caracter-classes/knight-icon.png'
 import MageIcon from '/caracter-classes/mage-icon.png'
 import RogueIcon from '/caracter-classes/rogue-icon.png'
 import SquireIcon from '/caracter-classes/squire-icon.png'
-
-const highlightQuest = [
-  {
-    title: 'A Ameaça das Cavernas Cristalinas',
-    level: '25+',
-    rewards: '1000 ouro, Cristal Ancestral, XP',
-    description: 'Explore as Cavernas Cristalinas e derrote o Guardião de Cristal que ameaça a região.',
-  },
-  {
-    title: 'O Segredo da Floresta Ancestral',
-    level: '30+',
-    rewards: '1500 ouro, Pergaminho Místico, XP',
-    description: 'Descubra os mistérios escondidos na Floresta Ancestral e encontre o artefato perdido.',
-  },
-  {
-    title: 'A Forja do Destino',
-    level: '20+',
-    rewards: '800 ouro, Martelo do Artesão, XP',
-    description: 'Ajude o ferreiro local a criar uma arma lendária reunindo materiais raros.',
-  },
-]
+import { useGuides } from '../../../services/guides'
+import { useBuilds } from '../../../services/builds'
 
 interface Weapon {
   title: string
@@ -197,19 +177,8 @@ const caracterClasses = [
 ]
 
 export const Home = () => {
-  const [guides, setGuides] = useState<GuidesApiTypes.Guide[]>([])
-
-  const fetchGuides = async () => {
-    try {
-      const response = await ApiNoAuth.get('/guides')
-      setGuides(response.data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(() => {
-    fetchGuides()
-  }, [])
+  const { data: guides = [] } = useGuides()
+  const { data: builds = [] } = useBuilds()
 
   return (
     <div>
@@ -270,8 +239,8 @@ export const Home = () => {
               <h2 className='text-2xl font-bold text-white mb-6 text-center'>Builds em Destaque</h2>
               <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto'>
                 <div className='space-y-6'>
-                  {highlightQuest.map((quest, index) => (
-                    <HighlightQuest {...quest} key={index} />
+                  {builds.map((build, index) => (
+                    <HighlightBuilds {...build} key={index} />
                   ))}
                 </div>
                 <div className='text-center mt-6'>
