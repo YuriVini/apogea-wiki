@@ -61,5 +61,6 @@ export interface BuildSchemaRequest {
     backpack: string
     rightHand: string
     accessory: string
+    necklace: string
   }
 }

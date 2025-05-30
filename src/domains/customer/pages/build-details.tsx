@@ -1,37 +1,28 @@
 import { Header } from '../../../components/header'
 import { Footer } from '../../../components/footer'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SkillsGrid } from '../../../components/skill-grid'
 import { Trash2 } from 'lucide-react'
 import { StatField } from '../../../components/stat-field'
 
 import { useParams } from 'react-router'
-import { useBuildsById } from '../../../services/builds'
-
+import { fetchBuildById, useUpdateBuild } from '../../../services/builds'
+import { useBuilder } from '../../../context/builder'
 export const BuildsDetails = () => {
-  const [isEditing, setIsEditing] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const { buildId } = useParams<{ buildId: string }>()
-  const [build, setBuildData] = useState<BuildsApiTypes.BuildData>({} as BuildsApiTypes.BuildData)
-  console.log(build)
-  const { data: buildData, isLoading } = useBuildsById(buildId!)
-
-  if (!buildData) {
-    return <div>Build not found</div>
-  }
-
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
+  const { build: buildData, isEditing, setIsEditing, setBuild } = useBuilder()
+  const { mutate: updateBuild } = useUpdateBuild()
 
   const handleInputChange = (field: keyof BuildsApiTypes.BuildData, value: string) => {
-    setBuildData((prev) => ({
+    setBuild((prev) => ({
       ...prev,
       [field]: value,
     }))
   }
 
   const handleStatsChange = (field: keyof BuildsApiTypes.BuildData['characterStats'], value: string | number) => {
-    setBuildData((prev) => ({
+    setBuild((prev) => ({
       ...prev,
       characterStats: {
         ...prev.characterStats,
@@ -41,7 +32,7 @@ export const BuildsDetails = () => {
   }
 
   const handleStatUpdate = (field: keyof BuildsApiTypes.BuildData['characterStats'], increment: boolean) => {
-    setBuildData((prev) => ({
+    setBuild((prev) => ({
       ...prev,
       characterStats: {
         ...prev.characterStats,
@@ -51,7 +42,7 @@ export const BuildsDetails = () => {
   }
 
   const handleArrayUpdate = (field: keyof Pick<BuildsApiTypes.BuildData, 'equipment' | 'strategy'>, action: 'add' | 'delete' | 'edit', index?: number, value?: string) => {
-    setBuildData((prev) => {
+    setBuild((prev) => {
       const array = prev[field] as string[]
       switch (action) {
         case 'add':
@@ -77,6 +68,61 @@ export const BuildsDetails = () => {
     { label: 'Capacity', field: 'capacity' as const },
   ]
 
+  const handleSaveEditBuild = () => {
+    if (isEditing) {
+      updateBuild(
+        {
+          id: buildData?.id,
+          title: buildData?.title,
+          overview: buildData?.overview,
+          characterStats: buildData?.characterStats,
+          equipment: {
+            accessory: buildData?.equipment?.accessory?.id,
+            backpack: buildData?.equipment?.backpack?.id,
+            chest: buildData?.equipment?.chest?.id,
+            helmet: buildData?.equipment?.helmet?.id,
+            legs: buildData?.equipment?.legs?.id,
+            boots: buildData?.equipment?.boots?.id,
+            leftHand: buildData?.equipment?.leftHand?.id,
+            rightHand: buildData?.equipment?.rightHand?.id,
+            ring: buildData?.equipment?.ring?.id,
+            necklace: buildData?.equipment?.necklace?.id,
+          },
+          strategy: buildData?.strategy,
+        },
+        {
+          onSuccess: () => {
+            setIsEditing(false)
+          },
+        }
+      )
+    } else {
+      setIsEditing(true)
+    }
+  }
+
+  useEffect(() => {
+    const fetchBuild = async () => {
+      try {
+        const data = await fetchBuildById(buildId!)
+        setBuild(data)
+        setIsLoading(false)
+      } catch (error) {
+        console.log('Error fetching build:', error)
+        setIsLoading(false)
+      }
+    }
+    fetchBuild()
+  }, [buildId])
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (!buildData) {
+    return <div>Build not found</div>
+  }
+
   return (
     <div className='min-h-screen bg-gray-900 text-white'>
       <Header />
@@ -94,7 +140,7 @@ export const BuildsDetails = () => {
               <h1 className='text-4xl font-bold text-center text-blue-400 flex-1'>{buildData.title}</h1>
             )}
             <button
-              onClick={() => setIsEditing(!isEditing)}
+              onClick={() => handleSaveEditBuild()}
               className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
                 isEditing ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'
               }`}
@@ -152,7 +198,7 @@ export const BuildsDetails = () => {
               </div>
 
               <div className='flex flex-1 justify-center'>
-                <SkillsGrid initialBuildGrid={buildData?.equipment} />
+                <SkillsGrid buildGrid={buildData?.equipment} />
               </div>
             </div>
           </div>

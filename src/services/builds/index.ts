@@ -15,16 +15,11 @@ export const useBuilds = () => {
   })
 }
 
-export const useBuildsById = (buildId: string) => {
-  return useQuery({
-    queryKey: [BUILD_BY_ID_QUERY_KEY, buildId],
-    queryFn: async (): Promise<BuildsApiTypes.BuildData> => {
-        const { data } = await ApiNoAuth.get<BuildsApiTypes.BuildData>(`/builds/${buildId}`)
-        return data
-      },
-      enabled: !!buildId
-  })
+export const fetchBuildById = async (buildId: string) => {
+  const { data } = await ApiNoAuth.get<BuildsApiTypes.BuildData>(`/builds/${buildId}`)
+  return data
 }
+
 
 export const useUpdateBuild = () => {
   return useMutation({

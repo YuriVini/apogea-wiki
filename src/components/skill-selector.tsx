@@ -1,25 +1,40 @@
 import { SkillIcon } from './skill-icon'
 import { useEquipments } from '../services/equipments'
 
+import { useBuilder } from '../context/builder'
 interface SkillSelectorProps {
   isOpen: boolean
   onClose: () => void
-  onSelect: (equipment: EquipmentsApiTypes.Equipment) => void
-  slotType: EquipmentsApiTypes.SlotType
+  slotType: EquipmentsApiTypes.CategoryType
+  type: EquipmentsApiTypes.SlotType
   category: EquipmentsApiTypes.CategoryType[]
 }
 
-export const SkillSelector = ({ isOpen, onClose, onSelect, slotType, category }: SkillSelectorProps) => {
+export const SkillSelector = ({ isOpen, onClose, type, slotType, category }: SkillSelectorProps) => {
   const { data: equipments = [], isLoading } = useEquipments()
+  const { build, setBuild } = useBuilder()
 
   if (!isOpen) return null
 
   const compatibleEquipment = equipments?.filter((item) => {
-    return item.type === slotType && category?.includes(item.category as EquipmentsApiTypes.CategoryType)
+    return item.type === type && category?.includes(item.category as EquipmentsApiTypes.CategoryType)
   })
 
-  console.log('equipments', equipments)
   const categoryLabel = category.length === 1 ? category[0].charAt(0).toUpperCase() + category[0].slice(1) : 'Equipment'
+
+  const handleSelectEquipment = (equipment: EquipmentsApiTypes.Equipment) => {
+    console.log('equipment', equipment)
+    console.log('build', build)
+    console.log('slotType', slotType)
+    setBuild({
+      ...build,
+      equipment: {
+        ...build?.equipment,
+        [slotType]: equipment,
+      },
+    })
+    onClose()
+  }
 
   if (isLoading) return <div>Loading...</div>
 
@@ -38,20 +53,17 @@ export const SkillSelector = ({ isOpen, onClose, onSelect, slotType, category }:
           <div className='grid grid-cols-2 gap-4'>
             {compatibleEquipment?.map((equipment) => (
               <button
-                key={equipment.name}
-                onClick={() => {
-                  onSelect(equipment)
-                  onClose()
-                }}
+                key={equipment?.name}
+                onClick={() => handleSelectEquipment(equipment)}
                 className='flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-800 transition-colors'
               >
                 <SkillIcon equipment={equipment} />
-                <span className='text-gray-200'>{equipment.name}</span>
+                <span className='text-gray-200'>{equipment?.name}</span>
               </button>
             ))}
           </div>
         ) : (
-          <p className='text-gray-400 text-center py-4'>No compatible items found for this slot type and category.</p>
+          <p className='text-gray-400 text-center py-4'>Nenhum item compatível encontrado.</p>
         )}
       </div>
     </div>

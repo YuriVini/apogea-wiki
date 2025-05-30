@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import { SkillSelector } from './skill-selector'
+import { useBuilder } from '../context/builder'
 
 interface SkillSlotProps {
   type: EquipmentsApiTypes.SlotType
   size?: 'normal' | 'small'
   equipment?: EquipmentsApiTypes.Equipment
   category?: EquipmentsApiTypes.CategoryType
-  onChange: (equipment: EquipmentsApiTypes.Equipment) => void
+  slot?: EquipmentsApiTypes.CategoryType
 }
 
-export const SkillSlot = ({ type = 'weapon', category = 'chest', size = 'normal', equipment, onChange }: SkillSlotProps) => {
+export const SkillSlot = ({ type = 'weapon', category = 'chest', size = 'normal', equipment, slot }: SkillSlotProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedEquipment, setSelectedEquipment] = useState<EquipmentsApiTypes.Equipment | null>(equipment || null)
+  const { isEditing } = useBuilder()
 
   const sizeClasses = size === 'small' ? 'w-8 h-8' : 'w-16 h-16'
 
@@ -23,17 +24,18 @@ export const SkillSlot = ({ type = 'weapon', category = 'chest', size = 'normal'
 
   const categoryToSort = category === 'weapon-staff-bow-dagger-shield-glove' ? (category?.split('-') as EquipmentsApiTypes.CategoryType[]) : [category]
 
-  const imageUrl = selectedEquipment?.imageUrl
+  const imageUrl = equipment?.imageUrl
 
-  const handleEquipmentSelect = (newEquipment: EquipmentsApiTypes.Equipment) => {
-    setSelectedEquipment(newEquipment)
-    onChange(newEquipment)
+  const handlePressSlot = () => {
+    if (isEditing) {
+      setIsModalOpen(true)
+    }
   }
 
   return (
     <>
       <button
-        onClick={() => setIsModalOpen(true)}
+        onClick={handlePressSlot}
         className={`
           ${sizeClasses} 
           rounded-lg 
@@ -50,12 +52,12 @@ export const SkillSlot = ({ type = 'weapon', category = 'chest', size = 'normal'
         `}
       >
         <div>
-          <img src={imageUrl} alt={selectedEquipment?.name} className='h-10 w-10' />
+          <img src={imageUrl} alt={equipment?.name} className='h-10 w-10' />
         </div>
         <div className='absolute -top-8 scale-0 group-hover:scale-100 transition-transform bg-gray-900 text-xs text-gray-300 px-2 py-1 rounded whitespace-nowrap'>{slotLabel}</div>
       </button>
 
-      <SkillSelector isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSelect={handleEquipmentSelect} slotType={type} category={categoryToSort} />
+      <SkillSelector isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} slotType={slot || category} type={type} category={categoryToSort} />
     </>
   )
 }
