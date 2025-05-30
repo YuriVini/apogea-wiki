@@ -240,7 +240,9 @@ export const Home = () => {
               <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto'>
                 <div className='space-y-6'>
                   {builds.map((build, index) => (
-                    <HighlightBuilds {...build} key={index} />
+                    <Link to={`/builds/${build.id}`} key={index}>
+                      <HighlightBuilds {...build} key={index} />
+                    </Link>
                   ))}
                 </div>
                 <div className='text-center mt-6'>
