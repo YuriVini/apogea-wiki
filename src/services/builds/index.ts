@@ -29,3 +29,12 @@ export const useUpdateBuild = () => {
       }
   })
 }
+
+export const useCreateBuild = () => {
+  return useMutation({
+    mutationFn: async (build: BuildsApiTypes.BuildSchemaRequest): Promise<BuildsApiTypes.BuildData> => {
+        const { data } = await Api.post<BuildsApiTypes.BuildData>(`/builds`, build)
+        return data
+      }
+  })
+}
