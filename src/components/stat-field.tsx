@@ -18,7 +18,7 @@ export const StatField = ({
   <div className='flex justify-between items-center py-1 border-b border-gray-700'>
     <span className='text-white font-semibold'>{label}:</span>
     <div className='flex items-center gap-2'>
-      <span className='text-white'>{value}</span>
+      <span className='text-white'>{value ?? 0}</span>
       {isEditing && (
         <>
           <button onClick={onIncrement} className='bg-green-600 hover:bg-green-700 text-white rounded px-2 py-1 text-sm flex items-center'>

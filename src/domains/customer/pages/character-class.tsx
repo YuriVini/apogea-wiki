@@ -344,11 +344,20 @@ export const CharacterClass = () => {
             <div className='mt-8 text-center'>
               <p className='text-gray-400 mb-4'>Não encontrou a build perfeita?</p>
               {isLoggedIn ? (
-                <button onClick={() => navigate('/create-build')} className='bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg font-bold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-green-500/20'>
+                <button
+                  onClick={() => navigate('/builds/create')}
+                  className='bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg font-bold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-green-500/20'
+                >
                   🔧 Criar Sua Própria Build
                 </button>
               ) : (
-                <p className='text-gray-400'>Faça <a href="/login" className="text-blue-400 hover:text-blue-300">login</a> para criar sua própria build</p>
+                <p className='text-gray-400'>
+                  Faça{' '}
+                  <a href='/login' className='text-blue-400 hover:text-blue-300'>
+                    login
+                  </a>{' '}
+                  para criar sua própria build
+                </p>
               )}
             </div>
           </div>

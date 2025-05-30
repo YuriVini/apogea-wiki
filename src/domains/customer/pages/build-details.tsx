@@ -8,18 +8,7 @@ import { StatField } from '../../../components/stat-field'
 import { useParams } from 'react-router'
 import { fetchBuildById, useUpdateBuild } from '../../../services/builds'
 import { useBuilder } from '../../../context/builder'
-
-const statLabels: Record<string, string> = {
-  class: '👑 Class',
-  level: '🔝 Level',
-  health: '❤️ Health',
-  mana: '💙 Mana',
-  magic: '🔮 Magic',
-  weaponSkill: '🗡️ Weapon Skill',
-  hpRegen: '💊 HP Regen',
-  mpRegen: '💙 MP Regen',
-  capacity: '💼 Capacity',
-}
+import { statLabels } from '../../../constants/caracter-class-database'
 
 export const BuildsDetails = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -31,16 +20,6 @@ export const BuildsDetails = () => {
     setBuild((prev) => ({
       ...prev,
       [field]: value,
-    }))
-  }
-
-  const handleStatsChange = (field: keyof BuildsApiTypes.BuildData['characterStats'], value: string | number) => {
-    setBuild((prev) => ({
-      ...prev,
-      characterStats: {
-        ...prev.characterStats,
-        [field]: value,
-      },
     }))
   }
 
@@ -77,6 +56,7 @@ export const BuildsDetails = () => {
           id: buildData?.id,
           title: buildData?.title,
           overview: buildData?.overview,
+          characterClass: buildData?.characterClass,
           characterStats: buildData?.characterStats,
           equipment: {
             accessory: buildData?.equipment?.accessory?.id,
@@ -139,7 +119,7 @@ export const BuildsDetails = () => {
                 className='text-4xl font-bold text-center text-blue-400 bg-gray-800 border border-gray-600 rounded px-4 py-2 flex-1 mr-4'
               />
             ) : (
-              <h1 className='text-4xl font-bold text-center text-blue-400 flex-1'>{buildData.title}</h1>
+              <h1 className='text-4xl font-bold text-center text-blue-400 flex-1'>{buildData?.title}</h1>
             )}
             <button
               onClick={() => handleSaveEditBuild()}
@@ -186,8 +166,8 @@ export const BuildsDetails = () => {
                   <span className='text-white font-semibold'>Your Class:</span>
                   {isEditing ? (
                     <select
-                      value={buildData?.characterStats?.class}
-                      onChange={(e) => handleStatsChange('class', e.target.value)}
+                      value={buildData?.characterClass}
+                      onChange={(e) => handleInputChange('characterClass', e.target.value)}
                       className='bg-gray-700 border border-gray-600 rounded px-2 py-1 w-32 text-white'
                     >
                       {['Squire', 'Knight', 'Mage', 'Rogue'].map((className) => (
@@ -197,7 +177,7 @@ export const BuildsDetails = () => {
                       ))}
                     </select>
                   ) : (
-                    <span className='text-white'>{buildData?.characterStats?.class}</span>
+                    <span className='text-white'>{buildData?.characterClass}</span>
                   )}
                 </div>
               </div>

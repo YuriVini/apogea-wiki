@@ -13,6 +13,17 @@ export interface BuildEquipmentData {
   necklace: EquipmentsApiTypes.Equipment
 }
 
+export interface CharacterStats {
+  mana: number
+  level: number
+  magic: number
+  health: number
+  hpRegen: number
+  mpRegen: number
+  capacity: number
+  weaponSkill: number
+}
+
 export interface BuildData {
   id: string
   title: string
@@ -20,18 +31,8 @@ export interface BuildData {
   equipment: BuildEquipmentData
   strategy: string[]
   rating: number
-  characterStats: {
-    level: number
-    health: number
-    mana: number
-    magic: number
-    weaponSkill: number
-    hpRegen: number
-    mpRegen: number
-    capacity: number
-    pvpStatus: string
-    class: string
-  }
+  characterClass: string
+  characterStats: CharacterStats
 }
 
 export interface BuildSchemaRequest {
@@ -39,18 +40,8 @@ export interface BuildSchemaRequest {
   title: string
   overview: string
   strategy: string[]
-  characterStats: {
-    mana: number
-    level: number
-    magic: number
-    class: string
-    health: number
-    hpRegen: number
-    mpRegen: number
-    capacity: number
-    pvpStatus: string
-    weaponSkill: number
-  }
+  characterClass: string
+  characterStats: CharacterStats
   equipment: {
     legs: string
     ring: string

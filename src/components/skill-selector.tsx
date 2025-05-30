@@ -17,6 +17,9 @@ export const SkillSelector = ({ isOpen, onClose, type, slotType, category }: Ski
   if (!isOpen) return null
 
   const compatibleEquipment = equipments?.filter((item) => {
+    if (type === 'all') {
+      return ['weapon', 'accessory', 'backpack'].includes(item.type as EquipmentsApiTypes.CategoryType)
+    }
     return item.type === type && category?.includes(item.category as EquipmentsApiTypes.CategoryType)
   })
 
