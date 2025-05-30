@@ -4,129 +4,33 @@ import { useState } from 'react'
 import { SkillsGrid } from '../../../components/skill-grid'
 import { Trash2 } from 'lucide-react'
 import { StatField } from '../../../components/stat-field'
-import { Equipment } from '../../../constants/equipment'
-import Helme3 from '/helmet/Helmet3.webp'
-import RingIcon from '/ring/Crystal_Ring.webp'
-import LegsIcon from '/legs/Leather_Cuisse.webp'
-import BootsIcon from '/boots/Boots1.webp'
-import ChestIcon from '/armor/Brass_armor.webp'
-import BackpackIcon from '/backpack/Backpack_blue.webp'
-import AccessoryIcon from '/necklace/Silver_amulet.webp'
-import LeftHandIcon from '/swords/Broadsword.webp'
-import RightHandIcon from '/swords/Broadsword.webp'
 
-interface BuildData {
-  title: string
-  overview: string
-  equipment: Record<string, Equipment>
-  strategy: string[]
-  characterStats: {
-    level: number
-    health: number
-    mana: number
-    magic: number
-    weaponSkill: number
-    hpRegen: number
-    mpRegen: number
-    capacity: number
-    pvpStatus: string
-    class: string
-  }
-}
+import { useParams } from 'react-router'
+import { useBuildsById } from '../../../services/builds'
 
-const initialBuildGrid: Record<string, Equipment> = {
-  accessory: {
-    name: 'Accessory',
-    imageUrl: AccessoryIcon,
-    type: 'accessory',
-    category: 'ring',
-  } as Equipment,
-  leftHand: {
-    name: 'Left Hand',
-    imageUrl: LeftHandIcon,
-    type: 'weapon',
-    category: 'sword',
-  } as Equipment,
-  rightHand: {
-    name: 'Right Hand',
-    imageUrl: RightHandIcon,
-    type: 'weapon',
-    category: 'sword',
-  } as Equipment,
-  chest: {
-    name: 'Chest',
-    imageUrl: ChestIcon,
-    type: 'armor',
-    category: 'chest',
-  } as Equipment,
-  legs: {
-    name: 'Legs',
-    imageUrl: LegsIcon,
-    type: 'armor',
-    category: 'leg',
-  } as Equipment,
-  boots: {
-    name: 'Boots',
-    imageUrl: BootsIcon,
-    type: 'armor',
-    category: 'boot',
-  } as Equipment,
-  helmet: {
-    name: 'Helmet',
-    imageUrl: Helme3,
-    type: 'armor',
-    category: 'helmet',
-  } as Equipment,
-  ring: {
-    name: 'Ring',
-    imageUrl: RingIcon,
-    type: 'accessory',
-    category: 'ring',
-  } as Equipment,
-  backpack: {
-    name: 'Backpack',
-    imageUrl: BackpackIcon,
-    type: 'accessory',
-    category: 'backpack',
-  } as Equipment,
-}
-
-const initialBuildData: BuildData = {
-  title: 'Penetrating Shot Rogue',
-  overview:
-    'A build Penetrating Shot Rogue é focada em maximizar o dano à distância com arco, utilizando a habilidade Penetrating Shot para atingir múltiplos inimigos em linha. Esta build é ideal para jogadores que preferem eliminar inimigos rapidamente à distância.',
-  equipment: initialBuildGrid,
-  strategy: [
-    'Mantenha distância dos inimigos, use terreno elevado quando possível e posicione-se para alinhar múltiplos inimigos.',
-    'Use Penetrating Shot para atingir grupos de inimigos, Aimed Shot para alvos únicos importantes e Stealth para reposicionamento.',
-    'Mantenha sempre um estoque grande de flechas, use Multishot em grupos densos e combine Critical Strike com Power Shot para máximo dano.',
-  ],
-  characterStats: {
-    level: 0,
-    health: 150,
-    mana: 0,
-    magic: 15,
-    weaponSkill: 0,
-    hpRegen: 0,
-    mpRegen: 0,
-    capacity: 0,
-    pvpStatus: 'Off',
-    class: 'Squire',
-  },
-}
-
-export const Builds = () => {
+export const BuildsDetails = () => {
   const [isEditing, setIsEditing] = useState(false)
-  const [buildData, setBuildData] = useState<BuildData>(initialBuildData)
+  const { buildId } = useParams<{ buildId: string }>()
+  const [build, setBuildData] = useState<BuildsApiTypes.BuildData>({} as BuildsApiTypes.BuildData)
+  console.log(build)
+  const { data: buildData, isLoading } = useBuildsById(buildId!)
 
-  const handleInputChange = (field: keyof BuildData, value: string) => {
+  if (!buildData) {
+    return <div>Build not found</div>
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  const handleInputChange = (field: keyof BuildsApiTypes.BuildData, value: string) => {
     setBuildData((prev) => ({
       ...prev,
       [field]: value,
     }))
   }
 
-  const handleStatsChange = (field: keyof BuildData['characterStats'], value: string | number) => {
+  const handleStatsChange = (field: keyof BuildsApiTypes.BuildData['characterStats'], value: string | number) => {
     setBuildData((prev) => ({
       ...prev,
       characterStats: {
@@ -136,7 +40,7 @@ export const Builds = () => {
     }))
   }
 
-  const handleStatUpdate = (field: keyof BuildData['characterStats'], increment: boolean) => {
+  const handleStatUpdate = (field: keyof BuildsApiTypes.BuildData['characterStats'], increment: boolean) => {
     setBuildData((prev) => ({
       ...prev,
       characterStats: {
@@ -146,7 +50,7 @@ export const Builds = () => {
     }))
   }
 
-  const handleArrayUpdate = (field: keyof Pick<BuildData, 'equipment' | 'strategy'>, action: 'add' | 'delete' | 'edit', index?: number, value?: string) => {
+  const handleArrayUpdate = (field: keyof Pick<BuildsApiTypes.BuildData, 'equipment' | 'strategy'>, action: 'add' | 'delete' | 'edit', index?: number, value?: string) => {
     setBuildData((prev) => {
       const array = prev[field] as string[]
       switch (action) {
@@ -182,7 +86,7 @@ export const Builds = () => {
             {isEditing ? (
               <input
                 type='text'
-                value={buildData.title}
+                value={buildData?.title}
                 onChange={(e) => handleInputChange('title', e.target.value)}
                 className='text-4xl font-bold text-center text-blue-400 bg-gray-800 border border-gray-600 rounded px-4 py-2 flex-1 mr-4'
               />
@@ -203,12 +107,12 @@ export const Builds = () => {
             <h2 className='text-2xl font-semibold mb-4 text-yellow-400'>Visão Geral</h2>
             {isEditing ? (
               <textarea
-                value={buildData.overview}
+                value={buildData?.overview}
                 onChange={(e) => handleInputChange('overview', e.target.value)}
                 className='w-full text-gray-300 bg-gray-700 border border-gray-600 rounded px-4 py-2 leading-relaxed resize-vertical min-h-[100px]'
               />
             ) : (
-              <p className='text-gray-300 leading-relaxed'>{buildData.overview}</p>
+              <p className='text-gray-300 leading-relaxed'>{buildData?.overview}</p>
             )}
           </div>
 
@@ -220,7 +124,7 @@ export const Builds = () => {
                   <StatField
                     key={field}
                     label={label}
-                    value={buildData.characterStats[field]}
+                    value={buildData?.characterStats[field]}
                     onIncrement={() => handleStatUpdate(field, true)}
                     onDecrement={() => handleStatUpdate(field, false)}
                     isEditing={isEditing}
@@ -231,7 +135,7 @@ export const Builds = () => {
                   <span className='text-white font-semibold'>Your Class:</span>
                   {isEditing ? (
                     <select
-                      value={buildData.characterStats.class}
+                      value={buildData?.characterStats?.class}
                       onChange={(e) => handleStatsChange('class', e.target.value)}
                       className='bg-gray-700 border border-gray-600 rounded px-2 py-1 w-32 text-white'
                     >
@@ -242,13 +146,13 @@ export const Builds = () => {
                       ))}
                     </select>
                   ) : (
-                    <span className='text-white'>{buildData.characterStats.class}</span>
+                    <span className='text-white'>{buildData?.characterStats?.class}</span>
                   )}
                 </div>
               </div>
 
               <div className='flex flex-1 justify-center'>
-                <SkillsGrid initialBuildGrid={buildData.equipment} />
+                <SkillsGrid initialBuildGrid={buildData?.equipment} />
               </div>
             </div>
           </div>
@@ -263,7 +167,7 @@ export const Builds = () => {
               )}
             </div>
             <ul className='space-y-2 text-gray-300'>
-              {buildData.strategy.map((strategyItem, index) => (
+              {buildData?.strategy.map((strategyItem, index) => (
                 <li key={index} className='flex items-center justify-between'>
                   <div className='flex items-center flex-1'>
                     <span className='text-cyan-400 mr-2'>💡</span>

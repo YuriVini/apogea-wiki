@@ -10,6 +10,7 @@ export interface BuildEquipmentData {
   backpack: EquipmentsApiTypes.Equipment
   rightHand: EquipmentsApiTypes.Equipment
   accessory: EquipmentsApiTypes.Equipment
+  necklace: EquipmentsApiTypes.Equipment
 }
 
 export interface BuildData {

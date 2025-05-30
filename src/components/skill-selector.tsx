@@ -1,13 +1,12 @@
 import { SkillIcon } from './skill-icon'
-import { Equipment, SlotType, CategoryType } from '../constants/equipment'
 import { useEquipments } from '../services/equipments'
 
 interface SkillSelectorProps {
   isOpen: boolean
   onClose: () => void
-  onSelect: (equipment: Equipment) => void
-  slotType: SlotType
-  category: CategoryType[]
+  onSelect: (equipment: EquipmentsApiTypes.Equipment) => void
+  slotType: EquipmentsApiTypes.SlotType
+  category: EquipmentsApiTypes.CategoryType[]
 }
 
 export const SkillSelector = ({ isOpen, onClose, onSelect, slotType, category }: SkillSelectorProps) => {
@@ -16,9 +15,10 @@ export const SkillSelector = ({ isOpen, onClose, onSelect, slotType, category }:
   if (!isOpen) return null
 
   const compatibleEquipment = equipments?.filter((item) => {
-    return item.type === slotType && category?.includes(item.category as CategoryType)
+    return item.type === slotType && category?.includes(item.category as EquipmentsApiTypes.CategoryType)
   })
 
+  console.log('equipments', equipments)
   const categoryLabel = category.length === 1 ? category[0].charAt(0).toUpperCase() + category[0].slice(1) : 'Equipment'
 
   if (isLoading) return <div>Loading...</div>

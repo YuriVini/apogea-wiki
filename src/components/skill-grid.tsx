@@ -1,17 +1,14 @@
 import { useState } from 'react'
 import { SkillSlot } from './skill-slot'
-import { useEquipments } from '../services/equipments'
-import { Equipment } from '../constants/equipment'
 
-export const SkillsGrid = ({ initialBuildGrid }: { initialBuildGrid: Record<string, Equipment> }) => {
-  const { data: equipments } = useEquipments()
+interface SkillsGridProps {
+  initialBuildGrid: BuildsApiTypes.BuildEquipmentData
+}
+
+export const SkillsGrid = ({ initialBuildGrid }: SkillsGridProps) => {
   const [buildGrid, setBuildGrid] = useState(initialBuildGrid)
-  const initialEquipment = {
-    sword: equipments?.find((e) => e.name === 'Sword'),
-    cutlass: equipments?.find((e) => e.name === 'Cutlass Sword'),
-  }
 
-  const updateEquipment = (slot: keyof typeof buildGrid, equipment: Equipment) => {
+  const updateEquipment = (slot: keyof typeof buildGrid, equipment: EquipmentsApiTypes.Equipment) => {
     setBuildGrid((prev) => ({
       ...prev,
       [slot]: equipment,
@@ -26,26 +23,26 @@ export const SkillsGrid = ({ initialBuildGrid }: { initialBuildGrid: Record<stri
             <SkillSlot type='armor' category='ring' equipment={buildGrid.ring} onChange={(equipment) => updateEquipment('ring', equipment)} />
             <SkillSlot
               type='weapon'
+              equipment={buildGrid.leftHand}
               category='weapon-staff-bow-dagger-shield-glove'
-              equipment={initialEquipment.sword}
               onChange={(equipment) => updateEquipment('leftHand', equipment)}
             />
-            <SkillSlot type='armor' category='chest' equipment={buildGrid.chest} onChange={(equipment) => updateEquipment('chest', equipment)} />
+            <SkillSlot type='armor' category='necklace' equipment={buildGrid.necklace} onChange={(equipment) => updateEquipment('chest', equipment)} />
           </div>
 
           <div className='space-y-4 self-center'>
             <SkillSlot type='armor' category='helmet' equipment={buildGrid.helmet} onChange={(equipment) => updateEquipment('helmet', equipment)} />
             <SkillSlot type='armor' category='chest' equipment={buildGrid.chest} onChange={(equipment) => updateEquipment('chest', equipment)} />
-            <SkillSlot type='armor' category='leg' equipment={buildGrid.legs} onChange={(equipment) => updateEquipment('legs', equipment)} />
-            <SkillSlot type='armor' category='boot' equipment={buildGrid.boots} onChange={(equipment) => updateEquipment('boots', equipment)} />
+            <SkillSlot type='armor' category='legs' equipment={buildGrid.legs} onChange={(equipment) => updateEquipment('legs', equipment)} />
+            <SkillSlot type='armor' category='boots' equipment={buildGrid.boots} onChange={(equipment) => updateEquipment('boots', equipment)} />
           </div>
 
           <div className='space-y-4 self-center'>
             <SkillSlot type='accessory' category='backpack' equipment={buildGrid.backpack} onChange={(equipment) => updateEquipment('backpack', equipment)} />
             <SkillSlot
               type='weapon'
+              equipment={buildGrid.rightHand}
               category='weapon-staff-bow-dagger-shield-glove'
-              equipment={initialEquipment.cutlass}
               onChange={(equipment) => updateEquipment('rightHand', equipment)}
             />
             <SkillSlot type='armor' category='ring' equipment={buildGrid.accessory} onChange={(equipment) => updateEquipment('accessory', equipment)} />

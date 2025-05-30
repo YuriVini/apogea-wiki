@@ -17,7 +17,7 @@ export type CategoryType =
   | 'shield'
   | 'glove'
   | 'boots'
-  | 'leg'
+  | 'legs'
   | 'chest'
   | 'helmet'
   | 'backpack'

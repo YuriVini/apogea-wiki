@@ -1,18 +1,17 @@
 import { useState } from 'react'
 import { SkillSelector } from './skill-selector'
-import { SlotType, Equipment, CategoryType } from '../constants/equipment'
 
 interface SkillSlotProps {
-  type: SlotType
+  type: EquipmentsApiTypes.SlotType
   size?: 'normal' | 'small'
-  equipment?: Equipment
-  category?: CategoryType
-  onChange: (equipment: Equipment) => void
+  equipment?: EquipmentsApiTypes.Equipment
+  category?: EquipmentsApiTypes.CategoryType
+  onChange: (equipment: EquipmentsApiTypes.Equipment) => void
 }
 
 export const SkillSlot = ({ type = 'weapon', category = 'chest', size = 'normal', equipment, onChange }: SkillSlotProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedEquipment, setSelectedEquipment] = useState<Equipment | null>(equipment || null)
+  const [selectedEquipment, setSelectedEquipment] = useState<EquipmentsApiTypes.Equipment | null>(equipment || null)
 
   const sizeClasses = size === 'small' ? 'w-8 h-8' : 'w-16 h-16'
 
@@ -22,11 +21,11 @@ export const SkillSlot = ({ type = 'weapon', category = 'chest', size = 'normal'
       : `${category.charAt(0).toUpperCase() + category.slice(1)} Slot`
     : 'Equipment Slot'
 
-  const categoryToSort = category === 'weapon-staff-bow-dagger-shield-glove' ? (category?.split('-') as CategoryType[]) : [category]
+  const categoryToSort = category === 'weapon-staff-bow-dagger-shield-glove' ? (category?.split('-') as EquipmentsApiTypes.CategoryType[]) : [category]
 
   const imageUrl = selectedEquipment?.imageUrl
 
-  const handleEquipmentSelect = (newEquipment: Equipment) => {
+  const handleEquipmentSelect = (newEquipment: EquipmentsApiTypes.Equipment) => {
     setSelectedEquipment(newEquipment)
     onChange(newEquipment)
   }

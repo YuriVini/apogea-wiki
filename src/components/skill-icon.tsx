@@ -1,8 +1,6 @@
-import { Equipment } from '../constants/equipment'
-
 interface SkillIconProps {
   className?: string
-  equipment?: Equipment
+  equipment?: EquipmentsApiTypes.Equipment
 }
 
 export const SkillIcon = ({ className = '', equipment }: SkillIconProps) => {
