@@ -11,13 +11,8 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
   const isNpcType = items.length > 0 && items[0]?.type === 'npc'
   const isItensQuestType = items.length > 0 && items[0]?.type === 'itens_quest'
 
-  // Adiciona borda à esquerda do header e da célula do botão editar
   function renderEditHeader() {
-    return (
-      <th className='text-center px-2 py-4 font-semibold w-16 border-l border-gray-600'>
-        Editar
-      </th>
-    )
+    return <th className='text-center px-2 py-4 font-semibold w-16 border-l border-gray-600'>Editar</th>
   }
 
   function renderEditButton(item: OtherDatabaseType) {
@@ -25,11 +20,16 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
       <td className='px-2 py-4 text-center w-16 border-l border-gray-600'>
         <Link
           to={`/admin/edit/${item.name}`}
-          className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 rounded-full transition-colors text-base shadow-md"
-          title="Editar"
+          className='inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 rounded-full transition-colors text-base shadow-md'
+          title='Editar'
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a4 4 0 01-1.414.828l-4.243 1.414 1.414-4.243a4 4 0 01.828-1.414z" />
+          <svg xmlns='http://www.w3.org/2000/svg' className='w-5 h-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a4 4 0 01-1.414.828l-4.243 1.414 1.414-4.243a4 4 0 01.828-1.414z'
+            />
           </svg>
         </Link>
       </td>

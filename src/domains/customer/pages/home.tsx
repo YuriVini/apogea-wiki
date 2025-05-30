@@ -101,7 +101,7 @@ const weapons: Weapon[] = [
   {
     title: 'Pernas',
     imageUrl: PantsIcon,
-    category: 'leg',
+    category: 'legs',
   },
   {
     title: 'Botas',

@@ -17,7 +17,6 @@ import { Other } from './domains/customer/pages/other'
 import { usePrefetchQuery } from '@tanstack/react-query'
 import { EQUIPMENTS_QUERY_KEY } from './services/equipments'
 import { queryClient } from './app'
-//import { Equipments } from './domains/admin/pages/equipments'
 import { Edit } from './domains/admin/pages/edit-equipment'
 import { BuildCreate } from './domains/customer/pages/build-create'
 export const AppRoutes = () => {
@@ -44,7 +43,6 @@ export const AppRoutes = () => {
 
       {/* Admin Routes */}
       <Route path='/admin/edit/:name' element={<Edit />} />
-      {/*<Route path='/admin/equipments' element={<Equipments />} />*/}
     </Routes>
   )
 }

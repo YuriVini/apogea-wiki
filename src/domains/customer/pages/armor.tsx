@@ -1,5 +1,3 @@
 export const Armor = () => {
-    return (
-        <div>Armor</div>
-    )
-}  
+  return <div>Armor</div>
+}
