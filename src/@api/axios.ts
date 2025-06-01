@@ -12,9 +12,10 @@ export interface HttpResponse<Data = any, MetaData = any> {
 }
 
 export const getEnvironment = () => {
+  
   return {
     envName: "DEVELOPMENT",
-    API_URL: "http://localhost:3333",
+    API_URL: "https://apogea-wiki-back.onrender.com" //"http://localhost:3333",
   };
 };
 
