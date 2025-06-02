@@ -7,6 +7,7 @@ import { isEqual } from 'lodash'
 
 interface AuthContextProps {
   isLoggedIn: boolean
+  isAdmin: boolean
   user: User
   logIn: (data: { email: string; password: string }) => Promise<void>
   logOut: () => Promise<void> | void
@@ -17,7 +18,13 @@ interface AuthContextProps {
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps)
 
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}
+
 interface User {
+  role: UserRole
   name: string
   email: string
   avatar_url: string
@@ -26,6 +33,7 @@ interface User {
 
 export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
   const [user, setUser] = useState<User>({
+    role: UserRole.USER,
     name: '',
     email: '',
     avatar_url: '',
@@ -52,6 +60,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
   const logOut = () => {
     localStorage.removeItem(USER_TOKEN)
     setUser({
+      role: UserRole.USER,
       name: '',
       email: '',
       avatar_url: '',
@@ -67,6 +76,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
         avatar_url: avatar_url,
       })
       setUser({
+        role: response.data.role,
         name: response.data.name,
         email: response.data.email,
         avatar_url: response.data.avatar_url,
@@ -109,6 +119,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
             email: response.data.email,
             avatar_url: response.data.avatar_url,
             isLoggedIn: true,
+            role: response.data.role,
           })
         }
       } catch (error) {
@@ -117,11 +128,13 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     }
   }
 
+  const isAdmin = useMemo(() => user.role === UserRole.ADMIN, [user])
+
   useEffect(() => {
     loadUser()
   }, [])
 
-  return <AuthContext.Provider value={{ isLoggedIn, user, logIn, logOut, updateProfile, changePassword, recoverPassword }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ isLoggedIn, user, isAdmin, logIn, logOut, updateProfile, changePassword, recoverPassword }}>{children}</AuthContext.Provider>
 }
 
 export const useAuth = () => useContext(AuthContext)
