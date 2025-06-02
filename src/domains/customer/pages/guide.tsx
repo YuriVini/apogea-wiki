@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Api, ApiNoAuth } from '../../../@api/axios'
 import { Header } from '../../../components/header'
 import { Trash2 } from 'lucide-react'
+import { toast } from 'react-toastify'
 
 export const Guide = () => {
   const { guideId } = useParams()
@@ -17,8 +18,8 @@ export const Guide = () => {
     try {
       const response = await ApiNoAuth.get(`/guides/${guideId}`)
       setGuide(response.data)
-    } catch (error) {
-      alert('Erro ao buscar guia: \n' + JSON.stringify(error))
+    } catch {
+      toast.error('Erro ao buscar guia.')
     }
   }
 
@@ -30,8 +31,8 @@ export const Guide = () => {
     try {
       const response = await ApiNoAuth.put(`/guides/${guideId}`, guide)
       console.log(response)
-    } catch (error) {
-      alert('Erro ao salvar guia: \n' + JSON.stringify(error))
+    } catch {
+      toast.error('Erro ao salvar guia.')
     } finally {
       setIsEditing(false)
       setEditingStep(null)
@@ -44,10 +45,10 @@ export const Guide = () => {
     if (confirmDelete) {
       try {
         await Api.delete(`/guides/${guideId}`)
-        alert('Guia excluído com sucesso!')
+        toast.success('Guia excluído com sucesso!')
         navigate('/guides')
-      } catch (error) {
-        alert('Erro ao excluir guia: \n' + JSON.stringify(error))
+      } catch {
+        toast.error('Erro ao excluir guia.')
       }
     }
   }

@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate, useSearchParams } from 'react-router'
 import { ApiNoAuth } from '../../../@api/axios'
+import { toast } from 'react-toastify'
 
 const validationSchema = z
   .object({
@@ -37,11 +38,10 @@ export const ResetPassword = () => {
         password: data.password,
         password_confirmation: data.confirmPassword,
       })
-      alert('Senha redefinida com sucesso!')
+      toast.success('Senha redefinida com sucesso!')
       navigate('/login')
-    } catch (error) {
-      console.error('Erro ao redefinir senha:', error)
-      alert('Erro ao redefinir senha. Verifique se o link é válido.')
+    } catch {
+      toast.error('Erro ao redefinir senha. Verifique se o link é válido.')
     }
   }
 

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '../../../context/auth'
+import { toast } from 'react-toastify'
 
 const validationSchema = z.object({
   email: z.string().email('Email inválido'),
@@ -19,10 +20,9 @@ export const ForgotPassword = () => {
   const handleForgotPassword = async (data: z.infer<typeof validationSchema>) => {
     try {
       await recoverPassword(data)
-      alert('Instruções enviadas para seu email!')
-    } catch (error) {
-      console.error('Erro ao recuperar senha:', error)
-      alert('Erro ao enviar instruções. Verifique se o email está correto.')
+      toast.success('Instruções enviadas para seu email!')
+    } catch {
+      toast.error('Erro ao enviar instruções. Verifique se o email está correto.')
     }
   }
 

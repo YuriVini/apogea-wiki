@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ApiNoAuth } from '../../../@api/axios'
 import { Link, useNavigate } from 'react-router'
 import { Header } from '../../../components/header'
+import { toast } from 'react-toastify'
 
 const validationSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
@@ -28,9 +29,8 @@ export const Register = () => {
     try {
       await ApiNoAuth.post('/register', data)
       navigate('/login')
-    } catch (error) {
-      console.error('Erro no registro:', error)
-      alert('Erro de conexão com o servidor')
+    } catch {
+      toast.error('Ocorreu um erro ao criar a conta. Tente novamente.')
     }
   }
 

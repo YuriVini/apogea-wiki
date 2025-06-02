@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { toast } from 'react-toastify'
 
 const profileSchema = z.object({
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
@@ -63,10 +64,9 @@ export const Profile = () => {
         avatar_url: data.avatar_url || '',
       })
       setIsEditing(false)
-      alert('Perfil atualizado com sucesso!')
-    } catch (error) {
-      console.error('Erro ao atualizar perfil:', error)
-      alert('Erro ao atualizar perfil')
+      toast.success('Perfil atualizado com sucesso!')
+    } catch {
+      toast.error('Erro ao atualizar perfil')
     }
   }
 
@@ -81,10 +81,9 @@ export const Profile = () => {
       setShowCurrentPassword(false)
       setShowNewPassword(false)
       setShowConfirmPassword(false)
-      alert('Senha alterada com sucesso!')
-    } catch (error) {
-      console.error('Erro ao alterar senha:', error)
-      alert('Erro ao alterar senha. Verifique se a senha atual está correta.')
+      toast.success('Senha alterada com sucesso!')
+    } catch {
+      toast.error('Erro ao alterar senha. Verifique se a senha atual está correta.')
     }
   }
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Api, ApiNoAuth } from '../../../@api/axios'
 import { Link } from 'react-router'
 import { Trash2 } from 'lucide-react'
+import { toast } from 'react-toastify'
 
 export const AllGuides = () => {
   const [guides, setGuides] = useState<GuidesApiTypes.Guide[]>([])
@@ -13,8 +14,8 @@ export const AllGuides = () => {
     try {
       const response = await ApiNoAuth.get('/guides')
       setGuides(response.data)
-    } catch (error) {
-      alert('Erro ao carregar guias. \n' + JSON.stringify(error))
+    } catch {
+      toast.error('Erro ao carregar guias.')
     } finally {
       setLoading(false)
     }
@@ -25,9 +26,9 @@ export const AllGuides = () => {
       try {
         await Api.delete(`/guides/${guideId}`)
         setGuides(guides.filter((guide) => guide.id !== guideId))
-        alert('Guia excluído com sucesso!')
-      } catch (error) {
-        alert('Erro ao excluir guia. Tente novamente. \n' + JSON.stringify(error))
+        toast.success('Guia excluído com sucesso!')
+      } catch {
+        toast.error('Erro ao excluir guia. Tente novamente.')
       }
     }
   }

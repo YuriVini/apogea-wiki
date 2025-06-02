@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Api } from '../../../@api/axios'
 import { Header } from '../../../components/header'
 import { useNavigate } from 'react-router'
+import { toast } from 'react-toastify'
 
 export const CreateGuide = () => {
   const navigate = useNavigate()
@@ -69,21 +70,21 @@ export const CreateGuide = () => {
 
   const handleCreateGuide = async () => {
     if (!guide.title.trim() || !guide.description.trim()) {
-      alert('Por favor, preencha o título e a descrição do guia.')
+      toast.error('Por favor, preencha o título e a descrição do guia.')
       return
     }
 
     if (guide.steps.some((step) => !step.title.trim() || !step.description.trim())) {
-      alert('Por favor, preencha o título e a descrição de todos os passos.')
+      toast.error('Por favor, preencha o título e a descrição de todos os passos.')
       return
     }
 
     try {
       const response = await Api.post<GuidesApiTypes.GuideCreateResponse>('/guides', guide)
-      alert('Guia criado com sucesso!')
+      toast.success('Guia criado com sucesso!')
       navigate(`/guides/${response.data.guideId}`)
-    } catch (error) {
-      alert('Erro ao criar guia: \n' + JSON.stringify(error))
+    } catch {
+      toast.error('Erro ao criar guia.')
     }
   }
 

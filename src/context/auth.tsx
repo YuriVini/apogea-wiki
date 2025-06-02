@@ -4,6 +4,8 @@ import { USER_TOKEN } from '../@api/storage'
 import { useNavigate } from 'react-router'
 import { Api, ApiNoAuth } from '../@api/axios'
 import { isEqual } from 'lodash'
+import { toast } from 'react-toastify'
+import { useLogin } from '../services/auth'
 
 interface AuthContextProps {
   isLoggedIn: boolean
@@ -23,7 +25,7 @@ export enum UserRole {
   USER = 'USER',
 }
 
-interface User {
+export interface User {
   role: UserRole
   name: string
   email: string
@@ -40,21 +42,24 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     isLoggedIn: false,
   })
   const navigate = useNavigate()
+  const { mutate: mutateLogin } = useLogin()
 
   const isLoggedIn = useMemo(() => !!user?.isLoggedIn, [user])
 
   const logIn = async ({ email, password }: { email: string; password: string }) => {
-    try {
-      const response = await ApiNoAuth.post('/login', {
-        email: email,
-        password: password,
-      })
-      localStorage.setItem(USER_TOKEN, response.data.token)
-      await loadUser()
-      navigate('/')
-    } catch (error) {
-      alert('Erro ao fazer login \n' + JSON.stringify(error))
-    }
+    mutateLogin(
+      { email, password },
+      {
+        onSuccess: async (response) => {
+          localStorage.setItem(USER_TOKEN, response.token)
+          await loadUser()
+          navigate('/')
+        },
+        onError: (error) => {
+          toast.error('Erro ao fazer login \n' + error?.data?.message)
+        },
+      }
+    )
   }
 
   const logOut = () => {
@@ -71,7 +76,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
 
   const updateProfile = async ({ name, avatar_url }: { name: string; avatar_url: string }) => {
     try {
-      const response = await Api.put('/me', {
+      const response = await Api.put<User>('/me', {
         name: name,
         avatar_url: avatar_url,
       })
@@ -83,7 +88,8 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
         isLoggedIn: true,
       })
     } catch (error) {
-      alert('Erro ao atualizar perfil \n' + JSON.stringify(error))
+      const { data } = error as GlobalApiTypes.ErrorResponse
+      toast.error('Erro ao atualizar perfil \n' + data?.message)
     }
   }
 
@@ -94,7 +100,8 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
         new_password: newPassword,
       })
     } catch (error) {
-      alert('Erro ao alterar senha \n' + JSON.stringify(error))
+      const { data } = error as GlobalApiTypes.ErrorResponse
+      toast.error('Erro ao alterar senha \n' + data?.message)
     }
   }
 
@@ -104,7 +111,8 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
         email: email,
       })
     } catch (error) {
-      alert('Erro ao recuperar senha \n' + JSON.stringify(error))
+      const { data } = error as GlobalApiTypes.ErrorResponse
+      toast.error('Erro ao recuperar senha \n' + data?.message)
     }
   }
 
@@ -123,7 +131,8 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
           })
         }
       } catch (error) {
-        alert('Erro ao carregar usuário \n' + JSON.stringify(error))
+        const { data } = error as GlobalApiTypes.ErrorResponse
+        toast.error('Erro ao carregar usuário \n' + data?.message)
       }
     }
   }
