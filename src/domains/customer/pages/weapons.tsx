@@ -3,21 +3,22 @@ import { Footer } from '../../../components/footer'
 import { WeaponBox } from '../../../components/weapon-box'
 import { useParams, Link } from 'react-router'
 import { useEquipments } from '../../../services/equipments'
-
+import { useAuth } from '../../../context/auth'
 export const Weapons = () => {
   const { weaponCategory } = useParams<{ weaponCategory: string }>()
   const { data: equipments, isLoading } = useEquipments()
+  const { isAdmin } = useAuth()
 
   if (isLoading) return <div>Loading...</div>
 
   const filteredWeapons = equipments?.filter((weapon) => weapon.category === weaponCategory) || []
 
   function renderEditHeader() {
-    return <th className='text-center px-2 py-4 font-semibold w-16 border-l border-gray-600'>Editar</th>
+    return isAdmin && <th className='text-center px-2 py-4 font-semibold w-16 border-l border-gray-600'>Editar</th>
   }
 
   function renderEditButton(weapon: EquipmentsApiTypes.Equipment) {
-    return (
+    return isAdmin && (
       <td className='px-2 py-4 text-center w-16 border-l border-gray-600'>
         <Link
           to={`/admin/edit/${weapon.name}`}
