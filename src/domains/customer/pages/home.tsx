@@ -253,16 +253,25 @@ export const Home = () => {
               <h2 className='text-2xl font-bold text-white mb-6 text-center'>Builds em Destaque</h2>
               <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg max-w-6xl mx-auto'>
                 <div className='space-y-6'>
-                  {builds.map((build, index) => (
+                  {builds?.slice(0, 3)?.map((build, index) => (
                     <Link to={`/builds/${build.id}`} key={index}>
                       <HighlightBuilds {...build} key={index} />
                     </Link>
                   ))}
                 </div>
-                <div className='text-center mt-6'>
-                  <Link to='/builds/create' className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'>
-                    Criar minha build
-                  </Link>
+                <div className='flex justify-center items-center gap-1'>
+                  <div className='text-center mt-6'>
+                    <Link to='/builds/create' className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'>
+                      Criar minha build
+                    </Link>
+                </div>
+                {builds?.length > 3 && (
+                  <div className='text-center mt-6'>
+                    <Link to='/builds' className='inline-block px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-sm'>
+                      Ver Todas as Builds
+                    </Link>
+                  </div>
+                )}
                 </div>
               </div>
             </div>
