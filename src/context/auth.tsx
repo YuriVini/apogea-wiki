@@ -11,6 +11,7 @@ interface AuthContextProps {
   isLoggedIn: boolean
   isAdmin: boolean
   user: User
+  loadingUser: boolean
   logIn: (data: { email: string; password: string }) => Promise<void>
   logOut: () => Promise<void> | void
   updateProfile: (data: { name: string; avatar_url: string; onSuccess: () => void }) => Promise<void>
@@ -35,6 +36,7 @@ export interface User {
 }
 
 export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
+  const [loadingUser, setLoadingUser] = useState(false)
   const [user, setUser] = useState<User>({
     role: UserRole.USER,
     name: '',
@@ -124,21 +126,24 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
   const loadUser = async () => {
     const token = localStorage.getItem(USER_TOKEN)
     if (token) {
+      setLoadingUser(true)
       try {
         const response = await Api.get('/me')
         if (!isEqual(response.data, user)) {
           setUser({
+            isLoggedIn: true,
             name: response.data.name,
+            role: response.data.role,
             email: response.data.email,
             avatar_url: response.data.avatar_url,
-            isLoggedIn: true,
-            role: response.data.role,
             created_at: response.data.created_at,
           })
         }
       } catch (error) {
         const { data } = error as GlobalApiTypes.ErrorResponse
         toast.error('Erro ao carregar usuário \n' + data?.message)
+      } finally {
+        setLoadingUser(false)
       }
     }
   }
@@ -149,7 +154,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     loadUser()
   }, [])
 
-  return <AuthContext.Provider value={{ isLoggedIn, user, isAdmin, logIn, logOut, updateProfile, changePassword, recoverPassword }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ isLoggedIn, loadingUser, user, isAdmin, logIn, logOut, updateProfile, changePassword, recoverPassword }}>{children}</AuthContext.Provider>
 }
 
 export const useAuth = () => useContext(AuthContext)

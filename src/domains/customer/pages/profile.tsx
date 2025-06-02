@@ -11,6 +11,8 @@ import { TextInput } from '../../../components/text-input'
 const profileSchema = z.object({
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
   avatar_url: z.string().url('URL do avatar deve ser válida').optional().or(z.literal('')),
+  email: z.string().email('Email deve ser válido').optional().or(z.literal('')),
+  created_at: z.string().optional(),
 })
 
 const passwordSchema = z
@@ -35,18 +37,21 @@ export const Profile = () => {
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
+  console.log('teste3____________', user)
   const {
     control,
     handleSubmit,
     setFocus,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
     reset,
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       name: user?.name || '',
+      email: user?.email || '',
       avatar_url: user?.avatar_url || '',
+      created_at: new Date(user?.created_at || new Date()).toLocaleDateString('pt-BR') || '',
     },
   })
 
@@ -135,59 +140,34 @@ export const Profile = () => {
                   </button>
                 )}
               </div>
-              {isEditing ? (
-                <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
-                  <div>
-                    <label className='block text-gray-300 text-sm font-medium mb-2'>Nome</label>
-                    <TextInput
-                      name='name'
-                      control={control}
-                      className='w-full bg-gray-600/30 rounded-lg p-3 text-white border border-gray-500/30 focus:border-blue-400/50 focus:outline-none'
-                      placeholder='Digite seu nome'
-                    />
-                    {errors.name && <p className='text-red-400 text-sm mt-1'>{errors.name.message}</p>}
-                  </div>
-                  <div>
-                    <label className='block text-gray-300 text-sm font-medium mb-2'>Email</label>
-                    <div className='bg-gray-600/30 rounded-lg p-3 text-gray-400'>{user?.email || 'Email não informado'} (não editável)</div>
-                  </div>
-                  <div>
-                    <label className='block text-gray-300 text-sm font-medium mb-2'>Membro desde</label>
-                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>{user?.created_at}</div>
-                  </div>
-                  <div className='flex space-x-2 pt-4'>
-                    <button
-                      type='submit'
-                      disabled={isSubmitting}
-                      className='bg-green-500/20 text-green-300 px-4 py-2 rounded border border-green-400/30 hover:bg-green-500/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
-                    >
-                      {isSubmitting ? 'Salvando...' : 'Salvar'}
-                    </button>
-                    <button
-                      type='button'
-                      onClick={handleCancelEdit}
-                      className='bg-gray-500/20 text-gray-300 px-4 py-2 rounded border border-gray-400/30 hover:bg-gray-500/30 transition-colors'
-                    >
-                      Cancelar
-                    </button>
-                  </div>
-                </form>
-              ) : (
-                <div className='space-y-4'>
-                  <div>
-                    <label className='block text-gray-300 text-sm font-medium mb-2'>Nome</label>
-                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>{user?.name || 'Nome não informado'}</div>
-                  </div>
-                  <div>
-                    <label className='block text-gray-300 text-sm font-medium mb-2'>Email</label>
-                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>{user?.email || 'Email não informado'}</div>
-                  </div>
-                  <div>
-                    <label className='block text-gray-300 text-sm font-medium mb-2'>Membro desde</label>
-                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>{user?.created_at}</div>
-                  </div>
+              <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+                <TextInput
+                  title='Nome'
+                  name='name'
+                  control={control}
+                  disabled={!isEditing}
+                  placeholder='Digite seu nome'
+                  className='w-full bg-gray-600/30 rounded-lg p-3 text-white border border-gray-500/30 focus:border-blue-400/50 focus:outline-none'
+                />
+                <TextInput title='Email' name='email' control={control} disabled />
+                <TextInput title='Membro desde' name='created_at' control={control} disabled />
+                <div className='flex space-x-2 pt-4'>
+                  <button
+                    type='submit'
+                    disabled={isSubmitting}
+                    className='bg-green-500/20 text-green-300 px-4 py-2 rounded border border-green-400/30 hover:bg-green-500/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+                  >
+                    {isSubmitting ? 'Salvando...' : 'Salvar'}
+                  </button>
+                  <button
+                    type='button'
+                    onClick={handleCancelEdit}
+                    className='bg-gray-500/20 text-gray-300 px-4 py-2 rounded border border-gray-400/30 hover:bg-gray-500/30 transition-colors'
+                  >
+                    Cancelar
+                  </button>
                 </div>
-              )}
+              </form>
             </div>
           </div>
 
