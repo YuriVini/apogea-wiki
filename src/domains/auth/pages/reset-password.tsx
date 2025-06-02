@@ -1,11 +1,11 @@
-import { Header } from '../../components/header'
-import { Footer } from '../../components/footer'
-import { TextInput } from '../../components/text-input'
+import { Header } from '../../../components/header'
+import { Footer } from '../../../components/footer'
+import { TextInput } from '../../../components/text-input'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate, useSearchParams } from 'react-router'
-import { ApiNoAuth } from '../../@api/axios'
+import { ApiNoAuth } from '../../../@api/axios'
 import { toast } from 'react-toastify'
 
 const validationSchema = z
