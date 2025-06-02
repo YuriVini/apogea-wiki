@@ -28,6 +28,7 @@ type PasswordFormData = z.infer<typeof passwordSchema>
 
 export const Profile = () => {
   const { user, updateProfile, changePassword } = useAuth()
+  console.log('teste____________', user)
   const [isEditing, setIsEditing] = useState(false)
   const [isChangingPassword, setIsChangingPassword] = useState(false)
   const [showCurrentPassword, setShowCurrentPassword] = useState(false)
@@ -158,7 +159,7 @@ export const Profile = () => {
                   </div>
                   <div>
                     <label className='block text-gray-300 text-sm font-medium mb-2'>Membro desde</label>
-                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>Março 2024</div>
+                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>{user?.created_at}</div>
                   </div>
                   <div className='flex space-x-2 pt-4'>
                     <button
@@ -189,33 +190,10 @@ export const Profile = () => {
                   </div>
                   <div>
                     <label className='block text-gray-300 text-sm font-medium mb-2'>Membro desde</label>
-                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>Março 2024</div>
+                    <div className='bg-gray-600/30 rounded-lg p-3 text-white'>{user?.created_at}</div>
                   </div>
                 </div>
               )}
-            </div>
-
-            {/* Estatísticas */}
-            <div className='bg-gray-700/30 rounded-lg p-6'>
-              <h2 className='text-xl font-bold text-white mb-4'>Estatísticas</h2>
-              <div className='space-y-4'>
-                <div className='flex justify-between items-center'>
-                  <span className='text-gray-300'>Guias Criados</span>
-                  <span className='text-white font-bold'>5</span>
-                </div>
-                <div className='flex justify-between items-center'>
-                  <span className='text-gray-300'>Guias Favoritos</span>
-                  <span className='text-white font-bold'>12</span>
-                </div>
-                <div className='flex justify-between items-center'>
-                  <span className='text-gray-300'>Comentários</span>
-                  <span className='text-white font-bold'>23</span>
-                </div>
-                <div className='flex justify-between items-center'>
-                  <span className='text-gray-300'>Curtidas Recebidas</span>
-                  <span className='text-white font-bold'>87</span>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -300,35 +278,6 @@ export const Profile = () => {
               </form>
             </div>
           )}
-
-          {/* Meus Guias */}
-          <div className='mt-8 bg-gray-700/30 rounded-lg p-6'>
-            <h2 className='text-xl font-bold text-white mb-4'>Meus Guias</h2>
-            <div className='space-y-3'>
-              <div className='bg-gray-600/30 rounded-lg p-4 flex justify-between items-center'>
-                <div>
-                  <h3 className='text-white font-medium'>Guia Completo para Iniciantes</h3>
-                  <p className='text-gray-400 text-sm'>Criado em 15/03/2024 • 234 visualizações</p>
-                </div>
-                <div className='flex space-x-2'>
-                  <button className='bg-blue-500/20 text-blue-300 px-3 py-1 rounded border border-blue-400/30 hover:bg-blue-500/30 transition-colors'>Editar</button>
-                  <button className='bg-red-500/20 text-red-300 px-3 py-1 rounded border border-red-400/30 hover:bg-red-500/30 transition-colors'>Excluir</button>
-                </div>
-              </div>
-
-              <div className='bg-gray-600/30 rounded-lg p-4 flex justify-between items-center'>
-                <div>
-                  <h3 className='text-white font-medium'>Melhores Builds para Mage</h3>
-                  <p className='text-gray-400 text-sm'>Criado em 10/03/2024 • 156 visualizações</p>
-                </div>
-                <div className='flex space-x-2'>
-                  <button className='bg-blue-500/20 text-blue-300 px-3 py-1 rounded border border-blue-400/30 hover:bg-blue-500/30 transition-colors'>Editar</button>
-                  <button className='bg-red-500/20 text-red-300 px-3 py-1 rounded border border-red-400/30 hover:bg-red-500/30 transition-colors'>Excluir</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Ações */}
           <div className='mt-8 flex justify-center space-x-4'>
             {!isChangingPassword && (

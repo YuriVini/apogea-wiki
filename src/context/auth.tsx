@@ -31,6 +31,7 @@ export interface User {
   email: string
   avatar_url: string
   isLoggedIn: boolean
+  created_at: string
 }
 
 export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
@@ -40,6 +41,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     email: '',
     avatar_url: '',
     isLoggedIn: false,
+    created_at: '',
   })
   const navigate = useNavigate()
   const { mutate: mutateLogin } = useLogin()
@@ -70,6 +72,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
       email: '',
       avatar_url: '',
       isLoggedIn: false,
+      created_at: '',
     })
     navigate('/')
   }
@@ -86,6 +89,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
         email: response.data.email,
         avatar_url: response.data.avatar_url,
         isLoggedIn: true,
+        created_at: response.data.created_at,
       })
     } catch (error) {
       const { data } = error as GlobalApiTypes.ErrorResponse
@@ -128,6 +132,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
             avatar_url: response.data.avatar_url,
             isLoggedIn: true,
             role: response.data.role,
+            created_at: response.data.created_at,
           })
         }
       } catch (error) {
