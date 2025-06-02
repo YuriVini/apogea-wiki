@@ -30,7 +30,8 @@ import RogueIcon from '/caracter-classes/rogue-icon.png'
 import SquireIcon from '/caracter-classes/squire-icon.png'
 import { useGuides } from '../../../services/guides'
 import { useBuilds } from '../../../services/builds'
-
+import { Countdown } from '../../../components/countdown'
+import { useGameNews } from '../../../components/news'
 interface Weapon {
   title: string
   imageUrl: string
@@ -179,16 +180,44 @@ const caracterClasses = [
 export const Home = () => {
   const { data: guides = [] } = useGuides()
   const { data: builds = [] } = useBuilds()
+  const { news, loading, error } = useGameNews()
 
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
         <Header />
 
+        <div className='max-w-7xl mx-auto p-6'>          
+          <div className='bg-gray-800/50 rounded-lg p-6 text-center'>
+            <h2 className='text-2xl font-bold text-yellow-400 mb-2'>Beta Test em Breve!</h2>
+            <p className='text-gray-300 mb-4'>O teste beta começará em:</p>
+            <div className='grid grid-cols-4 gap-4 max-w-2xl mx-auto'>
+              <div className='bg-gray-900/50 rounded p-3'>
+                <div className='text-3xl font-bold text-white' id='days'>00</div>
+                <div className='text-sm text-gray-400'>Dias</div>
+              </div>
+              <div className='bg-gray-900/50 rounded p-3'>
+                <div className='text-3xl font-bold text-white' id='hours'>00</div>
+                <div className='text-sm text-gray-400'>Horas</div>
+              </div>
+              <div className='bg-gray-900/50 rounded p-3'>
+                <div className='text-3xl font-bold text-white' id='minutes'>00</div>
+                <div className='text-sm text-gray-400'>Minutos</div>
+              </div>
+              <div className='bg-gray-900/50 rounded p-3'>
+                <div className='text-3xl font-bold text-white' id='seconds'>00</div>
+                <div className='text-sm text-gray-400'>Segundos</div>
+              </div>
+            </div>
+            <p className='text-gray-300 mt-4'>Data de início: 6 de junho de 2025 às 12:00</p>
+          </div>
+        </div>
+        <Countdown />
+
         <main className='max-w-7xl mx-auto p-6'>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
             <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
-              <h2 className='text-xl font-bold text-white mb-4'>Guias em Destaque</h2>
+              <h2 className='text-xl font-bold text-white mb-4'>Guias de Quest em Destaque</h2>
               <ul className='space-y-3'>
                 {guides?.slice(0, 4).map((guide, index) => (
                   <li key={index} className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
@@ -219,19 +248,26 @@ export const Home = () => {
 
             <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
               <h2 className='text-xl font-bold text-white mb-4'>Últimas Atualizações</h2>
-              <div className='space-y-4'>
-                <div>
-                  <p className='text-sm text-gray-400'>22/03/2024</p>
-                  <p className='text-gray-300 transition-colors duration-200 hover:text-white'>Novo Dungeon: Cavernas Cristalinas</p>
+              {loading ? (
+                <p className='text-gray-300'>Carregando...</p>
+              ) : error ? (
+                <p className='text-red-500'>Erro ao carregar as notícias: {error}</p>
+              ) : (
+                <div className='space-y-4'>
+                  {news.slice(0, 3).map((item, index) => (
+                    <div key={index} className='border-b border-gray-700 pb-2 last:border-b-0'>
+                      <p className='text-sm text-gray-400'>{new Date(item.author).toLocaleDateString()}</p>
+                      <Link to={`/news/${index}`} className='text-gray-300 transition-colors duration-200 hover:text-white'>
+                        {item.title}
+                      </Link>
+                    </div>
+                  ))}
                 </div>
-                <div>
-                  <p className='text-sm text-gray-400'>20/03/2024</p>
-                  <p className='text-gray-300 transition-colors duration-200 hover:text-white'>Atualização do Sistema de Crafting</p>
-                </div>
-                <div>
-                  <p className='text-sm text-gray-400'>18/03/2024</p>
-                  <p className='text-gray-300 transition-colors duration-200 hover:text-white'>Nova Região: Floresta Ancestral</p>
-                </div>
+              )}
+              <div className='mt-4 text-center'>
+                <Link to='/news' className='inline-block px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-sm'>
+                  Ver Todas as Notícias
+                </Link>
               </div>
             </div>
 
@@ -247,7 +283,7 @@ export const Home = () => {
                 </div>
                 <div className='text-center mt-6'>
                   <a href='#' className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'>
-                    Ver Mais Quests
+                    Ver Mais Builds
                   </a>
                 </div>
               </div>
@@ -301,7 +337,6 @@ export const Home = () => {
             </div>
           </div>
         </main>
-
         <Footer />
       </Suspense>
     </div>
