@@ -37,3 +37,11 @@ export const useCreateBuild = () => {
     },
   })
 }
+
+export const useDeleteBuild = () => {
+  return useMutation({
+    mutationFn: async (buildId: string) => {
+      await Api.delete(`/builds/${buildId}`)
+    },
+  })
+}
