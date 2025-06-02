@@ -260,7 +260,7 @@ export const Home = () => {
                   ))}
                 </div>
                 <div className='text-center mt-6'>
-                  <Link to='/build/create' className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'>
+                  <Link to='/builds/create' className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'>
                     Criar minha build
                   </Link>
                 </div>

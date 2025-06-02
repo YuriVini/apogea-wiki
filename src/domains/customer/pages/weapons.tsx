@@ -4,14 +4,20 @@ import { WeaponBox } from '../../../components/weapon-box'
 import { useParams, Link } from 'react-router'
 import { useEquipments } from '../../../services/equipments'
 import { useAuth } from '../../../context/auth'
+import { useState } from 'react'
+
 export const Weapons = () => {
   const { weaponCategory } = useParams<{ weaponCategory: string }>()
   const { data: equipments, isLoading } = useEquipments()
   const { isAdmin } = useAuth()
+  const [searchTerm, setSearchTerm] = useState('')
 
   if (isLoading) return <div>Loading...</div>
 
-  const filteredWeapons = equipments?.filter((weapon) => weapon.category === weaponCategory) || []
+  const filteredWeapons = equipments?.filter((weapon) => 
+    weapon.category === weaponCategory && 
+    weapon.name.toLowerCase().includes(searchTerm.toLowerCase())
+  ) || []
 
   function renderEditHeader() {
     return isAdmin && <th className='text-center px-2 py-4 font-semibold w-16 border-l border-gray-600'>Editar</th>
@@ -52,9 +58,18 @@ export const Weapons = () => {
           </p>
         </div>
 
+          <div className='mb-4 flex justify-end'>
+            <input
+              type='text'
+              placeholder='Buscar por nome...'
+              className='p-2 rounded-lg bg-gray-700 text-white'
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         <div className='mb-8'>
           <h2 className='text-2xl font-bold text-white mb-4 bg-purple-900/50 p-3 rounded-t-lg'>Melee Weapons</h2>
-          <div className='bg-gray-800/50 rounded-b-lg overflow-hidden'>
+          <div className='bg-gray-800/50 rounded-lg overflow-hidden'>
             <div className='overflow-x-auto'>
               <table className='w-full text-sm'>
                 <thead>
