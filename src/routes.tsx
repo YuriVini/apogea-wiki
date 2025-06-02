@@ -28,7 +28,7 @@ export const AppRoutes = () => {
       <Route path='/guides/:guideId' element={<Guide />} />
       <Route path='/weapons/:weaponCategory' element={<Weapons />} />
       <Route path='/armor' element={<Armor />} />
-      <Route path='/create-guide' element={<CreateGuide />} />
+      <Route path='/guides/create' element={<CreateGuide />} />
       <Route path='/register' element={<Register />} />
       <Route path='/login' element={<Login />} />
       <Route path='/profile' element={<Profile />} />

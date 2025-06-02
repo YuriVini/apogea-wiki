@@ -201,10 +201,19 @@ export const Home = () => {
                   </li>
                 ))}
               </ul>
-              <div className='mt-4 text-center'>
-                <Link to='/guides' className='inline-block px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-sm'>
-                  Ver Todos os Guias
-                </Link>
+              <div className='flex justify-center items-center gap-1'>
+                <div className='text-center mt-6'>
+                  <Link to='/guides/create' className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'>
+                    Criar meu guia
+                  </Link>
+                </div>
+                {guides?.length > 3 && (
+                  <div className='text-center mt-6'>
+                    <Link to='/guides' className='inline-block px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-sm'>
+                      Ver Todos os Guias
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -230,8 +239,10 @@ export const Home = () => {
                 <div className='space-y-4'>
                   {news?.slice(0, 2).map((item, index) => (
                     <div key={index} className='border-b border-gray-700 pb-2 last:border-b-0'>
-                      <p className='text-sm text-gray-400'>{item.title}</p>
-                      <p className='text-gray-300 transition-colors duration-200 hover:text-white'>{item.content}</p>
+                      <Link to={item.url} target='_blank'>
+                        <p className='text-sm text-gray-400'>{item.title}</p>
+                        <p className='text-gray-300 transition-colors duration-200 hover:text-white'>{item.content}</p>
+                      </Link>
                     </div>
                   ))}
                 </div>
@@ -249,9 +260,9 @@ export const Home = () => {
                   ))}
                 </div>
                 <div className='text-center mt-6'>
-                  <a href='#' className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'>
-                    Ver Mais Builds
-                  </a>
+                  <Link to='/build/create' className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'>
+                    Criar minha build
+                  </Link>
                 </div>
               </div>
             </div>
