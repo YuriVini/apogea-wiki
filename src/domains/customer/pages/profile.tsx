@@ -1,11 +1,12 @@
 import { Header } from '../../../components/header'
 import { Footer } from '../../../components/footer'
 import { useAuth } from '../../../context/auth'
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'react-toastify'
+import { TextInput } from '../../../components/text-input'
 
 const profileSchema = z.object({
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
@@ -28,17 +29,17 @@ type PasswordFormData = z.infer<typeof passwordSchema>
 
 export const Profile = () => {
   const { user, updateProfile, changePassword } = useAuth()
-  console.log('teste____________', user)
   const [isEditing, setIsEditing] = useState(false)
   const [isChangingPassword, setIsChangingPassword] = useState(false)
   const [showCurrentPassword, setShowCurrentPassword] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const nameInputRef = useRef<HTMLInputElement>(null)
 
   const {
-    register,
+    control,
     handleSubmit,
+    setFocus,
+    setValue,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<ProfileFormData>({
@@ -59,16 +60,14 @@ export const Profile = () => {
   })
 
   const onSubmit = async (data: ProfileFormData) => {
-    try {
-      await updateProfile({
-        name: data.name,
-        avatar_url: data.avatar_url || '',
-      })
-      setIsEditing(false)
-      toast.success('Perfil atualizado com sucesso!')
-    } catch {
-      toast.error('Erro ao atualizar perfil')
-    }
+    await updateProfile({
+      name: data.name,
+      avatar_url: data.avatar_url || '',
+      onSuccess: () => {
+        setIsEditing(false)
+        setValue('name', data.name)
+      },
+    })
   }
 
   const onPasswordSubmit = async (data: PasswordFormData) => {
@@ -94,6 +93,7 @@ export const Profile = () => {
       name: user?.name || '',
       avatar_url: user?.avatar_url || '',
     })
+    setFocus('name')
   }
 
   const handleCancelEdit = () => {
@@ -113,12 +113,6 @@ export const Profile = () => {
     setShowNewPassword(false)
     setShowConfirmPassword(false)
   }
-
-  useEffect(() => {
-    if (isEditing && nameInputRef.current) {
-      nameInputRef.current.focus()
-    }
-  }, [isEditing])
 
   return (
     <div>
@@ -145,9 +139,9 @@ export const Profile = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
                   <div>
                     <label className='block text-gray-300 text-sm font-medium mb-2'>Nome</label>
-                    <input
-                      {...register('name')}
-                      ref={nameInputRef}
+                    <TextInput
+                      name='name'
+                      control={control}
                       className='w-full bg-gray-600/30 rounded-lg p-3 text-white border border-gray-500/30 focus:border-blue-400/50 focus:outline-none'
                       placeholder='Digite seu nome'
                     />

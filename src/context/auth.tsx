@@ -13,7 +13,7 @@ interface AuthContextProps {
   user: User
   logIn: (data: { email: string; password: string }) => Promise<void>
   logOut: () => Promise<void> | void
-  updateProfile: (data: { name: string; avatar_url: string }) => Promise<void>
+  updateProfile: (data: { name: string; avatar_url: string; onSuccess: () => void }) => Promise<void>
   changePassword: (data: { currentPassword: string; newPassword: string }) => Promise<void>
   recoverPassword: (data: { email: string }) => Promise<void>
 }
@@ -77,22 +77,23 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     navigate('/')
   }
 
-  const updateProfile = async ({ name, avatar_url }: { name: string; avatar_url: string }) => {
+  const updateProfile = async ({ name, avatar_url, onSuccess }: { name: string; avatar_url: string; onSuccess: () => void }) => {
     try {
-      const response = await Api.put<User>('/me', {
+      const response = await Api.put<{ user: User }>('/me', {
         name: name,
         avatar_url: avatar_url,
       })
+      console.log('teste1____________', response?.data)
       setUser({
-        role: response.data.role,
-        name: response.data.name,
-        email: response.data.email,
-        avatar_url: response.data.avatar_url,
+        ...user,
+        name: response?.data?.user?.name,
         isLoggedIn: true,
-        created_at: response.data.created_at,
       })
+      toast.success('Perfil atualizado com sucesso!')
+      onSuccess()
     } catch (error) {
       const { data } = error as GlobalApiTypes.ErrorResponse
+      console.log('teste2____________', error)
       toast.error('Erro ao atualizar perfil \n' + data?.message)
     }
   }
