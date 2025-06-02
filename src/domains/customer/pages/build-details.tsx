@@ -5,8 +5,8 @@ import { SkillsGrid } from '../../../components/skill-grid'
 import { Trash2 } from 'lucide-react'
 import { StatField } from '../../../components/stat-field'
 
-import { useParams } from 'react-router'
-import { fetchBuildById, useUpdateBuild } from '../../../services/builds'
+import { useParams, useNavigate } from 'react-router'
+import { fetchBuildById, useUpdateBuild, useDeleteBuild } from '../../../services/builds'
 import { useBuilder } from '../../../context/builder'
 import { statLabels } from '../../../constants/caracter-class-database'
 
@@ -15,6 +15,8 @@ export const BuildsDetails = () => {
   const { buildId } = useParams<{ buildId: string }>()
   const { build: buildData, isEditing, setIsEditing, setBuild } = useBuilder()
   const { mutate: updateBuild } = useUpdateBuild()
+  const { mutate: deleteBuild } = useDeleteBuild()
+  const navigate = useNavigate()
 
   const handleInputChange = (field: keyof BuildsApiTypes.BuildData, value: string) => {
     setBuild((prev) => ({
@@ -83,6 +85,16 @@ export const BuildsDetails = () => {
     }
   }
 
+  const handleDeleteBuild = () => {
+    if (window.confirm('Tem certeza que deseja excluir esta build?')) {
+      deleteBuild(buildId!, {
+        onSuccess: () => {
+          navigate('/builds')
+        },
+      })
+    }
+  }
+
   useEffect(() => {
     const fetchBuild = async () => {
       try {
@@ -121,14 +133,22 @@ export const BuildsDetails = () => {
             ) : (
               <h1 className='text-4xl font-bold text-center text-blue-400 flex-1'>{buildData?.title}</h1>
             )}
-            <button
-              onClick={() => handleSaveEditBuild()}
-              className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
-                isEditing ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'
-              }`}
-            >
-              {isEditing ? 'Salvar' : 'Editar'}
-            </button>
+            <div className='flex space-x-2'>
+              <button
+                onClick={() => handleSaveEditBuild()}
+                className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
+                  isEditing ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'
+                }`}
+              >
+                {isEditing ? 'Salvar' : 'Editar'}
+              </button>
+              <button
+                onClick={handleDeleteBuild}
+                className='px-6 py-2 rounded-lg font-semibold transition-colors bg-red-600 hover:bg-red-700 text-white'
+              >
+                Excluir
+              </button>
+            </div>
           </div>
 
           <div className='bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700'>
