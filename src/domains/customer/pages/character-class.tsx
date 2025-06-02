@@ -158,11 +158,11 @@ export const CharacterClass = () => {
         {activeTab === 'builds' && (
           <div className='mb-12'>
             <div className='flex justify-between items-center mb-8'>
-              <h2 className='text-3xl font-bold text-white'>⚔️ Builds de Knight</h2>
+              <h2 className='text-3xl font-bold text-white'>⚔️ Builds de {classData?.name}</h2>
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
-              {builds?.map((build, index) => (
+              {builds?.filter(build => build.characterClass === classData?.name).map((build, index) => (
                 <div key={index} className='bg-gray-800/30 rounded-lg p-6 shadow-lg hover:bg-gray-700/30 transition-all duration-300 transform hover:scale-105'>
                   <div className='flex justify-between items-start mb-4'>
                     <div>
