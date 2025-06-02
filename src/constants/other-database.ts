@@ -50,11 +50,11 @@ export const OTHER_DATABASE: OtherDatabaseType[] = [
     
     
     // Items Quest
-    { name: 'Blue Ink', imageUrl: '/creature-drops/Rat_tail.webp', type: 'itens_quest', weight: '100 oz', description: 'A tail from a rat.' },
-    { name: 'Herb Bag', imageUrl: '/creature-drops/Ragged_Cloth.webp', type: 'itens_quest', weight: '100 oz', description: 'A cloth from a ragged.' },
-    { name: 'Potion Aqua Base', imageUrl: '/creature-drops/Rat_tail.webp', type: 'itens_quest', weight: '100 oz', description: 'A piece from a boletus.' },
-    { name: 'Jebidiah vials', imageUrl: '/creature-drops/Rat_tail.webp', type: 'itens_quest', weight: '100 oz', description: 'A seed from a colocasia.' },
-    { name: 'Almanac', imageUrl: '/creature-drops/Rat_tail.webp', type: 'itens_quest', weight: '100 oz', description: 'A wool from a white.' },
+    { name: 'Blue Ink', imageUrl: '/quest-items/Blue_Ink.webp', type: 'itens_quest', weight: '100 oz', description: 'A tail from a rat.' },
+    { name: 'Herb Bag', imageUrl: '/quest-items/Herb_bag.webp', type: 'itens_quest', weight: '100 oz', description: 'A cloth from a ragged.' },
+    { name: 'Potion Aqua Base', imageUrl: '/quest-items/Aqua_vial_jebidiah.webp', type: 'itens_quest', weight: '100 oz', description: 'A piece from a boletus.' },
+    { name: 'Jebidiah vials', imageUrl: '/quest-items/Jebidiah_vials.webp', type: 'itens_quest', weight: '100 oz', description: 'A seed from a colocasia.' },
+    { name: 'Almanac', imageUrl: '/quest-items/Almanac.webp', type: 'itens_quest', weight: '100 oz', description: 'A wool from a white.' },
     
     // Monster
     { name: 'Viscid Goblin', type: 'monster', hp: '195', exp: '277', abilities: '', loot: '0-2 Gold, Bug Wings' },
