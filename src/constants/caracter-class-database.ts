@@ -23,6 +23,7 @@ export interface CharacterClass {
   }[]
 
   recommendedEquipment?: {
+    icon?: string
     name: string
     description: string
   }[]
@@ -60,7 +61,7 @@ export const CHARACTER_CLASS_DATABASE: CharacterClass[] = [
   {
     name: 'Knight',
     description: 'Guerreiro resistente especializado em combate corpo a corpo e proteção de aliados',
-    imageUrl: '/knight.png',
+    imageUrl: '/caracter-classes/knight.png',
     type: 'knight',
     stats: [
       { title: 'Skill', value: 125, color: 'text-green-400' },
@@ -96,20 +97,24 @@ export const CHARACTER_CLASS_DATABASE: CharacterClass[] = [
     ],
     recommendedEquipment: [
       {
+        icon: '/swords/Longsword.webp',
         name: 'Espadas Pesadas',
         description: 'Alto dano e durabilidade para combate prolongado',
       },
       {
+        icon: '/shield/Tower_Shield.webp',
         name: 'Escudos',
         description: 'Proteção essencial e habilidades defensivas',
       },
       {
+        icon: '/armor/Plate_armor.webp',
         name: 'Armaduras Pesadas',
         description: 'Máxima proteção contra ataques físicos',
       },
       {
-        name: 'Machados',
-        description: 'Alternativa para maior dano bruto',
+        icon: '/ring/Golden_ring.webp',
+        name: 'Anéis de Vida',
+        description: 'Aumete sua vida',
       },
     ],
     strategy: {
@@ -141,7 +146,7 @@ export const CHARACTER_CLASS_DATABASE: CharacterClass[] = [
   {
     name: 'Mage',
     description: 'Mago especializado em magia e controle de campo',
-    imageUrl: '/mage.png',
+    imageUrl: '/caracter-classes/mage.png',
     type: 'mage',
     stats: [
       { title: 'Skill', value: 75, color: 'text-red-400' },
@@ -177,18 +182,17 @@ export const CHARACTER_CLASS_DATABASE: CharacterClass[] = [
     ],
     recommendedEquipment: [
       {
+        icon: '/staff/Crystal_Staff.webp',
         name: 'Cajados Mágicos',
         description: 'Aumenta o poder das magias e permite conjuração à distância',
       },
       {
-        name: 'Livros de Feitiços',
-        description: 'Essenciais para ampliar o repertório de magias e aumentar a eficiência mágica',
-      },
-      {
+        icon: '/armor/Dark_Robe.webp',
         name: 'Robes Arcanos',
         description: 'Oferecem proteção contra magias e aumentam a regeneração de mana',
       },
       {
+        icon: '/ring/Silver_Ring.webp',
         name: 'Amuletos Místicos',
         description: 'Aprimoram o controle de mana e a resistência a feitiços inimigos',
       },
@@ -228,7 +232,7 @@ export const CHARACTER_CLASS_DATABASE: CharacterClass[] = [
   {
     name: 'Rogue',
     description: 'Rogue especializado em furtividade e dano crítico',
-    imageUrl: '/rogue.png',
+    imageUrl: '/caracter-classes/rogue.png',
     type: 'rogue',
     stats: [
       { title: 'Skill', value: 150, color: 'text-green-400' },
@@ -264,20 +268,24 @@ export const CHARACTER_CLASS_DATABASE: CharacterClass[] = [
     ],
     recommendedEquipment: [
       {
+        icon: '/daggers/Onyx_Dagger.webp',
         name: 'Adagas',
         description: 'Permitem ataques rápidos e críticos, ideais para emboscadas e combate ágil.',
       },
       {
+        icon: '/bow/Longbow.webp',
         name: 'Arcos Curtos',
         description: 'Oferecem dano à distância e versatilidade para atacar sem ser visto.',
       },
       {
+        icon: '/armor/Brigandine_Vest.webp',
         name: 'Roupas Leves',
         description: 'Aumentam a mobilidade e facilitam a furtividade, permitindo esquivar de ataques.',
       },
       {
-        name: 'Anéis de Evasão',
-        description: 'Aprimoram a chance de esquiva e a resistência a efeitos negativos.',
+        icon: '/ring/Zircon_Ring.webp',
+        name: 'Anéis de Velocidade',
+        description: 'Aumete sua velocidade de ataque',
       },
     ],
     strategy: {
@@ -315,7 +323,7 @@ export const CHARACTER_CLASS_DATABASE: CharacterClass[] = [
   {
     name: 'Squire',
     description: 'Squire especializado em combate corpo a corpo e defesa',
-    imageUrl: '/squire.png',
+    imageUrl: '/caracter-classes/squire.png',
     type: 'squire',
     stats: [
       { title: 'Skill', value: 100, color: 'text-green-400' },
@@ -351,14 +359,17 @@ export const CHARACTER_CLASS_DATABASE: CharacterClass[] = [
     ],
     recommendedEquipment: [
       {
+        icon: '/swords/Cutlass_sword.webp',
         name: 'Espadas Curtas',
         description: 'Fáceis de manejar e ideais para quem está aprendendo técnicas de combate.',
       },
       {
+        icon: '/shield/Shield5.webp',
         name: 'Escudos Leves',
         description: 'Oferecem proteção sem comprometer a mobilidade.',
       },
       {
+        icon: '/armor/Gambeson_armor.webp',
         name: 'Armaduras de Couro',
         description: 'Boa defesa inicial sem pesar demais.',
       },
