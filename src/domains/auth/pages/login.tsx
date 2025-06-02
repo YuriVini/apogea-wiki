@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '../../../context/auth'
+import { Link } from 'react-router'
 
 const validationSchema = z.object({
   email: z.string().email('Email inválido'),
@@ -46,16 +47,16 @@ export const Login = () => {
             <div className='mt-6 text-center'>
               <p className='text-gray-400'>
                 Não tem uma conta?{' '}
-                <a href='/register' className='text-blue-400 hover:text-blue-300 transition-colors duration-300'>
+                <Link to='/register' className='text-blue-400 hover:text-blue-300 transition-colors duration-300'>
                   Criar conta
-                </a>
+                </Link>
               </p>
             </div>
 
             <div className='mt-4 text-center'>
-              <a href='/forgot-password' className='text-sm text-gray-400 hover:text-gray-300 transition-colors duration-300'>
+              <Link to='/forgot-password' className='text-sm text-gray-400 hover:text-gray-300 transition-colors duration-300'>
                 Esqueceu sua senha?
-              </a>
+              </Link>
             </div>
           </div>
         </div>
