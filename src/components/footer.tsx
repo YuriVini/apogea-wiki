@@ -26,7 +26,7 @@ export const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href='#' className='hover:text-white'>
+                <a href='/newsletter' className='hover:text-white'>
                   Notícias
                 </a>
               </li>
