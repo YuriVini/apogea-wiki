@@ -104,7 +104,6 @@ export const EditOther = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Implementar lógica de update
     console.log('Form submitted:', formData)
   }
 
@@ -116,28 +115,93 @@ export const EditOther = () => {
     }))
   }
 
-  const fields: { key: keyof OtherDatabaseType; label: string; type?: string }[] = [
-    { key: 'name', label: 'Nome' },
-    { key: 'imageUrl', label: 'URL da Imagem' },
-    { key: 'type', label: 'Tipo' },
-    { key: 'weight', label: 'Peso' },
-    { key: 'dropBy', label: 'Drop Por' },
-    { key: 'sellTo', label: 'Vender Para' },
-    { key: 'description', label: 'Descrição' },
-    { key: 'hp', label: 'HP' },
-    { key: 'exp', label: 'EXP' },
-    { key: 'abilities', label: 'Habilidades' },
-    { key: 'loot', label: 'Loot' },
-    { key: 'location', label: 'Localização' },
-    { key: 'author', label: 'Autor' },
-    { key: 'notes', label: 'Notas' },
-    { key: 'text', label: 'Texto', type: 'textarea' },
-    { key: 'satiateTime', label: 'Tempo de Saciamento' },
-    { key: 'buffs', label: 'Buffs' },
-    { key: 'requirements', label: 'Requisitos' },
-  ]
+  // Campos por tipo, de acordo com as colunas das tabelas do OtherTable
+  const typeFields: Record<string, { key: keyof OtherDatabaseType; label: string; type?: string }[]> = {
+    monster: [
+      { key: 'name', label: 'Nome' },
+      { key: 'imageUrl', label: 'URL da Imagem' },
+      { key: 'type', label: 'Tipo' },
+      { key: 'hp', label: 'HP' },
+      { key: 'exp', label: 'Experiência' },
+      { key: 'abilities', label: 'Habilidades' },
+      { key: 'loot', label: 'Loot' },
+    ],
+    drop_creatures: [
+      { key: 'imageUrl', label: 'URL da Imagem' },
+      { key: 'name', label: 'Nome' },
+      { key: 'type', label: 'Tipo' },
+      { key: 'weight', label: 'Peso' },
+      { key: 'dropBy', label: 'Drop Por' },
+      { key: 'sellTo', label: 'Preço de Venda' },
+    ],
+    book: [
+      { key: 'name', label: 'Nome' },
+      { key: 'type', label: 'Tipo' },
+      { key: 'location', label: 'Localização' },
+      { key: 'author', label: 'Autor' },
+      { key: 'notes', label: 'Notas' },
+      { key: 'text', label: 'Texto', type: 'textarea' },
+    ],
+    food: [
+      { key: 'imageUrl', label: 'URL da Imagem' },
+      { key: 'name', label: 'Nome' },
+      { key: 'type', label: 'Tipo' },
+      { key: 'weight', label: 'Peso' },
+      { key: 'dropBy', label: 'Drop Por' },
+      { key: 'satiateTime', label: 'Tempo de Saciamento' },
+      { key: 'buffs', label: 'Buffs' },
+    ],
+    recipes: [
+      { key: 'imageUrl', label: 'URL da Imagem' },
+      { key: 'name', label: 'Nome' },
+      { key: 'type', label: 'Tipo' },
+      { key: 'satiateTime', label: 'Tempo de Saciamento' },
+      { key: 'buffs', label: 'Buffs' },
+      { key: 'weight', label: 'Peso' },
+      { key: 'requirements', label: 'Requisitos' },
+      { key: 'dropBy', label: 'Drop Por' },
+    ],
+    npc: [
+      { key: 'name', label: 'Nome' },
+      { key: 'type', label: 'Tipo' },
+      { key: 'location', label: 'Localização' },
+      { key: 'sellTo', label: 'Vender Para' },
+    ],
+    itens_quest: [
+      { key: 'imageUrl', label: 'URL da Imagem' },
+      { key: 'name', label: 'Nome' },
+      { key: 'type', label: 'Tipo' },
+      { key: 'weight', label: 'Peso' },
+      { key: 'description', label: 'Descrição' },
+    ],
+    // fallback: todos os campos
+    default: [
+      { key: 'name', label: 'Nome' },
+      { key: 'imageUrl', label: 'URL da Imagem' },
+      { key: 'type', label: 'Tipo' },
+      { key: 'weight', label: 'Peso' },
+      { key: 'dropBy', label: 'Drop Por' },
+      { key: 'sellTo', label: 'Vender Para' },
+      { key: 'description', label: 'Descrição' },
+      { key: 'hp', label: 'HP' },
+      { key: 'exp', label: 'EXP' },
+      { key: 'abilities', label: 'Habilidades' },
+      { key: 'loot', label: 'Loot' },
+      { key: 'location', label: 'Localização' },
+      { key: 'author', label: 'Autor' },
+      { key: 'notes', label: 'Notas' },
+      { key: 'text', label: 'Texto', type: 'textarea' },
+      { key: 'satiateTime', label: 'Tempo de Saciamento' },
+      { key: 'buffs', label: 'Buffs' },
+      { key: 'requirements', label: 'Requisitos' },
+    ],
+  }
 
   const otherTypes = ['drop_creatures', 'itens_quest', 'monster', 'book', 'food', 'recipes', 'npc']
+
+  // Determina os campos a exibir de acordo com o type selecionado
+  const selectedType = formData.type || 'drop_creatures'
+  const fields = typeFields[selectedType] || typeFields.default
 
   return (
     <div className='min-h-screen bg-gradient-to-b from-gray-900 to-gray-800'>
