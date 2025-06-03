@@ -21,6 +21,7 @@ import { Edit } from './domains/admin/pages/edit-equipment'
 import { BuildCreate } from './domains/customer/pages/build-create'
 import { AllBuilds } from './domains/customer/pages/all-builds'
 import { CreateEquipment } from './domains/admin/pages/create-equipment'
+import { Newsletter } from './domains/customer/pages/newsletter'
 
 export const AppRoutes = () => {
   usePrefetchQuery({ queryKey: [EQUIPMENTS_QUERY_KEY] }, queryClient)
@@ -44,6 +45,7 @@ export const AppRoutes = () => {
       <Route path='/builds/create' element={<BuildCreate />} />
       <Route path='/other/:otherCategory' element={<Other />} />
       <Route path='/builds' element={<AllBuilds />} />
+      <Route path='/newsletter' element={<Newsletter />} />
 
       {/* Admin Routes */}
       <Route path='/admin/edit/:name' element={<Edit />} />
