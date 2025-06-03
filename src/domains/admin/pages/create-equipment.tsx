@@ -25,29 +25,26 @@ export const CreateEquipment = () => {
     attackSpeed: '',
   })
 
-  console.log('[ENTRADA] Estado inicial do formData:', formData)
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('[ENTRADA] handleSubmit - Dados enviados para criação:', formData)
     try {
       const result = await createEquipment(formData)
-      console.log('[SAÍDA] handleSubmit - Equipamento criado com sucesso! Resposta:', result)
+      console.log('Equipamento criado com sucesso! Resposta:', result)
       navigate('/weapons/sword')
     } catch (error) {
-      console.error('[SAÍDA] handleSubmit - Erro ao criar equipamento:', error)
+      console.error('Erro ao criar equipamento:', error)
     }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
-    console.log(`[ENTRADA] handleChange - Alterando campo ${name} para:`, value)
     setFormData((prev) => {
       const newFormData = {
         ...prev,
         [name]: value,
       }
-      console.log('[SAÍDA] handleChange - Novo formData:', newFormData)
       return newFormData
     })
   }
