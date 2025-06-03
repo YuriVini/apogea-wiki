@@ -2,6 +2,7 @@ import { OtherDatabaseType } from '../constants/other-database'
 import { OtherBox } from './other-box'
 import { Link } from 'react-router'
 import { useAuth } from '../context/auth'
+
 export const OtherTable = ({ title, items }: { title: string; items: OtherDatabaseType[] }) => {
   const isMonsterType = items.length > 0 && items[0]?.type === 'monster'
   const isDropCreatureType = items.length > 0 && items[0]?.type === 'drop_creatures'
@@ -10,7 +11,6 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
   const isRecipeType = items.length > 0 && items[0]?.type === 'recipes'
   const isNpcType = items.length > 0 && items[0]?.type === 'npc'
   const isItensQuestType = items.length > 0 && items[0]?.type === 'itens_quest'
-
   const { isAdmin } = useAuth()
 
   function renderEditHeader() {
@@ -25,7 +25,7 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
       return (
         <td className='px-2 py-4 text-center w-16 border-l border-gray-600'>
           <Link
-            to={`/admin/edit/${item.name}`}
+            to={`/admin/other/${item.name}`}
             className='inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 rounded-full transition-colors text-base shadow-md'
             title='Editar'
           >
