@@ -94,16 +94,25 @@ export const Edit = () => {
       <div className='container mx-auto px-4 py-8'>
         <div className='max-w-4xl mx-auto'>
           <div className='flex justify-between items-center mb-8'>
-            {isEditing ? (
-              <input
-                type='text'
-                value={equipment.name}
-                onChange={(e) => handleInputChange('name', e.target.value)}
-                className='text-4xl font-bold text-center text-blue-400 bg-gray-800 border border-gray-600 rounded px-4 py-2 flex-1 mr-4'
-              />
-            ) : (
-              <h1 className='text-4xl font-bold text-center text-blue-400 flex-1'>{equipment.name}</h1>
-            )}
+            <div className="flex items-center flex-1">
+              {equipment.imageUrl && (
+                <img
+                  src={equipment.imageUrl}
+                  alt={equipment.name}
+                  className="w-16 h-16 object-contain rounded-lg mr-4 border border-gray-700 bg-gray-900"
+                />
+              )}
+              {isEditing ? (
+                <input
+                  type='text'
+                  value={equipment.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  className='text-4xl font-bold text-blue-400 bg-gray-800 border border-gray-600 rounded px-4 py-2 flex-1'
+                />
+              ) : (
+                <h1 className='text-4xl font-bold text-blue-400 flex-1'>{equipment.name}</h1>
+              )}
+            </div>
             <div className='flex space-x-2'>
               <button
                 onClick={handleSaveEditEquipment}
