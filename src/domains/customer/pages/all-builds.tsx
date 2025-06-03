@@ -28,16 +28,16 @@ export const AllBuilds = () => {
 
   const handleDeleteBuild = async (buildId: string) => {
     if (window.confirm('Tem certeza que deseja excluir esta build? Esta ação não pode ser desfeita.')) {
-        deleteBuild(buildId!, {
-          onSuccess: () => {
-            setBuilds(builds.filter((build) => build.id !== buildId))
-            toast.success('Build excluída com sucesso!')
-            navigate('/builds')
-          },
-          onError: () => {
-            toast.error('Erro ao excluir build. Tente novamente.')
-          },
-        })
+      deleteBuild(buildId!, {
+        onSuccess: () => {
+          setBuilds(builds.filter((build) => build.id !== buildId))
+          toast.success('Build excluída com sucesso!')
+          navigate('/builds')
+        },
+        onError: () => {
+          toast.error('Erro ao excluir build. Tente novamente.')
+        },
+      })
     }
   }
 
@@ -45,7 +45,7 @@ export const AllBuilds = () => {
     fetchBuilds()
   }, [])
 
-  const filteredBuilds = selectedClass === 'all' ? builds : builds.filter(build => build.characterClass === selectedClass)
+  const filteredBuilds = selectedClass === 'all' ? builds : builds.filter((build) => build.characterClass === selectedClass)
 
   return (
     <div>
@@ -59,7 +59,9 @@ export const AllBuilds = () => {
 
           {!loading && builds.length > 0 && (
             <div className='mb-6'>
-              <label htmlFor='classFilter' className='block text-sm font-medium text-gray-300 mb-2'>Filtrar por Classe:</label>
+              <label htmlFor='classFilter' className='block text-sm font-medium text-gray-300 mb-2'>
+                Filtrar por Classe:
+              </label>
               <select
                 id='classFilter'
                 value={selectedClass}

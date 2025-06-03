@@ -9,10 +9,7 @@ export const Other = () => {
   const { otherCategory } = useParams()
   const [searchTerm, setSearchTerm] = useState('')
 
-  const filteredItems = OTHER_DATABASE.filter((item) => 
-    item.type === otherCategory && 
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredItems = OTHER_DATABASE.filter((item) => item.type === otherCategory && item.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   return (
     <div className='min-h-screen bg-gray-900'>

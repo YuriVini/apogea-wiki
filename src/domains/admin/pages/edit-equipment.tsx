@@ -113,10 +113,7 @@ export const Edit = () => {
               >
                 {isEditing ? 'Salvar' : 'Editar'}
               </button>
-              <Link
-                to={`/`}
-                className='px-6 py-2 rounded-lg font-semibold transition-colors bg-gray-600 hover:bg-gray-700 text-white'
-              >
+              <Link to={`/`} className='px-6 py-2 rounded-lg font-semibold transition-colors bg-gray-600 hover:bg-gray-700 text-white'>
                 Voltar
               </Link>
             </div>

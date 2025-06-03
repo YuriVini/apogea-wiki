@@ -205,9 +205,9 @@ export const Home = () => {
               </ul>
               <div className='flex justify-center items-center gap-1'>
                 <div className='text-center mt-6'>
-                    <Link  to={isLoggedIn ? '/guides/create': '/login'} className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'>
-                      Criar meu guia
-                    </Link>
+                  <Link to={isLoggedIn ? '/guides/create' : '/login'} className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'>
+                    Criar meu guia
+                  </Link>
                 </div>
                 {guides?.length > 3 && (
                   <div className='text-center mt-6'>
@@ -263,17 +263,17 @@ export const Home = () => {
                 </div>
                 <div className='flex justify-center items-center gap-1'>
                   <div className='text-center mt-6'>
-                    <Link to={isLoggedIn ? '/builds/create' : '/login' } className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'>
+                    <Link to={isLoggedIn ? '/builds/create' : '/login'} className='inline-block px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors'>
                       Criar minha build
                     </Link>
-                </div>
-                {builds?.length > 3 && (
-                  <div className='text-center mt-6'>
-                    <Link to='/builds' className='inline-block px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-sm'>
-                      Ver Todas as Builds
-                    </Link>
                   </div>
-                )}
+                  {builds?.length > 3 && (
+                    <div className='text-center mt-6'>
+                      <Link to='/builds' className='inline-block px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-sm'>
+                        Ver Todas as Builds
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

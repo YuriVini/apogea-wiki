@@ -115,9 +115,7 @@ export const CharacterClass = () => {
               <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
                 {classData?.recommendedEquipment?.map((equipment, index) => (
                   <div key={index} className='bg-gray-800/30 rounded-lg p-6 shadow-lg text-center hover:bg-gray-700/30 transition-all duration-300 transform hover:scale-105'>
-                    {equipment.icon && (
-                      <img src={equipment.icon} alt={equipment.name} className='w-16 h-16 mx-auto mb-3' />
-                    )}
+                    {equipment.icon && <img src={equipment.icon} alt={equipment.name} className='w-16 h-16 mx-auto mb-3' />}
                     <h3 className='text-lg font-bold text-white mb-2'>{equipment.name}</h3>
                     <p className='text-gray-300 text-sm'>{equipment.description}</p>
                   </div>
@@ -162,27 +160,29 @@ export const CharacterClass = () => {
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
-              {builds?.filter(build => build.characterClass === classData?.name).map((build, index) => (
-                <div key={index} className='bg-gray-800/30 rounded-lg p-6 shadow-lg hover:bg-gray-700/30 transition-all duration-300 transform hover:scale-105'>
-                  <div className='flex justify-between items-start mb-4'>
-                    <div>
-                      <h3 className='text-xl font-bold text-white mb-2'>{build.title}</h3>
-                      <p className='text-lg text-blue-400 mb-2'>Nível {build.characterStats.level}</p>
+              {builds
+                ?.filter((build) => build.characterClass === classData?.name)
+                .map((build, index) => (
+                  <div key={index} className='bg-gray-800/30 rounded-lg p-6 shadow-lg hover:bg-gray-700/30 transition-all duration-300 transform hover:scale-105'>
+                    <div className='flex justify-between items-start mb-4'>
+                      <div>
+                        <h3 className='text-xl font-bold text-white mb-2'>{build.title}</h3>
+                        <p className='text-lg text-blue-400 mb-2'>Nível {build.characterStats.level}</p>
+                      </div>
+                      <div className='flex items-center gap-1'>
+                        <span className='text-yellow-400'>⭐</span>
+                        <span className='text-white font-bold'>{build?.rating}</span>
+                      </div>
                     </div>
-                    <div className='flex items-center gap-1'>
-                      <span className='text-yellow-400'>⭐</span>
-                      <span className='text-white font-bold'>{build?.rating}</span>
-                    </div>
+                    <p className='text-gray-300 mb-4'>{build.overview}</p>
+                    <button
+                      onClick={() => navigate(`/builds/${build?.id}`)}
+                      className='w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg transition-colors duration-200'
+                    >
+                      Ver Build Completa
+                    </button>
                   </div>
-                  <p className='text-gray-300 mb-4'>{build.overview}</p>
-                  <button
-                    onClick={() => navigate(`/builds/${build?.id}`)}
-                    className='w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg transition-colors duration-200'
-                  >
-                    Ver Build Completa
-                  </button>
-                </div>
-              ))}
+                ))}
             </div>
 
             <div className='mt-8 text-center'>

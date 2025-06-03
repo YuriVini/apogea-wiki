@@ -142,10 +142,7 @@ export const BuildsDetails = () => {
               >
                 {isEditing ? 'Salvar' : 'Editar'}
               </button>
-              <button
-                onClick={handleDeleteBuild}
-                className='px-6 py-2 rounded-lg font-semibold transition-colors bg-red-600 hover:bg-red-700 text-white'
-              >
+              <button onClick={handleDeleteBuild} className='px-6 py-2 rounded-lg font-semibold transition-colors bg-red-600 hover:bg-red-700 text-white'>
                 Excluir
               </button>
             </div>
