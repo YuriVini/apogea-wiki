@@ -195,7 +195,7 @@ export const Home = () => {
         <main className='max-w-7xl mx-auto p-6'>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
             <div className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30'>
-              <h2 className='text-xl font-bold text-white mb-4'>Guias de Quest em Destaque</h2>
+              <h2 className='text-xl font-bold text-white mb-4'>Tutoriais em Destaque</h2>
               <ul className='space-y-3'>
                 {guides?.slice(0, 4).map((guide, index) => (
                   <li key={index} className='text-gray-300 hover:text-white cursor-pointer transition-colors duration-200'>
