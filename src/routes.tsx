@@ -20,6 +20,7 @@ import { queryClient } from './app'
 import { Edit } from './domains/admin/pages/edit-equipment'
 import { BuildCreate } from './domains/customer/pages/build-create'
 import { AllBuilds } from './domains/customer/pages/all-builds'
+import { CreateEquipment } from './domains/admin/pages/create-equipment'
 
 export const AppRoutes = () => {
   usePrefetchQuery({ queryKey: [EQUIPMENTS_QUERY_KEY] }, queryClient)
@@ -46,6 +47,7 @@ export const AppRoutes = () => {
 
       {/* Admin Routes */}
       <Route path='/admin/edit/:name' element={<Edit />} />
+      <Route path='/admin/equipments/create' element={<CreateEquipment />} />
     </Routes>
   )
 }
