@@ -13,6 +13,7 @@ export const CreateEquipment = () => {
     category: 'sword',
     imageUrl: '',
     size: '',
+    armor: '',
     range: '',
     damage: '',
     weight: '',
@@ -25,7 +26,7 @@ export const CreateEquipment = () => {
     attackSpeed: '',
   })
 
-  
+    
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -88,6 +89,11 @@ export const CreateEquipment = () => {
                 <option value='ability'>Ability</option>
                 <option value='backpack'>Backpack</option>
               </select>
+            </div>
+
+            <div>
+              <label className='block text-gray-300 mb-2'>Armor</label>
+              <input type='text' name='armor' value={formData.armor} onChange={handleChange} className='w-full p-2 rounded bg-gray-700 text-white' placeholder='e.g. 10' />
             </div>
 
             <div>
