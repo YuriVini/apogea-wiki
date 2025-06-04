@@ -47,6 +47,7 @@ export const Edit = () => {
           category: equipment.category,
           imageUrl: equipment.imageUrl,
           size: equipment.size,
+          armor: equipment.armor,
           range: equipment.range,
           damage: equipment.damage,
           weight: equipment.weight,
@@ -87,6 +88,12 @@ export const Edit = () => {
 
   const categories = ['sword', 'dagger', 'axe', 'mace', 'bow', 'staff', 'gloves', 'shield', 'helmet', 'chest', 'legs', 'boots', 'necklace', 'ring', 'backpack']
   const rarities = ['common', 'uncommon', 'rare', 'epic', 'legendary']
+
+  const isArmorOrAccessory = ['helmet', 'chest', 'legs', 'boots', 'necklace', 'ring', 'backpack'].includes(equipment.category)
+
+  const fieldsToDisplay = isArmorOrAccessory
+    ? ['name', 'armor', 'attributes', 'weight', 'dropBy', 'buyFrom', 'sellTo']
+    : Object.keys(equipment).filter(key => key !== 'id')
 
   return (
     <div className='min-h-screen bg-gradient-to-b from-gray-900 to-gray-800'>
@@ -129,55 +136,50 @@ export const Edit = () => {
           </div>
           <div className='bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-              {Object.entries(equipment).map(([key, value]) => (
-                <div key={key}>
-                  <label className='block text-gray-300 mb-2 font-semibold'>{key}</label>
-                  {key === 'category' ? (
-                    <select
-                      value={value as string}
-                      onChange={(e) => handleInputChange(key as keyof EquipmentsApiTypes.Equipment, e.target.value)}
-                      disabled={!isEditing}
-                      className='w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200'
-                    >
-                      {categories.map((category) => (
-                        <option key={category} value={category}>
-                          {category}
-                        </option>
-                      ))}
-                    </select>
-                  ) : key === 'rarity' ? (
-                    <select
-                      value={value as string}
-                      onChange={(e) => handleInputChange(key as keyof EquipmentsApiTypes.Equipment, e.target.value)}
-                      disabled={!isEditing}
-                      className='w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200'
-                    >
-                      {rarities.map((rarity) => (
-                        <option key={rarity} value={rarity}>
-                          {rarity}
-                        </option>
-                      ))}
-                    </select>
-                  ) : key === 'size' ? (
-                    <input
-                      type='text'
-                      value={value as string}
-                      onChange={(e) => handleInputChange(key as keyof EquipmentsApiTypes.Equipment, e.target.value)}
-                      disabled={!isEditing}
-                      className='w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200'
-                      placeholder='Enter size'
-                    />
-                  ) : (
-                    <input
-                      type='text'
-                      value={value as string}
-                      onChange={(e) => handleInputChange(key as keyof EquipmentsApiTypes.Equipment, e.target.value)}
-                      disabled={!isEditing}
-                      className='w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200'
-                    />
-                  )}
-                </div>
-              ))}
+              {fieldsToDisplay.map((key) => {
+                const value = equipment[key as keyof EquipmentsApiTypes.Equipment]
+                return (
+                  <div key={key}>
+                    <label className='block text-gray-300 mb-2 font-semibold'>{key}</label>
+                    {key === 'category' ? (
+                      <select
+                        value={value as string}
+                        onChange={(e) => handleInputChange(key as keyof EquipmentsApiTypes.Equipment, e.target.value)}
+                        disabled={!isEditing}
+                        className='w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200'
+                      >
+                        {categories.map((category) => (
+                          <option key={category} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </select>
+                    ) : key === 'rarity' ? (
+                      <select
+                        value={value as string}
+                        onChange={(e) => handleInputChange(key as keyof EquipmentsApiTypes.Equipment, e.target.value)}
+                        disabled={!isEditing}
+                        className='w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200'
+                      >
+                        {rarities.map((rarity) => (
+                          <option key={rarity} value={rarity}>
+                            {rarity}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type='text'
+                        value={value as string}
+                        onChange={(e) => handleInputChange(key as keyof EquipmentsApiTypes.Equipment, e.target.value)}
+                        disabled={!isEditing}
+                        className='w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200'
+                        placeholder={`Enter ${key}`}
+                      />
+                    )}
+                  </div>
+                )
+              })}
             </div>
           </div>
         </div>
