@@ -54,86 +54,86 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
               <tr className='bg-purple-900/30 text-gray-300'>
                 {isMonsterType ? (
                   <>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Nome</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>HP</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Experiência</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Habilidades</th>
-                    <th className='text-left p-4 font-semibold'>Loot</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Nome</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>HP</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Experiência</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Habilidades</th>
+                    <th className='text-center p-4 font-semibold'>Loot</th>
                     {renderEditHeader()}
                   </>
                 ) : isDropCreatureType ? (
                   <>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Item</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Nome</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Peso</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Drop Por</th>
-                    <th className='text-left p-4 font-semibold'>Preço de Venda</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Item</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Nome</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Peso</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Drop Por</th>
+                    <th className='text-center p-4 font-semibold'>Preço de Venda</th>
                     {renderEditHeader()}
                   </>
                 ) : isBookType ? (
                   <>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Nome</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Localização</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Autor</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Notas</th>
-                    <th className='text-left p-4 font-semibold'>Texto</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Nome</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Localização</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Autor</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Notas</th>
+                    <th className='text-center p-4 font-semibold'>Texto</th>
                     {renderEditHeader()}
                   </>
                 ) : isFoodType ? (
                   <>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Item</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Nome</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Peso</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Drop Por</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Tempo de Saciedade</th>
-                    <th className='text-left p-4 font-semibold'>Buffs</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Item</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Nome</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Peso</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Drop Por</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Tempo de Saciedade</th>
+                    <th className='text-center p-4 font-semibold'>Buffs</th>
                     {renderEditHeader()}
                   </>
                 ) : isRecipeType ? (
                   <>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Item</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Nome</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Tempo de Saciedade</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Buffs</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Peso</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Requisitos</th>
-                    <th className='text-left p-4 font-semibold'>Drop Por</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Item</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Nome</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Tempo de Saciedade</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Buffs</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Peso</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Requisitos</th>
+                    <th className='text-center p-4 font-semibold'>Drop Por</th>
                     {renderEditHeader()}
                   </>
                 ) : isNpcType ? (
                   <>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Nome</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Localização</th>
-                    <th className='text-left p-4 font-semibold'>Vende</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Nome</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Localização</th>
+                    <th className='text-center p-4 font-semibold'>Vende</th>
                     {renderEditHeader()}
                   </>
                 ) : isItensQuestType ? (
                   <>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Item</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Nome</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Peso</th>
-                    <th className='text-left p-4 font-semibold'>Descrição</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Item</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Nome</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Peso</th>
+                    <th className='text-center p-4 font-semibold'>Descrição</th>
                     {renderEditHeader()}
                   </>
                 ) : (
                   <>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Item</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Nome</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Tipo</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>HP</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Exp</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Habilidades</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Loot</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Localização</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Autor</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Notas</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Texto</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Tempo de Saciedade</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Buffs</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Peso</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Requisitos</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Drop Por</th>
-                    <th className='text-left p-4 font-semibold'>Vender Para</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Item</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Nome</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Tipo</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>HP</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Exp</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Habilidades</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Loot</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Localização</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Autor</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Notas</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Texto</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Tempo de Saciedade</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Buffs</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Peso</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Requisitos</th>
+                    <th className='text-center p-4 border-r border-gray-600 font-semibold'>Drop Por</th>
+                    <th className='text-center p-4 font-semibold'>Vender Para</th>
                     {renderEditHeader()}
                   </>
                 )}
@@ -144,15 +144,15 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                 <tr key={index} className='border-b border-gray-700 hover:bg-gray-700/30 transition-colors'>
                   {isMonsterType ? (
                     <>
-                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg'>{item.name}</td>
-                      <td className='p-4 border-r border-gray-600 text-red-400 font-semibold'>
+                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg text-center'>{item.name}</td>
+                      <td className='p-4 border-r border-gray-600 text-red-400 font-semibold text-center'>
                         <span className='bg-red-900/30 px-2 py-1 rounded'>{item.hp || '-'}</span>
                       </td>
-                      <td className='p-4 border-r border-gray-600 text-green-400 font-semibold'>
+                      <td className='p-4 border-r border-gray-600 text-green-400 font-semibold text-center'>
                         <span className='bg-green-900/30 px-2 py-1 rounded'>{item.exp || '-'}</span>
                       </td>
-                      <td className='p-4 border-r border-gray-600 text-purple-400 text-sm'>{item.abilities || 'Nenhuma habilidade especial'}</td>
-                      <td className='p-4 text-yellow-400 text-sm'>{item.loot || 'Nenhum loot'}</td>
+                      <td className='p-4 border-r border-gray-600 text-purple-400 text-sm text-center'>{item.abilities || 'Nenhuma habilidade especial'}</td>
+                      <td className='p-4 text-yellow-400 text-sm text-center'>{item.loot || 'Nenhum loot'}</td>
                       {renderEditButton(item)}
                     </>
                   ) : isDropCreatureType ? (
@@ -162,23 +162,23 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                           <OtherBox title={item.name} imageUrl={item.imageUrl || ''} />
                         </div>
                       </td>
-                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg'>{item.name}</td>
-                      <td className='p-4 border-r border-gray-600 text-gray-300 font-semibold'>
+                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg text-center'>{item.name}</td>
+                      <td className='p-4 border-r border-gray-600 text-gray-300 font-semibold text-center'>
                         <span className='bg-gray-900/30 px-2 py-1 rounded'>{item.weight || '-'}</span>
                       </td>
-                      <td className='p-4 border-r border-gray-600 text-red-400 text-sm'>{item.dropBy || 'Não informado'}</td>
-                      <td className='p-4 text-green-400 text-sm'>{item.sellTo || 'Não vendável'}</td>
+                      <td className='p-4 border-r border-gray-600 text-red-400 text-sm text-center'>{item.dropBy || 'Não informado'}</td>
+                      <td className='p-4 text-green-400 text-sm text-center'>{item.sellTo || 'Não vendável'}</td>
                       {renderEditButton(item)}
                     </>
                   ) : isBookType ? (
                     <>
-                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg'>{item.name}</td>
-                      <td className='p-4 border-r border-gray-600 text-cyan-400 font-semibold'>
+                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg text-center'>{item.name}</td>
+                      <td className='p-4 border-r border-gray-600 text-cyan-400 font-semibold text-center'>
                         <span className='bg-cyan-900/30 px-2 py-1 rounded'>{item.location || '-'}</span>
                       </td>
-                      <td className='p-4 border-r border-gray-600 text-purple-400 text-sm'>{item.author || 'Autor desconhecido'}</td>
-                      <td className='p-4 border-r border-gray-600 text-gray-300 text-sm'>{item.notes || 'Sem notas'}</td>
-                      <td className='p-4 text-yellow-400 text-sm'>{item.text || 'Sem texto'}</td>
+                      <td className='p-4 border-r border-gray-600 text-purple-400 text-sm text-center'>{item.author || 'Autor desconhecido'}</td>
+                      <td className='p-4 border-r border-gray-600 text-gray-300 text-sm text-center'>{item.notes || 'Sem notas'}</td>
+                      <td className='p-4 text-yellow-400 text-sm text-center'>{item.text || 'Sem texto'}</td>
                       {renderEditButton(item)}
                     </>
                   ) : isFoodType ? (
@@ -188,15 +188,15 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                           <OtherBox title={item.name} imageUrl={item.imageUrl || ''} />
                         </div>
                       </td>
-                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg'>{item.name}</td>
-                      <td className='p-4 border-r border-gray-600 text-gray-300 font-semibold'>
+                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg text-center'>{item.name}</td>
+                      <td className='p-4 border-r border-gray-600 text-gray-300 font-semibold text-center'>
                         <span className='bg-gray-900/30 px-2 py-1 rounded'>{item.weight || '-'}</span>
                       </td>
-                      <td className='p-4 border-r border-gray-600 text-red-400 text-sm'>{item.dropBy || 'Não informado'}</td>
-                      <td className='p-4 border-r border-gray-600 text-green-400 font-semibold'>
+                      <td className='p-4 border-r border-gray-600 text-red-400 text-sm text-center'>{item.dropBy || 'Não informado'}</td>
+                      <td className='p-4 border-r border-gray-600 text-green-400 font-semibold text-center'>
                         <span className='bg-green-900/30 px-2 py-1 rounded'>{item.satiateTime || '-'}</span>
                       </td>
-                      <td className='p-4 text-purple-400 text-sm'>{item.buffs || 'Nenhum buff'}</td>
+                      <td className='p-4 text-purple-400 text-sm text-center'>{item.buffs || 'Nenhum buff'}</td>
                       {renderEditButton(item)}
                     </>
                   ) : isRecipeType ? (
@@ -206,25 +206,25 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                           <OtherBox title={item.name} imageUrl={item.imageUrl || ''} />
                         </div>
                       </td>
-                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg'>{item.name}</td>
-                      <td className='p-4 border-r border-gray-600 text-green-400 font-semibold'>
+                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg text-center'>{item.name}</td>
+                      <td className='p-4 border-r border-gray-600 text-green-400 font-semibold text-center'>
                         <span className='bg-green-900/30 px-2 py-1 rounded'>{item.satiateTime || '-'}</span>
                       </td>
-                      <td className='p-4 border-r border-gray-600 text-purple-400 text-sm'>{item.buffs || 'Nenhum buff'}</td>
-                      <td className='p-4 border-r border-gray-600 text-gray-300 font-semibold'>
+                      <td className='p-4 border-r border-gray-600 text-purple-400 text-sm text-center'>{item.buffs || 'Nenhum buff'}</td>
+                      <td className='p-4 border-r border-gray-600 text-gray-300 font-semibold text-center'>
                         <span className='bg-gray-900/30 px-2 py-1 rounded'>{item.weight || '-'}</span>
                       </td>
-                      <td className='p-4 border-r border-gray-600 text-yellow-400 text-sm'>{item.requirements || 'Sem requisitos'}</td>
-                      <td className='p-4 text-red-400 text-sm'>{item.dropBy || 'Não informado'}</td>
+                      <td className='p-4 border-r border-gray-600 text-yellow-400 text-sm text-center'>{item.requirements || 'Sem requisitos'}</td>
+                      <td className='p-4 text-red-400 text-sm text-center'>{item.dropBy || 'Não informado'}</td>
                       {renderEditButton(item)}
                     </>
                   ) : isNpcType ? (
                     <>
-                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg'>{item.name}</td>
-                      <td className='p-4 border-r border-gray-600 text-cyan-400 font-semibold'>
+                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg text-center'>{item.name}</td>
+                      <td className='p-4 border-r border-gray-600 text-cyan-400 font-semibold text-center'>
                         <span className='bg-cyan-900/30 px-2 py-1 rounded'>{item.location || '-'}</span>
                       </td>
-                      <td className='p-4 text-green-400 text-sm'>{item.sellTo || 'Não vende nada'}</td>
+                      <td className='p-4 text-green-400 text-sm text-center'>{item.sellTo || 'Não vende nada'}</td>
                       {renderEditButton(item)}
                     </>
                   ) : isItensQuestType ? (
@@ -234,11 +234,11 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                           <OtherBox title={item.name} imageUrl={item.imageUrl || ''} />
                         </div>
                       </td>
-                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg'>{item.name}</td>
-                      <td className='p-4 border-r border-gray-600 text-gray-300 font-semibold'>
+                      <td className='p-4 border-r border-gray-600 text-orange-400 font-bold text-lg text-center'>{item.name}</td>
+                      <td className='p-4 border-r border-gray-600 text-gray-300 font-semibold text-center'>
                         <span className='bg-gray-900/30 px-2 py-1 rounded'>{item.weight || '-'}</span>
                       </td>
-                      <td className='p-4 text-purple-400 text-sm'>{item.description || 'Sem descrição'}</td>
+                      <td className='p-4 text-purple-400 text-sm text-center'>{item.description || 'Sem descrição'}</td>
                       {renderEditButton(item)}
                     </>
                   ) : (
@@ -248,22 +248,22 @@ export const OtherTable = ({ title, items }: { title: string; items: OtherDataba
                           <OtherBox title={item.name} imageUrl={item.imageUrl || ''} />
                         </div>
                       </td>
-                      <td className='p-4 border-r border-gray-600 text-yellow-400 font-medium'>{item.name}</td>
-                      <td className='p-4 border-r border-gray-600 text-blue-400'>{item.type}</td>
-                      <td className='p-4 border-r border-gray-600 text-red-400'>{item.hp || '-'}</td>
-                      <td className='p-4 border-r border-gray-600 text-green-400'>{item.exp || '-'}</td>
-                      <td className='p-4 border-r border-gray-600 text-purple-400'>{item.abilities || '-'}</td>
-                      <td className='p-4 border-r border-gray-600 text-orange-400'>{item.loot || '-'}</td>
-                      <td className='p-4 border-r border-gray-600 text-cyan-400'>{item.location || '-'}</td>
-                      <td className='p-4 border-r border-gray-600 text-gray-300'>{item.author || '-'}</td>
-                      <td className='p-4 border-r border-gray-600 text-gray-300'>{item.notes || '-'}</td>
-                      <td className='p-4 border-r border-gray-600 text-gray-300'>{item.text || '-'}</td>
-                      <td className='p-4 border-r border-gray-600 text-green-400'>{item.satiateTime || '-'}</td>
-                      <td className='p-4 border-r border-gray-600 text-purple-400'>{item.buffs || '-'}</td>
-                      <td className='p-4 border-r border-gray-600 text-gray-300'>{item.weight || '-'}</td>
-                      <td className='p-4 border-r border-gray-600 text-orange-400'>{item.requirements || '-'}</td>
-                      <td className='p-4 border-r border-gray-600 text-red-400'>{item.dropBy || '-'}</td>
-                      <td className='p-4 text-green-300'>{item.sellTo || '-'}</td>
+                      <td className='p-4 border-r border-gray-600 text-yellow-400 font-medium text-center'>{item.name}</td>
+                      <td className='p-4 border-r border-gray-600 text-blue-400 text-center'>{item.type}</td>
+                      <td className='p-4 border-r border-gray-600 text-red-400 text-center'>{item.hp || '-'}</td>
+                      <td className='p-4 border-r border-gray-600 text-green-400 text-center'>{item.exp || '-'}</td>
+                      <td className='p-4 border-r border-gray-600 text-purple-400 text-center'>{item.abilities || '-'}</td>
+                      <td className='p-4 border-r border-gray-600 text-orange-400 text-center'>{item.loot || '-'}</td>
+                      <td className='p-4 border-r border-gray-600 text-cyan-400 text-center'>{item.location || '-'}</td>
+                      <td className='p-4 border-r border-gray-600 text-gray-300 text-center'>{item.author || '-'}</td>
+                      <td className='p-4 border-r border-gray-600 text-gray-300 text-center'>{item.notes || '-'}</td>
+                      <td className='p-4 border-r border-gray-600 text-gray-300 text-center'>{item.text || '-'}</td>
+                      <td className='p-4 border-r border-gray-600 text-green-400 text-center'>{item.satiateTime || '-'}</td>
+                      <td className='p-4 border-r border-gray-600 text-purple-400 text-center'>{item.buffs || '-'}</td>
+                      <td className='p-4 border-r border-gray-600 text-gray-300 text-center'>{item.weight || '-'}</td>
+                      <td className='p-4 border-r border-gray-600 text-orange-400 text-center'>{item.requirements || '-'}</td>
+                      <td className='p-4 border-r border-gray-600 text-red-400 text-center'>{item.dropBy || '-'}</td>
+                      <td className='p-4 text-green-300 text-center'>{item.sellTo || '-'}</td>
                       {renderEditButton(item)}
                     </>
                   )}
