@@ -15,7 +15,7 @@ export const getEnvironment = () => {
   
   return {
     envName: "DEVELOPMENT",
-    API_URL: "http://localhost:3333/api" //"https://apogea-wiki-back.onrender.com/api"
+    API_URL: "https://apogea-wiki-back.onrender.com/api" 
   };
 };
 
