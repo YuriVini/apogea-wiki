@@ -85,7 +85,6 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
         name: name,
         avatar_url: avatar_url,
       })
-      console.log('teste1____________', response?.data)
       setUser({
         ...user,
         name: response?.data?.user?.name,
@@ -95,7 +94,6 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
       onSuccess()
     } catch (error) {
       const { data } = error as GlobalApiTypes.ErrorResponse
-      console.log('teste2____________', error)
       toast.error('Erro ao atualizar perfil \n' + data?.message)
     }
   }

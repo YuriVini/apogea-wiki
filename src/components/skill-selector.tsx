@@ -26,9 +26,6 @@ export const SkillSelector = ({ isOpen, onClose, type, slotType, category }: Ski
   const categoryLabel = category.length === 1 ? category[0].charAt(0).toUpperCase() + category[0].slice(1) : 'Equipment'
 
   const handleSelectEquipment = (equipment: EquipmentsApiTypes.Equipment) => {
-    console.log('equipment', equipment)
-    console.log('build', build)
-    console.log('slotType', slotType)
     setBuild({
       ...build,
       equipment: {
