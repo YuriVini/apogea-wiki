@@ -35,6 +35,7 @@ export interface Equipment {
   rarity?: 'common' | 'magic' | 'rare' | 'legendary'
   imageUrl: string
   type: SlotType
+  armor?: string
   category: CategoryType
   damage?: string
   attackSpeed?: string
