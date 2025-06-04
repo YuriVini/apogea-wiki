@@ -12,9 +12,8 @@ export interface HttpResponse<Data = any, MetaData = any> {
 }
 
 export const getEnvironment = () => {
-  
   return {
-    envName: "DEVELOPMENT",
+    envName: "PRODUCTION",
     API_URL: "https://apogea-wiki-back.onrender.com/api" 
   };
 };

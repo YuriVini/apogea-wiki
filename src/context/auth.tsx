@@ -140,7 +140,11 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
           })
         }
       } catch (error) {
-        const { data } = error as GlobalApiTypes.ErrorResponse
+        const { data, status } = error as GlobalApiTypes.ErrorResponse
+        if (status === 404) {
+          localStorage.removeItem(USER_TOKEN)
+          logOut()
+        }
         toast.error('Erro ao carregar usuário \n' + data?.message)
       } finally {
         setLoadingUser(false)
