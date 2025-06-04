@@ -1,17 +1,25 @@
 import { Footer } from '../../../components/footer'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Api } from '../../../@api/axios'
 import { Header } from '../../../components/header'
 import { useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
+import { useUpload } from '../../../hooks/uploads'
+
+interface StepImageFile {
+  file: File
+  preview: string
+}
 
 export const CreateGuide = () => {
   const navigate = useNavigate()
+  const { uploadFileToS3 } = useUpload()
   const [guide, setGuide] = useState<GuidesApiTypes.Guide>({
     title: '',
     description: '',
     steps: [{ title: '', description: '' }],
   } as GuidesApiTypes.Guide)
+  const [pendingImages, setPendingImages] = useState<Record<number, StepImageFile>>({})
 
   const handleUpdateGuide = (field: keyof GuidesApiTypes.Guide, value: string) => {
     setGuide({ ...guide, [field]: value })
@@ -51,6 +59,14 @@ export const CreateGuide = () => {
       newSteps[index] = { ...step, [property]: defaultValue }
     }
 
+    // If we're removing the image_url property, also remove any pending image
+    if (property === 'image_url' && pendingImages[index]) {
+      URL.revokeObjectURL(pendingImages[index].preview)
+      const newPendingImages = { ...pendingImages }
+      delete newPendingImages[index]
+      setPendingImages(newPendingImages)
+    }
+
     setGuide({ ...guide, steps: newSteps })
   }
 
@@ -68,6 +84,14 @@ export const CreateGuide = () => {
     setGuide({ ...guide, steps: newSteps })
   }
 
+  const handleImageSelect = (index: number, file: File) => {
+    const preview = URL.createObjectURL(file)
+    setPendingImages((prev) => ({
+      ...prev,
+      [index]: { file, preview },
+    }))
+  }
+
   const handleCreateGuide = async () => {
     if (!guide.title.trim() || !guide.description.trim()) {
       toast.error('Por favor, preencha o título e a descrição do guia.')
@@ -80,13 +104,42 @@ export const CreateGuide = () => {
     }
 
     try {
-      const response = await Api.post<GuidesApiTypes.GuideCreateResponse>('/guides', guide)
+      // Upload all pending images first
+      const newSteps = [...guide.steps]
+      for (const [index, imageData] of Object.entries(pendingImages)) {
+        const stepIndex = parseInt(index)
+        const fileName = await uploadFileToS3(imageData.file, 'guides')
+        newSteps[stepIndex] = { ...newSteps[stepIndex], image_url: fileName }
+      }
+
+      // Update guide with new image URLs
+      const updatedGuide = { ...guide, steps: newSteps }
+
+      const response = await Api.post<GuidesApiTypes.GuideCreateResponse>('/guides', updatedGuide)
       toast.success('Guia criado com sucesso!')
       navigate(`/guides/${response.data.guideId}`)
     } catch {
       toast.error('Erro ao criar guia.')
     }
   }
+
+  const handleFinishStepEditing = (index: number) => {
+    // If there's a pending image, update the step with its preview URL
+    if (pendingImages[index]) {
+      const newSteps = [...guide.steps]
+      newSteps[index] = { ...newSteps[index], image_url: pendingImages[index].preview }
+      setGuide({ ...guide, steps: newSteps })
+    }
+  }
+
+  // Cleanup preview URLs when component unmounts
+  useEffect(() => {
+    return () => {
+      Object.values(pendingImages).forEach((image) => {
+        URL.revokeObjectURL(image.preview)
+      })
+    }
+  }, [pendingImages])
 
   return (
     <div>
@@ -283,16 +336,43 @@ export const CreateGuide = () => {
 
                 {step.image_url !== undefined && (
                   <div className='bg-indigo-900/20 p-3 rounded'>
-                    <label className='block text-indigo-300 font-medium mb-1'>🖼️ URL da Imagem:</label>
+                    <label className='block text-indigo-300 font-medium mb-1'>🖼️ Imagem:</label>
                     <input
-                      type='text'
-                      value={step.image_url}
-                      onChange={(e) => handleUpdateStep(index, { ...step, image_url: e.target.value })}
+                      type='file'
+                      accept='image/*'
+                      onChange={(e) => {
+                        const file = e.target.files?.[0]
+                        if (file) {
+                          handleImageSelect(index, file)
+                        }
+                      }}
                       className='text-indigo-200 w-full bg-indigo-900/30 rounded p-2'
-                      placeholder='Digite a URL da imagem aqui...'
                     />
+                    {(pendingImages[index]?.preview || step.image_url) && (
+                      <div className='mt-2'>
+                        <img src={pendingImages[index]?.preview || step.image_url} alt={step.title} className='max-h-40 rounded-lg shadow-lg' />
+                      </div>
+                    )}
                   </div>
                 )}
+
+                <div className='flex gap-2 pt-4 border-t border-gray-600'>
+                  <button onClick={() => handleFinishStepEditing(index)} className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors'>
+                    ✅ Concluir Edição
+                  </button>
+                  <button
+                    onClick={() => handleRemoveStep(index)}
+                    className='bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded
+                    transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-red-500/30
+                    transform hover:scale-105 active:scale-95
+                    font-medium
+                    border border-red-400/30 hover:border-red-300/40
+                    backdrop-blur-sm bg-opacity-90
+                    focus:outline-none focus:ring-2 focus:ring-red-500/50'
+                  >
+                    🗑️ Excluir Passo
+                  </button>
+                </div>
               </div>
             </div>
           ))}
