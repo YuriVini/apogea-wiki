@@ -344,7 +344,7 @@ export class Api {
       });
 
     return {
-      data: response?.data,
+      data: response,
       meta: response?.meta,
       reason: response?.reason,
       statusCode: response?.statusCode || 500,
