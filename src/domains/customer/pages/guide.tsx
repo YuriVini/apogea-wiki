@@ -58,7 +58,8 @@ export const Guide = () => {
 
       // Save the guide
       const response = await Api.put(`/guides/${guideId}`, updatedGuide)
-      setGuide(response.data)
+      console.log('response', response)
+      setGuide((prev) => ({ ...prev, ...response.data }))
       // Clear pending images
       setPendingImages({})
       toast.success('Guia salvo com sucesso!')

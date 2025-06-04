@@ -20,8 +20,8 @@ const fetchEquipments = async (): Promise<EquipmentsApiTypes.Equipment[]> => {
 
 export const useCreateEquipment = () => {
   return useMutation({
-    mutationFn: async (equipment: Omit<EquipmentsApiTypes.Equipment, 'id'>): Promise<{ equipmentId: string }> => {
-      const { data } = await Api.post<{ equipmentId: string }>(`/equipments`, equipment)
+    mutationFn: async (equipment: Omit<EquipmentsApiTypes.Equipment, 'id'>): Promise<{ id: string }> => {
+      const { data } = await Api.post<{ id: string }>(`/equipments`, equipment)
       return data
     },
   })

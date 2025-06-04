@@ -8,10 +8,12 @@ export const useUpload = () => {
     try {
       const uuid = uuidv4()
       const fileName = `${folder}/${uuid}-${file.name}`
+      console.log('fileName', fileName)
       const { signedUrl } = await upload(fileName)
+      console.log('signedUrl', signedUrl)
       const fileBuffer = await file.arrayBuffer()
       const binaryData = new Uint8Array(fileBuffer)
-      
+
       await fetch(signedUrl, {
         method: 'PUT',
         body: binaryData,

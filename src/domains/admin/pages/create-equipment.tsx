@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router'
 import { useCreateEquipment } from '../../../services/equipments'
 import { Header } from '../../../components/header'
 import { Footer } from '../../../components/footer'
+import { toast } from 'react-toastify'
 
 export const CreateEquipment = () => {
   const navigate = useNavigate()
@@ -26,16 +27,14 @@ export const CreateEquipment = () => {
     attackSpeed: '',
   })
 
-    
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
       const result = await createEquipment(formData)
-      console.log('Equipamento criado com sucesso! Resposta:', result)
-      navigate('/weapons/sword')
-    } catch (error) {
-      console.error('Erro ao criar equipamento:', error)
+      toast.success('Equipamento criado com sucesso!')
+      navigate(`/equipments/${result.id}`)
+    } catch {
+      toast.error('Erro ao criar equipamento')
     }
   }
 
