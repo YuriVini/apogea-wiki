@@ -37,7 +37,6 @@ export const Profile = () => {
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-  console.log('teste3____________', user)
   const {
     control,
     handleSubmit,
@@ -126,47 +125,94 @@ export const Profile = () => {
         <div className='bg-gray-800/30 rounded-lg p-8 shadow-lg'>
           <h1 className='text-3xl font-bold text-white mb-8 text-center'>Meu Perfil</h1>
 
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+          <div className='flex flex-col md:flex-row md:space-x-8 items-start'>
             {/* Informações do Usuário */}
-            <div className='bg-gray-700/30 rounded-lg p-6'>
-              <div className='flex justify-between items-center mb-4'>
-                <h2 className='text-xl font-bold text-white'>Informações Pessoais</h2>
-                {!isEditing && (
-                  <button
-                    onClick={handleEditClick}
-                    className='bg-blue-500/20 text-blue-300 p-2 rounded border border-blue-400/30 hover:bg-blue-500/30 hover:border-blue-300/50 transition-all duration-300 hover:scale-105'
-                  >
-                    ✏️
-                  </button>
-                )}
+            <div className='bg-gray-700/30 rounded-lg p-6 flex-1 w-full'>
+              <div className='flex items-center mb-6 gap-6'>
+                <div className='flex-shrink-0'>
+                  <div className='w-24 h-24 rounded-full overflow-hidden border-4 border-gray-600 bg-gray-900 flex items-center justify-center'>
+                    {user?.avatar_url ? (
+                      <img
+                        src={user.avatar_url}
+                        alt={user.name}
+                        className='w-full h-full object-cover'
+                      />
+                    ) : (
+                      <span className='text-4xl text-gray-500'>
+                        {user?.name?.[0]?.toUpperCase() || 'U'}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className='flex-1'>
+                  <div className='flex justify-between items-center mb-2'>
+                    <h2 className='text-xl font-bold text-white'>Informações Pessoais</h2>
+                    {!isEditing && (
+                      <button
+                        onClick={handleEditClick}
+                        className='bg-blue-500/20 text-blue-300 p-2 rounded border border-blue-400/30 hover:bg-blue-500/30 hover:border-blue-300/50 transition-all duration-300 hover:scale-105'
+                        title="Editar perfil"
+                      >
+                        ✏️
+                      </button>
+                    )}
+                  </div>
+                  <p className='text-gray-400 text-sm'>
+                    Visualize e edite suas informações pessoais.
+                  </p>
+                </div>
               </div>
               <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
-                <TextInput
-                  title='Nome'
-                  name='name'
-                  control={control}
-                  disabled={!isEditing}
-                  placeholder='Digite seu nome'
-                  className='w-full bg-gray-600/30 rounded-lg p-3 text-white border border-gray-500/30 focus:border-blue-400/50 focus:outline-none'
-                />
-                <TextInput title='Email' name='email' control={control} disabled />
-                <TextInput title='Membro desde' name='created_at' control={control} disabled />
-                <div className='flex space-x-2 pt-4'>
-                  <button
-                    type='submit'
-                    disabled={isSubmitting}
-                    className='bg-green-500/20 text-green-300 px-4 py-2 rounded border border-green-400/30 hover:bg-green-500/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
-                  >
-                    {isSubmitting ? 'Salvando...' : 'Salvar'}
-                  </button>
-                  <button
-                    type='button'
-                    onClick={handleCancelEdit}
-                    className='bg-gray-500/20 text-gray-300 px-4 py-2 rounded border border-gray-400/30 hover:bg-gray-500/30 transition-colors'
-                  >
-                    Cancelar
-                  </button>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                  <TextInput
+                    title='Nome'
+                    name='name'
+                    control={control}
+                    disabled={!isEditing}
+                    placeholder='Digite seu nome'
+                    className='w-full bg-gray-600/30 rounded-lg p-3 text-white border border-gray-500/30 focus:border-blue-400/50 focus:outline-none'
+                  />
+                  <TextInput
+                    title='Email'
+                    name='email'
+                    control={control}
+                    disabled
+                    className='w-full bg-gray-600/30 rounded-lg p-3 text-white border border-gray-500/30'
+                  />
+                  <TextInput
+                    title='Membro desde'
+                    name='created_at'
+                    control={control}
+                    disabled
+                    className='w-full bg-gray-600/30 rounded-lg p-3 text-white border border-gray-500/30'
+                  />
+                  <TextInput
+                    title='Avatar URL'
+                    name='avatar_url'
+                    control={control}
+                    disabled={!isEditing}
+                    placeholder='URL do seu avatar'
+                    className='w-full bg-gray-600/30 rounded-lg p-3 text-white border border-gray-500/30 focus:border-blue-400/50 focus:outline-none'
+                  />
                 </div>
+                {isEditing && (
+                  <div className='flex space-x-2 pt-4'>
+                    <button
+                      type='submit'
+                      disabled={isSubmitting}
+                      className='bg-green-500/20 text-green-300 px-4 py-2 rounded border border-green-400/30 hover:bg-green-500/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+                    >
+                      {isSubmitting ? 'Salvando...' : 'Salvar'}
+                    </button>
+                    <button
+                      type='button'
+                      onClick={handleCancelEdit}
+                      className='bg-gray-500/20 text-gray-300 px-4 py-2 rounded border border-gray-400/30 hover:bg-gray-500/30 transition-colors'
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                )}
               </form>
             </div>
           </div>
