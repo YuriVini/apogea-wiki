@@ -18,6 +18,8 @@ export const Weapons = () => {
 
   const filteredWeapons = equipments?.filter((weapon) => weapon.category === weaponCategory && weapon.name.toLowerCase().includes(searchTerm.toLowerCase())) || []
 
+  const isArmorOrAccessory = ['helmet', 'chest', 'legs', 'boots', 'necklace', 'ring', 'backpack'].includes(weaponCategory || '')
+
   function renderEditHeader() {
     return (
       isAdmin && (
@@ -29,7 +31,6 @@ export const Weapons = () => {
     )
   }
 
-  // Ajuste: handler recebe o id do equipamento
   const handleDeleteEquipment = (weaponId: string) => {
     if (window.confirm('Tem certeza que deseja excluir esta arma?')) {
       deleteEquipment(weaponId, {
@@ -103,7 +104,9 @@ export const Weapons = () => {
           )}
         </div>
         <div className='mb-8'>
-          <h2 className='text-2xl font-bold text-white mb-4 bg-purple-900/50 p-3 rounded-t-lg'>Melee Weapons</h2>
+          <h2 className='text-2xl font-bold text-white mb-4 bg-purple-900/50 p-3 rounded-t-lg'>
+            {isArmorOrAccessory ? 'Armaduras e Acessórios' : 'Armas e Escudos'}
+          </h2>
           <div className='bg-gray-800/50 rounded-lg overflow-hidden'>
             <div className='overflow-x-auto'>
               <table className='w-full text-sm'>
@@ -111,12 +114,20 @@ export const Weapons = () => {
                   <tr className='bg-purple-900/30 text-gray-300'>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Item</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Nome</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Dano</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Velocidade de Ataque</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Alcance</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Defesa</th>
+                    {!isArmorOrAccessory ? (
+                      <>
+                        <th className='text-left p-4 border-r border-gray-600 font-semibold'>Dano</th>
+                        <th className='text-left p-4 border-r border-gray-600 font-semibold'>Velocidade de Ataque</th>
+                        <th className='text-left p-4 border-r border-gray-600 font-semibold'>Alcance</th>
+                        <th className='text-left p-4 border-r border-gray-600 font-semibold'>Defesa</th>
+                      </>
+                    ) : (
+                      <th className='text-left p-4 border-r border-gray-600 font-semibold'>Armor</th>
+                    )}
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Atributos</th>
-                    <th className='text-left p-4 border-r border-gray-600 font-semibold'>Tamanho</th>
+                    {!isArmorOrAccessory && (
+                      <th className='text-left p-4 border-r border-gray-600 font-semibold'>Tamanho</th>
+                    )}
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Peso</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Drop Por</th>
                     <th className='text-left p-4 border-r border-gray-600 font-semibold'>Comprar De</th>
@@ -133,12 +144,20 @@ export const Weapons = () => {
                         </div>
                       </td>
                       <td className='p-4 border-r border-gray-600 text-yellow-400 font-medium'>{weapon.name}</td>
-                      <td className='p-4 border-r border-gray-600 text-green-400'>{weapon.damage}</td>
-                      <td className='p-4 border-r border-gray-600 text-blue-400'>{weapon.attackSpeed}</td>
-                      <td className='p-4 border-r border-gray-600 text-orange-400'>{weapon.range}</td>
-                      <td className='p-4 border-r border-gray-600 text-purple-400'>{weapon.defense}</td>
+                      {!isArmorOrAccessory ? (
+                        <>
+                          <td className='p-4 border-r border-gray-600 text-green-400'>{weapon.damage}</td>
+                          <td className='p-4 border-r border-gray-600 text-blue-400'>{weapon.attackSpeed}</td>
+                          <td className='p-4 border-r border-gray-600 text-orange-400'>{weapon.range}</td>
+                          <td className='p-4 border-r border-gray-600 text-purple-400'>{weapon.defense}</td>
+                        </>
+                      ) : (
+                        <td className='p-4 border-r border-gray-600 text-purple-400'>{weapon.armor}</td>
+                      )}
                       <td className='p-4 border-r border-gray-600 text-gray-300'>{weapon.attributes}</td>
-                      <td className='p-4 border-r border-gray-600 text-gray-300'>{weapon.size}</td>
+                      {!isArmorOrAccessory && (
+                        <td className='p-4 border-r border-gray-600 text-gray-300'>{weapon.size}</td>
+                      )}
                       <td className='p-4 border-r border-gray-600 text-gray-300'>{weapon.weight}</td>
                       <td className='p-4 border-r border-gray-600 text-red-400'>{weapon.dropBy}</td>
                       <td className='p-4 border-r border-gray-600 text-cyan-400'>{weapon.buyFrom}</td>
