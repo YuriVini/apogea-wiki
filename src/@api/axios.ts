@@ -14,16 +14,16 @@ export interface HttpResponse<Data = any, MetaData = any> {
 export const getEnvironment = () => {
   return {
     envName: "PRODUCTION",
-    API_URL: "https://apogea-wiki-back.onrender.com/api" 
+    API_URL: "http://localhost:3333/api", // "https://apogea-wiki-back.onrender.com/api"
   };
 };
 
 export const createInstanceNoAuth = () => {
   return axios.create({
-  timeout: 30000,
-  baseURL: getEnvironment().API_URL,
-  headers: { "Content-Type": "application/json" },
-});
+    timeout: 30000,
+    baseURL: getEnvironment().API_URL,
+    headers: { "Content-Type": "application/json" },
+  });
 };
 
 export class ApiNoAuth {
@@ -31,7 +31,7 @@ export class ApiNoAuth {
 
   static async get<Data = any, MetaData = any>(
     path: string,
-    params?: any
+    params?: any,
   ): Promise<HttpResponse<Data, MetaData>> {
     const response = await this.clientApiNoAuth
       .get(path, { params })
@@ -47,7 +47,8 @@ export class ApiNoAuth {
       reason: response?.reason,
       statusCode: response?.statusCode || 500,
       status: response?.status || "Server Error",
-      message: response?.message || "Ocorreu um erro ao processar a solicitação",
+      message:
+        response?.message || "Ocorreu um erro ao processar a solicitação",
     };
   }
 
@@ -58,7 +59,9 @@ export class ApiNoAuth {
       .catch((err: { response: { data: any } }) => {
         const data = err?.response?.data;
         const message =
-          data?.reason || data?.message || "Ocorreu um erro ao processar a solicitação";
+          data?.reason ||
+          data?.message ||
+          "Ocorreu um erro ao processar a solicitação";
         throw new Error(message);
       });
 
@@ -68,10 +71,10 @@ export class ApiNoAuth {
       reason: response?.reason,
       statusCode: response?.statusCode || 500,
       status: response?.status || "Server Error",
-      message: response?.message || "Ocorreu um erro ao processar a solicitação",
+      message:
+        response?.message || "Ocorreu um erro ao processar a solicitação",
     };
   }
-
 
   static getConfigs(body: any) {
     if (body instanceof FormData) {
@@ -85,7 +88,7 @@ export class ApiNoAuth {
   static async post<Data = any, MetaData = any>(
     path: string,
     body: any = {},
-    params?: any
+    params?: any,
   ): Promise<HttpResponse<Data, MetaData>> {
     const response = await this.clientApiNoAuth
       .post(path, body, { ...(Api.getConfigs(body) || {}), params })
@@ -101,13 +104,14 @@ export class ApiNoAuth {
       reason: response?.reason,
       statusCode: response?.statusCode || 500,
       status: response?.status || "Server Error",
-      message: response?.message || "Ocorreu um erro ao processar a solicitação",
+      message:
+        response?.message || "Ocorreu um erro ao processar a solicitação",
     };
   }
-  
+
   static async put<Data = any, MetaData = any>(
     path: string,
-    body: any = {}
+    body: any = {},
   ): Promise<HttpResponse<Data, MetaData>> {
     const response = await this.clientApiNoAuth
       .put(path, body, Api.getConfigs(body))
@@ -115,7 +119,9 @@ export class ApiNoAuth {
       .catch((err: { response: { data: any } }) => {
         const data = err?.response?.data;
         const message =
-          data?.reason || data?.message || "Ocorreu um erro ao processar a solicitação";
+          data?.reason ||
+          data?.message ||
+          "Ocorreu um erro ao processar a solicitação";
         throw new Error(message);
       });
 
@@ -125,7 +131,8 @@ export class ApiNoAuth {
       reason: response?.reason,
       statusCode: response?.statusCode || 500,
       status: response?.status || "Server Error",
-      message: response?.message || "Ocorreu um erro ao processar a solicitação",
+      message:
+        response?.message || "Ocorreu um erro ao processar a solicitação",
     };
   }
 }
@@ -164,7 +171,7 @@ export const createInstance = () => {
     },
     (error: any) => {
       return error;
-    }
+    },
   );
 
   client.interceptors.response.use(
@@ -218,12 +225,17 @@ export const createInstance = () => {
         }
       }
 
-      if (err && (err.response?.status === 504 || err.response?.status === 500)) {
-        return new Error("Ocorreu um erro interno mas o suporte técnico já foi acionado!");
+      if (
+        err &&
+        (err.response?.status === 504 || err.response?.status === 500)
+      ) {
+        return new Error(
+          "Ocorreu um erro interno mas o suporte técnico já foi acionado!",
+        );
       }
 
       return await Promise.reject(err);
-    }
+    },
   );
 
   return client;
@@ -239,7 +251,9 @@ export class Api {
       .catch((err: { response: { data: any } }) => {
         const data = err?.response?.data;
         const message =
-          data?.reason || data?.message || "Ocorreu um erro ao processar a solicitação";
+          data?.reason ||
+          data?.message ||
+          "Ocorreu um erro ao processar a solicitação";
         throw new Error(message);
       });
 
@@ -249,13 +263,14 @@ export class Api {
       reason: response?.reason,
       statusCode: response?.statusCode || 500,
       status: response?.status || "Server Error",
-      message: response?.message || "Ocorreu um erro ao processar a solicitação",
+      message:
+        response?.message || "Ocorreu um erro ao processar a solicitação",
     };
   }
 
   static async get<Data = any, MetaData = any>(
     path: string,
-    params?: any
+    params?: any,
   ): Promise<HttpResponse<Data, MetaData>> {
     const response = await this.clientApi
       .get(path, { params })
@@ -271,7 +286,8 @@ export class Api {
       reason: response?.reason,
       statusCode: response?.statusCode || 500,
       status: response?.status || "Server Error",
-      message: response?.message || "Ocorreu um erro ao processar a solicitação",
+      message:
+        response?.message || "Ocorreu um erro ao processar a solicitação",
     };
   }
 
@@ -286,7 +302,7 @@ export class Api {
 
   static async patch<Data = any, MetaData = any>(
     path: string,
-    body: any = {}
+    body: any = {},
   ): Promise<HttpResponse<Data, MetaData>> {
     const response = await this.clientApi
       .patch(path, body, Api.getConfigs(body))
@@ -302,14 +318,15 @@ export class Api {
       reason: response?.reason,
       statusCode: response?.statusCode || 500,
       status: response?.status || "Server Error",
-      message: response?.message || "Ocorreu um erro ao processar a solicitação",
+      message:
+        response?.message || "Ocorreu um erro ao processar a solicitação",
     };
   }
 
   static async post<Data = any, MetaData = any>(
     path: string,
     body: any = {},
-    params?: any
+    params?: any,
   ): Promise<HttpResponse<Data, MetaData>> {
     const response = await this.clientApi
       .post(path, body, { ...(Api.getConfigs(body) || {}), params })
@@ -325,13 +342,14 @@ export class Api {
       reason: response?.reason,
       statusCode: response?.statusCode || 500,
       status: response?.status || "Server Error",
-      message: response?.message || "Ocorreu um erro ao processar a solicitação",
+      message:
+        response?.message || "Ocorreu um erro ao processar a solicitação",
     };
   }
 
   static async put<Data = any, MetaData = any>(
     path: string,
-    body: any = {}
+    body: any = {},
   ): Promise<HttpResponse<Data, MetaData>> {
     const response = await this.clientApi
       .put(path, body, Api.getConfigs(body))
@@ -339,7 +357,9 @@ export class Api {
       .catch((err: { response: { data: any } }) => {
         const data = err?.response?.data;
         const message =
-          data?.reason || data?.message || "Ocorreu um erro ao processar a solicitação";
+          data?.reason ||
+          data?.message ||
+          "Ocorreu um erro ao processar a solicitação";
         throw new Error(message);
       });
 
@@ -349,7 +369,8 @@ export class Api {
       reason: response?.reason,
       statusCode: response?.statusCode || 500,
       status: response?.status || "Server Error",
-      message: response?.message || "Ocorreu um erro ao processar a solicitação",
+      message:
+        response?.message || "Ocorreu um erro ao processar a solicitação",
     };
   }
 }
