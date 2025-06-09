@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run TypeScript type checking
+echo "🔍 Running TypeScript type checking..."
+npx tsc --noEmit
+
+# Run lint-staged (which will run ESLint and other checks)
+echo "🔍 Running lint-staged..."
+npx lint-staged
+
+# Update git index
+git update-index --again
+
+git push
