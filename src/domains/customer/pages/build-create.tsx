@@ -90,14 +90,14 @@ export const BuildCreate = () => {
       <Header />
       <div className='container mx-auto px-4 py-8'>
         <div className='max-w-6xl mx-auto'>
-          <div className='flex justify-between items-center mb-8'>
+          <div className='flex flex-col sm:flex-row justify-between items-center mb-8'>
             <input
               type='text'
               value={buildData?.title}
               onChange={(e) => handleInputChange('title', e.target.value)}
-              className='text-4xl font-bold text-center text-blue-400 bg-gray-800 border border-gray-600 rounded px-4 py-2 flex-1 mr-4'
+              className='text-4xl font-bold text-center text-blue-400 bg-gray-800 border border-gray-600 rounded px-4 py-2 w-full sm:w-auto sm:flex-1 sm:mr-4 mb-4 sm:mb-0'
             />
-            <button onClick={handleCreateBuild} className='px-6 py-2 rounded-lg font-semibold transition-colors bg-green-600 hover:bg-green-700 text-white'>
+            <button onClick={handleCreateBuild} className='w-full sm:w-auto px-6 py-2 rounded-lg font-semibold transition-colors bg-green-600 hover:bg-green-700 text-white'>
               Criar Build
             </button>
           </div>
@@ -113,8 +113,8 @@ export const BuildCreate = () => {
 
           <div className='bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700'>
             <h2 className='text-2xl font-semibold mb-4 text-purple-400'>Pontos de Skill</h2>
-            <div className='flex justify-evenly bg-gray-900 rounded-lg p-4 border border-gray-600'>
-              <div className='w-1/4 space-y-2'>
+            <div className='flex flex-col lg:flex-row justify-evenly bg-gray-900 rounded-lg p-4 border border-gray-600'>
+              <div className='w-full lg:w-1/4 space-y-2 mb-4 lg:mb-0'>
                 {Object?.entries(buildData?.characterStats)?.map(([field, value]) => {
                   if (!statLabels[field]) return null
                   return (
@@ -160,16 +160,16 @@ export const BuildCreate = () => {
             </div>
             <ul className='space-y-2 text-gray-300'>
               {buildData?.strategy?.map((strategyItem, index) => (
-                <li key={index} className='flex items-center justify-between'>
-                  <div className='flex items-center flex-1'>
-                    <span className='text-cyan-400 mr-2'>💡</span>
+                <li key={index} className='flex flex-col sm:flex-row items-start sm:items-center justify-between'>
+                  <div className='flex items-start sm:items-center flex-1 mb-2 sm:mb-0'>
+                    <span className='text-cyan-400 mr-2 mt-1 sm:mt-0'>💡</span>
                     <textarea
                       value={strategyItem}
                       onChange={(e) => handleArrayUpdate('strategy', 'edit', index, e.target.value)}
-                      className='bg-gray-700 border border-gray-600 rounded px-2 py-1 flex-1 resize-vertical min-h-[60px]'
+                      className='bg-gray-700 border border-gray-600 rounded px-2 py-1 flex-1 resize-vertical min-h-[60px] w-full sm:w-auto'
                     />
                   </div>
-                  <button onClick={() => handleArrayUpdate('strategy', 'delete', index)} className='ml-2 text-red-400 hover:text-red-300 text-sm'>
+                  <button onClick={() => handleArrayUpdate('strategy', 'delete', index)} className='ml-0 sm:ml-2 text-red-400 hover:text-red-300 text-sm'>
                     <Trash2 />
                   </button>
                 </li>

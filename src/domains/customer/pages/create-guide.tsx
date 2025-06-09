@@ -142,12 +142,12 @@ export const CreateGuide = () => {
   }, [pendingImages])
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-900">
       <Header />
 
-      <div className='max-w-4xl mx-auto p-8'>
+      <div className='max-w-4xl mx-auto p-4 sm:p-6 lg:p-8'>
         <div className='mb-6'>
-          <h1 className='text-4xl font-bold text-white animate-fade-in-down'>Criar Novo Guia</h1>
+          <h1 className='text-3xl sm:text-4xl font-bold text-white animate-fade-in-down'>Criar Novo Guia</h1>
         </div>
 
         <div className='mb-6'>
@@ -156,12 +156,12 @@ export const CreateGuide = () => {
             type='text'
             value={guide.title}
             onChange={(e) => handleUpdateGuide('title', e.target.value)}
-            className='text-4xl font-bold bg-gray-800/30 text-white rounded px-4 py-2 w-full'
+            className='text-2xl sm:text-4xl font-bold bg-gray-800/30 text-white rounded px-4 py-2 w-full'
             placeholder='Digite o título do guia...'
           />
         </div>
 
-        <div className='mb-12'>
+        <div className='mb-8 sm:mb-12'>
           <label className='block text-white font-medium mb-2'>Descrição:</label>
           <textarea
             value={guide.description}
@@ -172,12 +172,12 @@ export const CreateGuide = () => {
           />
         </div>
 
-        <div className='space-y-12'>
+        <div className='space-y-8 sm:space-y-12'>
           {guide?.steps?.map((step, index) => (
-            <div key={index} className='bg-gray-800/30 rounded-lg p-6 transform hover:scale-[1.02] transition-all duration-300 hover:bg-gray-700/30 shadow-lg hover:shadow-xl'>
+            <div key={index} className='bg-gray-800/30 rounded-lg p-4 sm:p-6 transform hover:scale-[1.02] transition-all duration-300 hover:bg-gray-700/30 shadow-lg hover:shadow-xl'>
               <div className='space-y-4'>
-                <div className='flex justify-between items-center'>
-                  <h3 className='text-xl font-semibold text-white'>Passo {index + 1}</h3>
+                <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center'>
+                  <h3 className='text-xl font-semibold text-white mb-2 sm:mb-0'>Passo {index + 1}</h3>
                   {guide.steps.length > 1 && (
                     <button onClick={() => handleRemoveStep(index)} className='bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition-colors'>
                       🗑️ Remover Passo
@@ -356,8 +356,8 @@ export const CreateGuide = () => {
                   </div>
                 )}
 
-                <div className='flex gap-2 pt-4 border-t border-gray-600'>
-                  <button onClick={() => handleFinishStepEditing(index)} className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors'>
+                <div className='flex flex-col sm:flex-row gap-2 pt-4 border-t border-gray-600'>
+                  <button onClick={() => handleFinishStepEditing(index)} className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors w-full sm:w-auto'>
                     ✅ Concluir Edição
                   </button>
                   <button
@@ -368,7 +368,8 @@ export const CreateGuide = () => {
                     font-medium
                     border border-red-400/30 hover:border-red-300/40
                     backdrop-blur-sm bg-opacity-90
-                    focus:outline-none focus:ring-2 focus:ring-red-500/50'
+                    focus:outline-none focus:ring-2 focus:ring-red-500/50
+                    w-full sm:w-auto'
                   >
                     🗑️ Excluir Passo
                   </button>
@@ -389,7 +390,7 @@ export const CreateGuide = () => {
             border border-blue-400/30 hover:border-blue-300/40
             backdrop-blur-sm bg-opacity-90
             focus:outline-none focus:ring-2 focus:ring-blue-500/50
-            group'
+            group w-full sm:w-auto'
           >
             <span className='text-lg group-hover:rotate-12 transition-transform duration-300'>➕</span>
             Adicionar Novo Passo
@@ -398,7 +399,7 @@ export const CreateGuide = () => {
       </div>
 
       <button
-        className='fixed bottom-8 right-8 bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-full 
+        className='fixed bottom-4 right-4 sm:bottom-8 sm:right-8 bg-green-500 hover:bg-green-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-full 
         transition-all duration-300 flex items-center gap-2
         shadow-lg hover:shadow-xl hover:shadow-green-500/30
         transform hover:scale-110 hover:-translate-y-1 active:translate-y-0
