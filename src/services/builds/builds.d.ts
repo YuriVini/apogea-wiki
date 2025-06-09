@@ -34,6 +34,7 @@ export interface BuildData {
   characterClass: string
   characterStats: CharacterStats
   userId: string
+  author: string
 }
 
 export interface BuildSchemaRequest {

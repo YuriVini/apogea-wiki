@@ -17,6 +17,7 @@ const defaultBuild: BuildsApiTypes.BuildData = {
   userId: '',
   rating: 0,
   characterClass: 'Knight',
+  author: '',
   characterStats: {
     level: 1,
     health: 0,

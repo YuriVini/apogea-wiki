@@ -76,8 +76,7 @@ export const AllGuides = () => {
                       <span>{guide.steps?.length || 0} passos</span>
                       <span className='text-blue-400 hover:text-blue-300 transition-colors'>Ver guia →</span>
                     </div>
-                    <div className='mt-2 text-sm text-gray-500'>
-                    </div>
+                    <div className='mt-2 text-sm text-gray-500'></div>
                   </Link>
                 </div>
               ))}

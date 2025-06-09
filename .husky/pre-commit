@@ -1,0 +1,15 @@
+# Run TypeScript type checking
+echo "🔍 Running TypeScript type checking..."
+npx tsc --noEmit
+echo "✅ TypeScript type checking completed"
+
+# Run lint-staged (which will run ESLint and other checks)
+echo "🔍 Running lint-staged..."
+npx lint-staged
+echo "✅ Lint-staged completed"
+
+# Update git index
+git update-index --again
+echo "✅ Git index updated"
+
+git push

@@ -104,9 +104,7 @@ export const Weapons = () => {
           )}
         </div>
         <div className='mb-8'>
-          <h2 className='text-2xl font-bold text-white mb-4 bg-purple-900/50 p-3 rounded-t-lg'>
-            {isArmorOrAccessory ? 'Armaduras e Acessórios' : 'Armas e Escudos'}
-          </h2>
+          <h2 className='text-2xl font-bold text-white mb-4 bg-purple-900/50 p-3 rounded-t-lg'>{isArmorOrAccessory ? 'Armaduras e Acessórios' : 'Armas e Escudos'}</h2>
           <div className='bg-gray-800/50 rounded-lg overflow-hidden'>
             <div className='overflow-x-auto'>
               <table className='w-full text-sm'>
@@ -125,9 +123,7 @@ export const Weapons = () => {
                       <th className='text-center p-4 border-r border-gray-600 font-semibold'>Armor</th>
                     )}
                     <th className='text-center p-4 border-r border-gray-600 font-semibold'>Atributos</th>
-                    {!isArmorOrAccessory && (
-                      <th className='text-center p-4 border-r border-gray-600 font-semibold'>Tamanho</th>
-                    )}
+                    {!isArmorOrAccessory && <th className='text-center p-4 border-r border-gray-600 font-semibold'>Tamanho</th>}
                     <th className='text-center p-4 border-r border-gray-600 font-semibold'>Peso</th>
                     <th className='text-center p-4 border-r border-gray-600 font-semibold'>Drop Por</th>
                     <th className='text-center p-4 border-r border-gray-600 font-semibold'>Comprar De</th>
@@ -155,9 +151,7 @@ export const Weapons = () => {
                         <td className='p-4 border-r border-gray-600 text-purple-400 text-center'>{weapon.armor}</td>
                       )}
                       <td className='p-4 border-r border-gray-600 text-gray-300 text-center'>{weapon.attributes}</td>
-                      {!isArmorOrAccessory && (
-                        <td className='p-4 border-r border-gray-600 text-gray-300 text-center'>{weapon.size}</td>
-                      )}
+                      {!isArmorOrAccessory && <td className='p-4 border-r border-gray-600 text-gray-300 text-center'>{weapon.size}</td>}
                       <td className='p-4 border-r border-gray-600 text-gray-300 text-center'>{weapon.weight}</td>
                       <td className='p-4 border-r border-gray-600 text-red-400 text-center'>{weapon.dropBy}</td>
                       <td className='p-4 border-r border-gray-600 text-cyan-400 text-center'>{weapon.buyFrom}</td>

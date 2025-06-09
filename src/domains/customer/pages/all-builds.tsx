@@ -1,6 +1,6 @@
 import { Header } from '../../../components/header'
 import { Footer } from '../../../components/footer'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { ApiNoAuth } from '../../../@api/axios'
 import { Link } from 'react-router'
 import { Trash2 } from 'lucide-react'
@@ -47,7 +47,7 @@ export const AllBuilds = () => {
     fetchBuilds()
   }, [])
 
-  const filteredBuilds = selectedClass === 'all' ? builds : builds.filter((build) => build.characterClass === selectedClass)
+  const filteredBuilds = useMemo(() => (selectedClass === 'all' ? builds : builds.filter((build) => build.characterClass === selectedClass)), [builds, selectedClass])
 
   return (
     <div>
@@ -107,9 +107,7 @@ export const AllBuilds = () => {
                       <span>{build.characterClass}</span>
                       <span className='text-blue-400 hover:text-blue-300 transition-colors'>Ver build →</span>
                     </div>
-                    <div className='mt-2 text-sm text-gray-500'>
-                      Criado por: {build.author || 'Usuário Desconhecido'}
-                    </div>
+                    <div className='mt-2 text-sm text-gray-500'>Criado por: {build?.author || 'Usuário Desconhecido'}</div>
                   </Link>
                 </div>
               ))}

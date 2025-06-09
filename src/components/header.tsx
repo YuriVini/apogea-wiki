@@ -21,7 +21,11 @@ export const Header = () => {
         <button className='md:hidden text-white' onClick={toggleMenu}>
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
-        <nav className={`md:flex md:space-x-6 ${isMenuOpen ? 'block' : 'hidden'} md:relative fixed inset-0 bg-gray-800 md:bg-transparent p-4 md:p-0 z-50 overflow-y-auto md:overflow-visible`}>
+        <nav
+          className={`md:flex md:space-x-6 ${
+            isMenuOpen ? 'block' : 'hidden'
+          } md:relative fixed inset-0 bg-gray-800 md:bg-transparent p-4 md:p-0 z-50 overflow-y-auto md:overflow-visible`}
+        >
           <div className='md:hidden flex justify-end'>
             <button className='text-white mb-4' onClick={toggleMenu}>
               <X size={24} />
@@ -40,7 +44,7 @@ export const Header = () => {
             Tutoriais
           </Link>
           <Link
-            to='/guides/create'
+            to={isLoggedIn ? '/guides/create' : '/login'}
             className='block md:inline-block text-gray-300 hover:text-white transition-all duration-300 hover:scale-110 bg-blue-500/20 px-3 py-2 md:py-1 rounded-lg border border-blue-400/30 hover:bg-blue-500/30 hover:border-blue-300/50 shadow-md hover:shadow-blue-500/20 my-2 md:my-0 text-center'
           >
             ✨ Criar Guia
