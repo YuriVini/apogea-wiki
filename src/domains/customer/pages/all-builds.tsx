@@ -107,6 +107,9 @@ export const AllBuilds = () => {
                       <span>{build.characterClass}</span>
                       <span className='text-blue-400 hover:text-blue-300 transition-colors'>Ver build →</span>
                     </div>
+                    <div className='mt-2 text-sm text-gray-500'>
+                      Criado por: {build.author || 'Usuário Desconhecido'}
+                    </div>
                   </Link>
                 </div>
               ))}
