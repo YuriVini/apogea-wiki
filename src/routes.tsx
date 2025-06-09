@@ -2,7 +2,6 @@ import { Route, Routes } from 'react-router'
 import { Home } from './domains/customer/pages/home'
 import { Guide } from './domains/customer/pages/guide'
 import { Weapons } from './domains/customer/pages/weapons'
-import { Armor } from './domains/customer/pages/armor'
 import { CreateGuide } from './domains/customer/pages/create-guide'
 import { Register } from './domains/auth/pages/register'
 import { Login } from './domains/auth/pages/login'
@@ -32,7 +31,6 @@ export const AppRoutes = () => {
       <Route path='/' element={<Home />} />
       <Route path='/guides/:guideId' element={<Guide />} />
       <Route path='/weapons/:weaponCategory' element={<Weapons />} />
-      <Route path='/armor' element={<Armor />} />
       <Route path='/guides/create' element={<CreateGuide />} />
       <Route path='/register' element={<Register />} />
       <Route path='/login' element={<Login />} />

@@ -142,7 +142,7 @@ export const CreateGuide = () => {
   }, [pendingImages])
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className='min-h-screen bg-gray-900'>
       <Header />
 
       <div className='max-w-4xl mx-auto p-4 sm:p-6 lg:p-8'>
@@ -174,7 +174,10 @@ export const CreateGuide = () => {
 
         <div className='space-y-8 sm:space-y-12'>
           {guide?.steps?.map((step, index) => (
-            <div key={index} className='bg-gray-800/30 rounded-lg p-4 sm:p-6 transform hover:scale-[1.02] transition-all duration-300 hover:bg-gray-700/30 shadow-lg hover:shadow-xl'>
+            <div
+              key={index}
+              className='bg-gray-800/30 rounded-lg p-4 sm:p-6 transform hover:scale-[1.02] transition-all duration-300 hover:bg-gray-700/30 shadow-lg hover:shadow-xl'
+            >
               <div className='space-y-4'>
                 <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center'>
                   <h3 className='text-xl font-semibold text-white mb-2 sm:mb-0'>Passo {index + 1}</h3>
