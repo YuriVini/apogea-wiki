@@ -1,6 +1,6 @@
 import { Header } from '../../../components/header'
 import { Footer } from '../../../components/footer'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { SkillsGrid } from '../../../components/skill-grid'
 import { Trash2 } from 'lucide-react'
 import { StatField } from '../../../components/stat-field'
@@ -9,6 +9,8 @@ import { useParams, useNavigate } from 'react-router'
 import { fetchBuildById, useUpdateBuild, useDeleteBuild } from '../../../services/builds'
 import { useBuilder } from '../../../context/builder'
 import { statLabels } from '../../../constants/caracter-class-database'
+import { useAuth } from '../../../context/auth'
+
 
 export const BuildsDetails = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -17,6 +19,12 @@ export const BuildsDetails = () => {
   const { mutate: updateBuild } = useUpdateBuild()
   const { mutate: deleteBuild } = useDeleteBuild()
   const navigate = useNavigate()
+  const { user, isAdmin } = useAuth()
+
+  const canEdit = useMemo(
+    () => isAdmin || user?.id === buildData?.userId,
+    [isAdmin, user, buildData]
+  );
 
   const handleInputChange = (field: keyof BuildsApiTypes.BuildData, value: string) => {
     setBuild((prev) => ({
@@ -24,6 +32,8 @@ export const BuildsDetails = () => {
       [field]: value,
     }))
   }
+
+
 
   const handleStatUpdate = (field: keyof BuildsApiTypes.BuildData['characterStats'], increment: boolean) => {
     setBuild((prev) => ({
@@ -133,6 +143,7 @@ export const BuildsDetails = () => {
             ) : (
               <h1 className='text-4xl font-bold text-center text-blue-400 flex-1'>{buildData?.title}</h1>
             )}
+            {canEdit && (
             <div className='flex space-x-2'>
               <button
                 onClick={() => handleSaveEditBuild()}
@@ -143,9 +154,10 @@ export const BuildsDetails = () => {
                 {isEditing ? 'Salvar' : 'Editar'}
               </button>
               <button onClick={handleDeleteBuild} className='px-6 py-2 rounded-lg font-semibold transition-colors bg-red-600 hover:bg-red-700 text-white'>
-                Excluir
-              </button>
-            </div>
+                  Excluir
+                </button>
+              </div>
+            )}
           </div>
 
           <div className='bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700'>

@@ -33,6 +33,7 @@ export interface User {
   avatar_url: string
   isLoggedIn: boolean
   created_at: string
+  id: string
 }
 
 export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
@@ -44,6 +45,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
     avatar_url: '',
     isLoggedIn: false,
     created_at: '',
+    id: '',
   })
   const navigate = useNavigate()
   const { mutate: mutateLogin } = useLogin()
@@ -75,6 +77,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
       avatar_url: '',
       isLoggedIn: false,
       created_at: '',
+      id: '',
     })
     navigate('/')
   }
@@ -135,6 +138,7 @@ export const AuthProvider = ({ children }: { children?: React.ReactNode }) => {
             email: response.data.email,
             avatar_url: response.data.avatar_url,
             created_at: response.data.created_at,
+            id: response.data.id,
           })
         }
       } catch (error) {

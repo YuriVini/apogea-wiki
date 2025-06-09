@@ -7,6 +7,7 @@ import { Trash2 } from 'lucide-react'
 import { toast } from 'react-toastify'
 import { useDeleteBuild } from '../../../services/builds'
 import { useNavigate } from 'react-router'
+import { useAuth } from '../../../context/auth'
 
 export const AllBuilds = () => {
   const [builds, setBuilds] = useState<BuildsApiTypes.BuildData[]>([])
@@ -14,6 +15,7 @@ export const AllBuilds = () => {
   const [selectedClass, setSelectedClass] = useState<string>('all')
   const { mutate: deleteBuild } = useDeleteBuild()
   const navigate = useNavigate()
+  const { user, isAdmin } = useAuth()
 
   const fetchBuilds = async () => {
     try {
@@ -88,13 +90,15 @@ export const AllBuilds = () => {
                   key={build.id}
                   className='bg-gray-800/30 rounded-lg p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-700/30 hover:shadow-xl relative group'
                 >
-                  <button
-                    onClick={() => handleDeleteBuild(build.id)}
-                    className='absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 shadow-lg hover:shadow-red-500/30'
-                    title='Excluir build'
-                  >
-                    <Trash2 />
-                  </button>
+                  {(isAdmin || user?.id === build?.userId) && (
+                    <button
+                      onClick={() => handleDeleteBuild(build.id)}
+                      className='absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 shadow-lg hover:shadow-red-500/30'
+                      title='Excluir build'
+                    >
+                      <Trash2 />
+                    </button>
+                  )}
 
                   <Link to={`/builds/${build.id}`} className='block'>
                     <h3 className='text-xl font-bold text-white mb-3 line-clamp-2 pr-12'>{build.title}</h3>

@@ -33,6 +33,7 @@ export interface BuildData {
   rating: number
   characterClass: string
   characterStats: CharacterStats
+  userId: string
 }
 
 export interface BuildSchemaRequest {

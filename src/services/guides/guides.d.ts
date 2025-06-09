@@ -17,6 +17,7 @@ export interface Guide {
   description: string
   steps: GuideStep[]
   footer_text: string
+  userId: string
 }
 
 export interface GuideCreateResponse {
