@@ -14,6 +14,7 @@ const defaultBuild: BuildsApiTypes.BuildData = {
   id: '',
   title: 'Nova Build',
   overview: '',
+  userId: '',
   rating: 0,
   characterClass: 'Knight',
   characterStats: {

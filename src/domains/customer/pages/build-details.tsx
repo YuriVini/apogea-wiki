@@ -11,7 +11,6 @@ import { useBuilder } from '../../../context/builder'
 import { statLabels } from '../../../constants/caracter-class-database'
 import { useAuth } from '../../../context/auth'
 
-
 export const BuildsDetails = () => {
   const [isLoading, setIsLoading] = useState(true)
   const { buildId } = useParams<{ buildId: string }>()
@@ -21,10 +20,7 @@ export const BuildsDetails = () => {
   const navigate = useNavigate()
   const { user, isAdmin } = useAuth()
 
-  const canEdit = useMemo(
-    () => isAdmin || user?.id === buildData?.userId,
-    [isAdmin, user, buildData]
-  );
+  const canEdit = useMemo(() => isAdmin || user?.id === buildData?.userId, [isAdmin, user, buildData])
 
   const handleInputChange = (field: keyof BuildsApiTypes.BuildData, value: string) => {
     setBuild((prev) => ({
@@ -32,8 +28,6 @@ export const BuildsDetails = () => {
       [field]: value,
     }))
   }
-
-
 
   const handleStatUpdate = (field: keyof BuildsApiTypes.BuildData['characterStats'], increment: boolean) => {
     setBuild((prev) => ({
@@ -144,16 +138,16 @@ export const BuildsDetails = () => {
               <h1 className='text-4xl font-bold text-center text-blue-400 flex-1'>{buildData?.title}</h1>
             )}
             {canEdit && (
-            <div className='flex space-x-2'>
-              <button
-                onClick={() => handleSaveEditBuild()}
-                className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
-                  isEditing ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'
-                }`}
-              >
-                {isEditing ? 'Salvar' : 'Editar'}
-              </button>
-              <button onClick={handleDeleteBuild} className='px-6 py-2 rounded-lg font-semibold transition-colors bg-red-600 hover:bg-red-700 text-white'>
+              <div className='flex space-x-2'>
+                <button
+                  onClick={() => handleSaveEditBuild()}
+                  className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
+                    isEditing ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'
+                  }`}
+                >
+                  {isEditing ? 'Salvar' : 'Editar'}
+                </button>
+                <button onClick={handleDeleteBuild} className='px-6 py-2 rounded-lg font-semibold transition-colors bg-red-600 hover:bg-red-700 text-white'>
                   Excluir
                 </button>
               </div>
