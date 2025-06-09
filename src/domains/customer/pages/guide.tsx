@@ -566,6 +566,7 @@ export const Guide = () => {
 
       <Footer />
 
+      {canEdit && (
       <button
         className='fixed bottom-8 right-8 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full 
         transition-all duration-300 shadow-lg hover:shadow-xl
@@ -573,8 +574,9 @@ export const Guide = () => {
         focus:outline-none focus:ring-2 focus:ring-blue-500/50'
         onClick={isEditing ? handleSaveGuide : handleEditGuide}
       >
-        <span className='text-2xl'>{isEditing ? '💾' : '✏️'}</span>
-      </button>
+          <span className='text-2xl'>{isEditing ? '💾' : '✏️'}</span>
+        </button>
+      )}
     </div>
   )
 }
