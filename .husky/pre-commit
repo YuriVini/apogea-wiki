@@ -1,6 +1,7 @@
 # Run TypeScript type checking
 echo "🔍 Running TypeScript type checking..."
 npx tsc --noEmit
+yarn run build
 echo "✅ TypeScript type checking completed"
 
 # Run lint-staged (which will run ESLint and other checks)
