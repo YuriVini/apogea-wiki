@@ -3,9 +3,24 @@ import { Api } from "../../@api/axios";
 import { ApiNoAuth } from "../../@api/axios";
 
 export const OTHER_QUERY_KEY = "other";
+export const OTHER_ITEMS_TYPE_QUERY_KEY = "other-items-type";
 
 const fetchOther = async (): Promise<OtherApiTypes.OtherListResponse> => {
-  const { data } = await ApiNoAuth.get("/other");
+  const { data } = await ApiNoAuth.get("/other-items");
+  return data;
+};
+
+export const fetchOtherItemsType = async (
+  type: string,
+): Promise<OtherApiTypes.OtherListResponse> => {
+  const { data } = await ApiNoAuth.get(`/other-items/type/${type}`);
+  return data;
+};
+
+export const fetchOtherById = async (
+  id: string,
+): Promise<OtherApiTypes.Other> => {
+  const { data } = await ApiNoAuth.get(`/other-items/item/${id}`);
   return data;
 };
 
@@ -26,7 +41,7 @@ export const useUpdateOther = () => {
 export const useCreateOther = () => {
   return useMutation({
     mutationFn: async (
-      other: Omit<OtherApiTypes.Other, "name">,
+      other: Omit<OtherApiTypes.Other, "id">,
     ): Promise<{ id: string }> => {
       const { data } = await Api.post<{ id: string }>(`/other`, other);
       return data;
@@ -36,7 +51,7 @@ export const useCreateOther = () => {
 
 export const useDeleteOther = () => {
   return useMutation({
-    mutationFn: async (otherId: string) => {
+    mutationFn: async (otherId: string): Promise<void> => {
       await Api.delete(`/other/${otherId}`);
     },
   });
@@ -46,5 +61,12 @@ export const useOther = () => {
   return useQuery({
     queryKey: [OTHER_QUERY_KEY],
     queryFn: fetchOther,
+  });
+};
+
+export const useOtherById = (id: string) => {
+  return useQuery({
+    queryKey: [OTHER_QUERY_KEY, id],
+    queryFn: () => fetchOtherById(id),
   });
 };
