@@ -91,7 +91,9 @@ export const AllGuides = () => {
                         Ver guia →
                       </span>
                     </div>
-                    <div className="mt-2 text-sm text-gray-500"></div>
+                    <div className="mt-2 text-sm text-gray-500">
+                      Criado por: {guide.author || "Usuário desconhecido"}
+                    </div>
                   </Link>
                 </div>
               ))}
