@@ -1,199 +1,233 @@
-import { useParams, useNavigate } from 'react-router'
-import { Footer } from '../../../components/footer'
-import { useEffect, useMemo, useState } from 'react'
-import { Api, ApiNoAuth } from '../../../@api/axios'
-import { Header } from '../../../components/header'
-import { Trash2 } from 'lucide-react'
-import { toast } from 'react-toastify'
-import { useUpload } from '../../../hooks/uploads'
-import { useAuth } from '../../../context/auth'
+import { useParams, useNavigate } from "react-router";
+import { Footer } from "../../../components/footer";
+import { useEffect, useMemo, useState } from "react";
+import { Api, ApiNoAuth } from "../../../@api/axios";
+import { Header } from "../../../components/header";
+import { Trash2 } from "lucide-react";
+import { toast } from "react-toastify";
+import { useUpload } from "../../../hooks/uploads";
+import { useAuth } from "../../../context/auth";
+import { useEquipments } from "../../../services/equipments";
 
 interface StepImageFile {
-  file: File
-  preview: string
+  file: File;
+  preview: string;
 }
 
 export const Guide = () => {
-  const { guideId } = useParams()
-  const navigate = useNavigate()
-  const { uploadFileToS3 } = useUpload()
-  const { user, isAdmin } = useAuth()
+  const { guideId } = useParams();
+  const navigate = useNavigate();
+  const { uploadFileToS3 } = useUpload();
+  const { user, isAdmin } = useAuth();
+  const { data: equipments = [] } = useEquipments();
 
-  const [guide, setGuide] = useState<GuidesApiTypes.Guide>({} as GuidesApiTypes.Guide)
-  const canEdit = useMemo(() => isAdmin || user?.id === guide?.userId, [isAdmin, user, guide])
-  const [isEditing, setIsEditing] = useState(false)
-  const [editingStep, setEditingStep] = useState<number | null>(null)
-  const [pendingImages, setPendingImages] = useState<Record<number, StepImageFile>>({})
+  const [guide, setGuide] = useState<GuidesApiTypes.Guide>(
+    {} as GuidesApiTypes.Guide,
+  );
+  const canEdit = useMemo(
+    () => isAdmin || user?.id === guide?.userId,
+    [isAdmin, user, guide],
+  );
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingStep, setEditingStep] = useState<number | null>(null);
+  const [pendingImages, setPendingImages] = useState<
+    Record<number, StepImageFile>
+  >({});
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchGuideById = async () => {
     try {
-      const response = await ApiNoAuth.get(`/guides/${guideId}`)
-      setGuide(response.data)
+      const response = await ApiNoAuth.get(`/guides/${guideId}`);
+      setGuide(response.data?.guide);
     } catch {
-      toast.error('Erro ao buscar guia.')
+      toast.error("Erro ao buscar guia.");
     }
-  }
+  };
 
   const handleEditGuide = () => {
-    setIsEditing(true)
-  }
+    setIsEditing(true);
+  };
 
   const handleImageSelect = (index: number, file: File) => {
-    const preview = URL.createObjectURL(file)
+    const preview = URL.createObjectURL(file);
     setPendingImages((prev) => ({
       ...prev,
       [index]: { file, preview },
-    }))
-  }
+    }));
+  };
 
   const handleSaveGuide = async () => {
     try {
-      const newSteps = [...guide.steps]
+      const newSteps = [...guide.steps];
       for (const [index, imageData] of Object.entries(pendingImages)) {
-        const stepIndex = parseInt(index)
-        const fileName = await uploadFileToS3(imageData.file, 'guides')
-        newSteps[stepIndex] = { ...newSteps[stepIndex], image_url: fileName }
+        const stepIndex = parseInt(index);
+        const fileName = await uploadFileToS3(imageData.file, "guides");
+        newSteps[stepIndex] = { ...newSteps[stepIndex], image_url: fileName };
       }
 
-      const updatedGuide = { ...guide, steps: newSteps }
+      console.log(newSteps);
 
-      const response = await Api.put(`/guides/${guideId}`, updatedGuide)
-      setGuide(response.data)
-      setPendingImages({})
-      toast.success('Guia salvo com sucesso!')
+      const updatedGuide = {
+        ...guide,
+        steps: newSteps.map((step) => ({
+          ...step,
+          equipments: step.equipments?.map((equipment) =>
+            typeof equipment === "string" ? equipment : equipment.id,
+          ),
+        })),
+      };
+      console.log(updatedGuide);
+
+      const response = await Api.put(`/guides/${guideId}`, updatedGuide);
+      setGuide(response.data?.guide);
+      setPendingImages({});
+      toast.success("Guia salvo com sucesso!");
     } catch {
-      toast.error('Erro ao salvar guia.')
+      toast.error("Erro ao salvar guia.");
     } finally {
-      setIsEditing(false)
-      setEditingStep(null)
+      setIsEditing(false);
+      setEditingStep(null);
     }
-  }
+  };
 
   const handleDeleteGuide = async () => {
-    const confirmDelete = window.confirm('Tem certeza que deseja excluir este guia? Esta ação não pode ser desfeita.')
+    const confirmDelete = window.confirm(
+      "Tem certeza que deseja excluir este guia? Esta ação não pode ser desfeita.",
+    );
 
     if (confirmDelete) {
       try {
-        await Api.delete(`/guides/${guideId}`)
-        toast.success('Guia excluído com sucesso!')
-        navigate('/guides')
+        await Api.delete(`/guides/${guideId}`);
+        toast.success("Guia excluído com sucesso!");
+        navigate("/guides");
       } catch {
-        toast.error('Erro ao excluir guia.')
+        toast.error("Erro ao excluir guia.");
       }
     }
-  }
+  };
 
   const handleEditStep = (index: number) => {
-    setEditingStep(index)
-  }
+    setEditingStep(index);
+  };
 
   const handleFinishStepEditing = (index: number) => {
     if (pendingImages[index]) {
-      const newSteps = [...guide.steps]
+      const newSteps = [...guide.steps];
       newSteps[index] = {
         ...newSteps[index],
         image_url: pendingImages[index].preview,
-      }
-      setGuide({ ...guide, steps: newSteps })
+      };
+      setGuide({ ...guide, steps: newSteps });
     }
-    setEditingStep(null)
-  }
+    setEditingStep(null);
+  };
 
-  const handleUpdateStep = (index: number, updatedStep: GuidesApiTypes.GuideStep) => {
-    const newSteps = [...guide.steps]
-    newSteps[index] = updatedStep
-    setGuide({ ...guide, steps: newSteps })
-  }
+  const handleUpdateStep = (
+    index: number,
+    updatedStep: GuidesApiTypes.GuideStep,
+  ) => {
+    const newSteps = [...guide.steps];
+    newSteps[index] = updatedStep;
+    setGuide({ ...guide, steps: newSteps });
+  };
 
-  const handleUpdateGuide = (field: keyof GuidesApiTypes.Guide, value: string) => {
-    setGuide({ ...guide, [field]: value })
-  }
+  const handleUpdateGuide = (
+    field: keyof GuidesApiTypes.Guide,
+    value: string,
+  ) => {
+    setGuide({ ...guide, [field]: value });
+  };
 
   const handleUpdateItems = (index: number, items: string[]) => {
-    const newSteps = [...guide.steps]
-    newSteps[index] = { ...newSteps[index], item: items }
-    setGuide({ ...guide, steps: newSteps })
-  }
+    const newSteps = [...guide.steps];
+    newSteps[index] = { ...newSteps[index], items: items };
+    setGuide({ ...guide, steps: newSteps });
+  };
 
   const handleRemoveItem = (stepIndex: number, itemIndex: number) => {
-    const newSteps = [...guide.steps]
-    const newItems = [...(newSteps[stepIndex].item || [])]
-    newItems.splice(itemIndex, 1)
-    newSteps[stepIndex] = { ...newSteps[stepIndex], item: newItems }
-    setGuide({ ...guide, steps: newSteps })
-  }
+    const newSteps = [...guide.steps];
+    const newItems = [...(newSteps[stepIndex].items || [])];
+    newItems.splice(itemIndex, 1);
+    newSteps[stepIndex] = { ...newSteps[stepIndex], items: newItems };
+    setGuide({ ...guide, steps: newSteps });
+  };
 
   const handleAddStep = () => {
     const newStep: GuidesApiTypes.GuideStep = {
-      title: 'Novo Passo',
-      description: 'Descrição do novo passo',
-    }
-    setGuide({ ...guide, steps: [...guide.steps, newStep] })
-    setEditingStep(guide.steps.length)
-  }
+      title: "Novo Passo",
+      description: "Descrição do novo passo",
+    };
+    setGuide({ ...guide, steps: [...guide.steps, newStep] });
+    setEditingStep(guide.steps.length);
+  };
 
   const handleRemoveStep = (index: number) => {
-    const newSteps = [...guide.steps]
-    newSteps.splice(index, 1)
-    setGuide({ ...guide, steps: newSteps })
+    const newSteps = [...guide.steps];
+    newSteps.splice(index, 1);
+    setGuide({ ...guide, steps: newSteps });
     if (editingStep === index) {
-      setEditingStep(null)
+      setEditingStep(null);
     } else if (editingStep !== null && editingStep > index) {
-      setEditingStep(editingStep - 1)
+      setEditingStep(editingStep - 1);
     }
-  }
+  };
 
-  const handleToggleStepProperty = (index: number, property: keyof GuidesApiTypes.GuideStep) => {
-    const step = guide.steps[index]
-    const newSteps = [...guide.steps]
+  const handleToggleStepProperty = (
+    index: number,
+    property: keyof GuidesApiTypes.GuideStep,
+  ) => {
+    const step = guide.steps[index];
+    const newSteps = [...guide.steps];
 
     if (step[property] !== undefined) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { [property]: _, ...stepWithoutProperty } = step
-      newSteps[index] = stepWithoutProperty as GuidesApiTypes.GuideStep
+      const { [property]: _, ...stepWithoutProperty } = step;
+      newSteps[index] = stepWithoutProperty as GuidesApiTypes.GuideStep;
     } else {
-      let defaultValue: string | string[] = ''
-      if (property === 'item') {
-        defaultValue = []
+      let defaultValue: string | string[] = "";
+      if (property === "items" || property === "equipments") {
+        defaultValue = [];
       }
-      newSteps[index] = { ...step, [property]: defaultValue }
+      newSteps[index] = { ...step, [property]: defaultValue };
     }
 
-    setGuide({ ...guide, steps: newSteps })
-  }
+    setGuide({ ...guide, steps: newSteps });
+  };
 
   useEffect(() => {
     return () => {
       Object.values(pendingImages).forEach((image) => {
-        URL.revokeObjectURL(image.preview)
-      })
-    }
-  }, [pendingImages])
+        URL.revokeObjectURL(image.preview);
+      });
+    };
+  }, [pendingImages]);
 
   useEffect(() => {
-    fetchGuideById()
-  }, [])
+    fetchGuideById();
+  }, []);
 
   return (
     <div>
       <Header />
 
-      <div className='max-w-4xl mx-auto p-8'>
-        <div className='flex justify-between items-center mb-6'>
+      <div className="max-w-4xl mx-auto p-8">
+        <div className="flex justify-between items-center mb-6">
           {isEditing ? (
             <input
-              type='text'
+              type="text"
               value={guide.title}
-              onChange={(e) => handleUpdateGuide('title', e.target.value)}
-              className='text-4xl font-bold bg-gray-800/30 text-white rounded px-2 py-1 w-full'
+              onChange={(e) => handleUpdateGuide("title", e.target.value)}
+              className="text-4xl font-bold bg-gray-800/30 text-white rounded px-2 py-1 w-full"
             />
           ) : (
-            <h1 className='text-4xl font-bold text-white animate-fade-in-down'>{guide.title}</h1>
+            <h1 className="text-4xl font-bold text-white animate-fade-in-down">
+              {guide.title}
+            </h1>
           )}
           {canEdit && (
-            <div className='flex gap-2'>
+            <div className="flex gap-2">
               <button
-                className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg 
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg 
               transition-all duration-300 flex items-center gap-2
               shadow-md hover:shadow-lg hover:shadow-blue-500/30
               transform hover:scale-103 hover:-translate-y-0.5 active:translate-y-0
@@ -201,14 +235,16 @@ export const Guide = () => {
               border border-blue-400/30 hover:border-blue-300/40
               backdrop-blur-sm bg-opacity-90
               focus:outline-none focus:ring-2 focus:ring-blue-500/50
-              group'
+              group"
                 onClick={isEditing ? handleSaveGuide : handleEditGuide}
               >
-                <span className='text-base group-hover:rotate-12 transition-transform duration-300'>{isEditing ? '💾' : '✏️'}</span>
-                {isEditing ? 'Salvar Alterações' : 'Editar'}
+                <span className="text-base group-hover:rotate-12 transition-transform duration-300">
+                  {isEditing ? "💾" : "✏️"}
+                </span>
+                {isEditing ? "Salvar Alterações" : "Editar"}
               </button>
               <button
-                className='bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg 
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg 
                 transition-all duration-300 flex items-center gap-2
                 shadow-md hover:shadow-lg hover:shadow-red-500/30
                 transform hover:scale-103 hover:-translate-y-0.5 active:translate-y-0
@@ -216,10 +252,10 @@ export const Guide = () => {
                 border border-red-400/30 hover:border-red-300/40
                 backdrop-blur-sm bg-opacity-90
                 focus:outline-none focus:ring-2 focus:ring-red-500/50
-                group'
+                group"
                 onClick={handleDeleteGuide}
               >
-                <Trash2 className='text-base group-hover:rotate-12 transition-transform duration-300' />
+                <Trash2 className="text-base group-hover:rotate-12 transition-transform duration-300" />
                 Excluir Guia
               </button>
             </div>
@@ -229,21 +265,26 @@ export const Guide = () => {
         {isEditing ? (
           <textarea
             value={guide.description}
-            onChange={(e) => handleUpdateGuide('description', e.target.value)}
-            className='text-gray-300 mb-12 w-full bg-gray-800/30 rounded p-2'
+            onChange={(e) => handleUpdateGuide("description", e.target.value)}
+            className="text-gray-300 mb-12 w-full bg-gray-800/30 rounded p-2"
             rows={3}
           />
         ) : (
-          <p className='text-gray-300 mb-12 animate-fade-in-up'>{guide.description}</p>
+          <p className="text-gray-300 mb-12 animate-fade-in-up">
+            {guide.description}
+          </p>
         )}
 
-        <div className='space-y-12'>
+        <div className="space-y-12">
           {guide?.steps?.map((step, index) => (
-            <div key={index} className='bg-gray-800/30 rounded-lg p-6 transform hover:scale-[1.02] transition-all duration-300 hover:bg-gray-700/30 shadow-lg hover:shadow-xl'>
+            <div
+              key={index}
+              className="bg-gray-800/30 rounded-lg p-6 transform hover:scale-[1.02] transition-all duration-300 hover:bg-gray-700/30 shadow-lg hover:shadow-xl"
+            >
               {editingStep === index ? (
-                <div className='space-y-4'>
+                <div className="space-y-4">
                   <input
-                    type='text'
+                    type="text"
                     value={step.title}
                     onChange={(e) =>
                       handleUpdateStep(index, {
@@ -251,7 +292,7 @@ export const Guide = () => {
                         title: e.target.value,
                       })
                     }
-                    className='text-2xl font-bold bg-gray-700/30 text-white rounded px-2 py-1 w-full'
+                    className="text-2xl font-bold bg-gray-700/30 text-white rounded px-2 py-1 w-full"
                   />
                   <textarea
                     value={step.description}
@@ -261,69 +302,241 @@ export const Guide = () => {
                         description: e.target.value,
                       })
                     }
-                    className='text-gray-300 w-full bg-gray-700/30 rounded p-2'
+                    className="text-gray-300 w-full bg-gray-700/30 rounded p-2"
                     rows={3}
                   />
 
-                  <div className='border-t border-gray-600 pt-4'>
-                    <h4 className='text-white font-bold mb-3'>Propriedades do Passo:</h4>
-                    <div className='grid grid-cols-2 gap-3 mb-4'>
+                  <div className="border-t border-gray-600 pt-4">
+                    <h4 className="text-white font-bold mb-3">
+                      Propriedades do Passo:
+                    </h4>
+                    <div className="grid grid-cols-2 gap-3 mb-4">
                       <button
-                        onClick={() => handleToggleStepProperty(index, 'hint')}
+                        onClick={() => handleToggleStepProperty(index, "hint")}
                         className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 ${
-                          step.hint !== undefined ? 'bg-blue-500 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                          step.hint !== undefined
+                            ? "bg-blue-500 text-white shadow-md"
+                            : "bg-gray-600 text-gray-300 hover:bg-gray-500"
                         }`}
                       >
-                        💡 Dica {step.hint !== undefined ? '✓' : ''}
+                        💡 Dica {step.hint !== undefined ? "✓" : ""}
                       </button>
                       <button
-                        onClick={() => handleToggleStepProperty(index, 'item')}
+                        onClick={() => {
+                          if (!step.items) {
+                            handleUpdateItems(index, []);
+                          } else {
+                            handleToggleStepProperty(index, "items");
+                          }
+                        }}
                         className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 ${
-                          step.item !== undefined ? 'bg-green-500 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                          step.items !== undefined
+                            ? "bg-green-500 text-white shadow-md"
+                            : "bg-gray-600 text-gray-300 hover:bg-gray-500"
                         }`}
                       >
-                        🎒 Itens {step.item !== undefined ? '✓' : ''}
+                        🎒 Itens {step.items !== undefined ? "✓" : ""}
                       </button>
                       <button
-                        onClick={() => handleToggleStepProperty(index, 'note')}
+                        onClick={() => handleToggleStepProperty(index, "note")}
                         className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 ${
-                          step.note !== undefined ? 'bg-yellow-500 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                          step.note !== undefined
+                            ? "bg-yellow-500 text-white shadow-md"
+                            : "bg-gray-600 text-gray-300 hover:bg-gray-500"
                         }`}
                       >
-                        📝 Nota {step.note !== undefined ? '✓' : ''}
+                        📝 Nota {step.note !== undefined ? "✓" : ""}
                       </button>
                       <button
-                        onClick={() => handleToggleStepProperty(index, 'benefit')}
+                        onClick={() =>
+                          handleToggleStepProperty(index, "benefit")
+                        }
                         className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 ${
-                          step.benefit !== undefined ? 'bg-green-400 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                          step.benefit !== undefined
+                            ? "bg-green-400 text-white shadow-md"
+                            : "bg-gray-600 text-gray-300 hover:bg-gray-500"
                         }`}
                       >
-                        ✨ Benefício {step.benefit !== undefined ? '✓' : ''}
+                        ✨ Benefício {step.benefit !== undefined ? "✓" : ""}
                       </button>
                       <button
-                        onClick={() => handleToggleStepProperty(index, 'advice')}
+                        onClick={() =>
+                          handleToggleStepProperty(index, "advice")
+                        }
                         className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 ${
-                          step.advice !== undefined ? 'bg-purple-500 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                          step.advice !== undefined
+                            ? "bg-purple-500 text-white shadow-md"
+                            : "bg-gray-600 text-gray-300 hover:bg-gray-500"
                         }`}
                       >
-                        🔮 Recomendação {step.advice !== undefined ? '✓' : ''}
+                        🔮 Recomendação {step.advice !== undefined ? "✓" : ""}
                       </button>
                       <button
-                        onClick={() => handleToggleStepProperty(index, 'image_url')}
+                        onClick={() =>
+                          handleToggleStepProperty(index, "image_url")
+                        }
                         className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 ${
-                          step.image_url !== undefined ? 'bg-indigo-500 text-white shadow-md' : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                          step.image_url !== undefined
+                            ? "bg-indigo-500 text-white shadow-md"
+                            : "bg-gray-600 text-gray-300 hover:bg-gray-500"
                         }`}
                       >
-                        🖼️ Imagem {step.image_url !== undefined ? '✓' : ''}
+                        🖼️ Imagem {step.image_url !== undefined ? "✓" : ""}
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (!step.equipments) {
+                            handleUpdateStep(index, {
+                              ...step,
+                              equipments: [],
+                            });
+                          } else {
+                            handleToggleStepProperty(index, "equipments");
+                          }
+                        }}
+                        className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 ${
+                          step?.equipments !== undefined
+                            ? "bg-indigo-500 text-white shadow-md"
+                            : "bg-gray-600 text-gray-300 hover:bg-gray-500"
+                        }`}
+                      >
+                        ⚔️ Equipamentos{" "}
+                        {step?.equipments !== undefined ? "✓" : ""}
                       </button>
                     </div>
                   </div>
 
+                  {step?.equipments !== undefined && (
+                    <div className="bg-indigo-900/20 p-3 rounded mt-4">
+                      <label className="block text-indigo-300 font-medium mb-1">
+                        ⚔️ Equipamentos:
+                      </label>
+                      <div className="space-y-2">
+                        {step?.equipments?.map((equipmentId, i) => {
+                          const equipment = equipments.find(
+                            (eq) =>
+                              eq.id ===
+                              (typeof equipmentId === "string"
+                                ? equipmentId
+                                : equipmentId.id),
+                          );
+                          return equipment ? (
+                            <div
+                              key={i}
+                              className="flex items-center gap-2 bg-indigo-800/30 p-2 rounded"
+                            >
+                              <img
+                                src={equipment?.imageUrl}
+                                alt={equipment?.name}
+                                className="w-8 h-8 rounded"
+                              />
+                              <span className="text-indigo-200">
+                                {equipment?.name}
+                              </span>
+                              <button
+                                onClick={() => {
+                                  const newEquipmentIds = [
+                                    ...(step?.equipments || []),
+                                  ];
+                                  newEquipmentIds.splice(i, 1);
+                                  handleUpdateStep(index, {
+                                    ...step,
+                                    equipments: newEquipmentIds.map(
+                                      (equipment) =>
+                                        typeof equipment === "string"
+                                          ? equipment
+                                          : equipment.id,
+                                    ),
+                                  });
+                                }}
+                                className="ml-auto text-red-400 hover:text-red-300"
+                              >
+                                🗑️
+                              </button>
+                            </div>
+                          ) : null;
+                        })}
+                        <div className="relative">
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              placeholder="Buscar equipamento..."
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                              className="flex-1 bg-indigo-900/30 text-indigo-200 rounded p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            />
+                            <button
+                              onClick={() => {
+                                const newStep = { ...step };
+                                if (!newStep?.equipments) {
+                                  newStep.equipments = [];
+                                }
+                                handleUpdateStep(index, newStep);
+                              }}
+                              className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded transition-colors flex items-center gap-2"
+                            >
+                              <span>+</span>
+                              <span>Adicionar</span>
+                            </button>
+                          </div>
+                          {searchTerm && (
+                            <div className="absolute z-10 w-full mt-1 bg-gray-800 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                              {equipments
+                                .filter((equipment) =>
+                                  equipment.name
+                                    .toLowerCase()
+                                    .includes(searchTerm.toLowerCase()),
+                                )
+                                .filter((equipment) => {
+                                  const equipmentIds =
+                                    step?.equipments?.map((eq) =>
+                                      typeof eq === "string" ? eq : eq.id,
+                                    ) || [];
+                                  return !equipmentIds.includes(equipment.id);
+                                })
+                                .map((equipment) => (
+                                  <button
+                                    key={equipment.id}
+                                    onClick={() => {
+                                      handleUpdateStep(index, {
+                                        ...step,
+                                        equipments: [
+                                          ...(step?.equipments || []),
+                                          equipment.id,
+                                        ].map((equipment) =>
+                                          typeof equipment === "string"
+                                            ? equipment
+                                            : equipment.id,
+                                        ),
+                                      });
+                                      setSearchTerm("");
+                                    }}
+                                    className="w-full flex items-center gap-2 p-2 hover:bg-indigo-900/30 text-left"
+                                  >
+                                    <img
+                                      src={equipment.imageUrl}
+                                      alt={equipment.name}
+                                      className="w-8 h-8 rounded"
+                                    />
+                                    <span className="text-indigo-200">
+                                      {equipment.name}
+                                    </span>
+                                  </button>
+                                ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {step.hint !== undefined && (
-                    <div className='bg-blue-900/20 p-3 rounded'>
-                      <label className='block text-blue-300 font-medium mb-1'>💡 Dica:</label>
+                    <div className="bg-blue-900/20 p-3 rounded">
+                      <label className="block text-blue-300 font-medium mb-1">
+                        💡 Dica:
+                      </label>
                       <input
-                        type='text'
+                        type="text"
                         value={step.hint}
                         onChange={(e) =>
                           handleUpdateStep(index, {
@@ -331,36 +544,43 @@ export const Guide = () => {
                             hint: e.target.value,
                           })
                         }
-                        className='text-blue-200 w-full bg-blue-900/30 rounded p-2'
-                        placeholder='Digite a dica aqui...'
+                        className="text-blue-200 w-full bg-blue-900/30 rounded p-2"
+                        placeholder="Digite a dica aqui..."
                       />
                     </div>
                   )}
 
-                  {step.item !== undefined && (
-                    <div className='bg-green-900/20 p-3 rounded'>
-                      <label className='block text-green-300 font-medium mb-2'>🎒 Itens:</label>
-                      {step?.item?.map((item, i) => (
-                        <div key={i} className='flex gap-2 mb-2'>
+                  {step.items !== undefined && step.items.length > 0 && (
+                    <div className="bg-green-900/20 p-3 rounded">
+                      <label className="block text-green-300 font-medium mb-2">
+                        🎒 Itens:
+                      </label>
+                      {step?.items?.map((item, i) => (
+                        <div key={i} className="flex gap-2 mb-2">
                           <input
-                            type='text'
+                            type="text"
                             value={item}
                             onChange={(e) => {
-                              const newItems = [...step.item!]
-                              newItems[i] = e.target.value
-                              handleUpdateItems(index, newItems)
+                              const newItems = [...step.items!];
+                              newItems[i] = e.target.value;
+                              handleUpdateItems(index, newItems);
                             }}
-                            className='text-gray-300 flex-1 bg-gray-700/30 rounded p-2'
-                            placeholder='Nome do item...'
+                            className="text-gray-300 flex-1 bg-gray-700/30 rounded p-2"
+                            placeholder="Nome do item..."
                           />
-                          <button onClick={() => handleRemoveItem(index, i)} className='bg-red-500 hover:bg-red-600 text-white px-3 rounded transition-colors'>
+                          <button
+                            onClick={() => handleRemoveItem(index, i)}
+                            className="bg-red-500 hover:bg-red-600 text-white px-3 rounded transition-colors"
+                          >
                             🗑️
                           </button>
                         </div>
                       ))}
                       <button
-                        onClick={() => handleUpdateItems(index, [...(step.item || []), ''])}
-                        className='bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded mt-2 transition-colors'
+                        onClick={() =>
+                          handleUpdateItems(index, [...(step.items || []), ""])
+                        }
+                        className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded mt-2 transition-colors"
                       >
                         + Adicionar Item
                       </button>
@@ -368,10 +588,12 @@ export const Guide = () => {
                   )}
 
                   {step.note !== undefined && (
-                    <div className='bg-yellow-900/20 p-3 rounded'>
-                      <label className='block text-yellow-300 font-medium mb-1'>📝 Nota:</label>
+                    <div className="bg-yellow-900/20 p-3 rounded">
+                      <label className="block text-yellow-300 font-medium mb-1">
+                        📝 Nota:
+                      </label>
                       <input
-                        type='text'
+                        type="text"
                         value={step.note}
                         onChange={(e) =>
                           handleUpdateStep(index, {
@@ -379,17 +601,19 @@ export const Guide = () => {
                             note: e.target.value,
                           })
                         }
-                        className='text-yellow-200 w-full bg-yellow-900/30 rounded p-2'
-                        placeholder='Digite a nota aqui...'
+                        className="text-yellow-200 w-full bg-yellow-900/30 rounded p-2"
+                        placeholder="Digite a nota aqui..."
                       />
                     </div>
                   )}
 
                   {step.benefit !== undefined && (
-                    <div className='bg-green-900/20 p-3 rounded'>
-                      <label className='block text-green-300 font-medium mb-1'>✨ Benefício:</label>
+                    <div className="bg-green-900/20 p-3 rounded">
+                      <label className="block text-green-300 font-medium mb-1">
+                        ✨ Benefício:
+                      </label>
                       <input
-                        type='text'
+                        type="text"
                         value={step.benefit}
                         onChange={(e) =>
                           handleUpdateStep(index, {
@@ -397,17 +621,19 @@ export const Guide = () => {
                             benefit: e.target.value,
                           })
                         }
-                        className='text-green-200 w-full bg-green-900/30 rounded p-2'
-                        placeholder='Digite o benefício aqui...'
+                        className="text-green-200 w-full bg-green-900/30 rounded p-2"
+                        placeholder="Digite o benefício aqui..."
                       />
                     </div>
                   )}
 
                   {step.advice !== undefined && (
-                    <div className='bg-purple-900/20 p-3 rounded'>
-                      <label className='block text-purple-300 font-medium mb-1'>🔮 Recomendação:</label>
+                    <div className="bg-purple-900/20 p-3 rounded">
+                      <label className="block text-purple-300 font-medium mb-1">
+                        🔮 Recomendação:
+                      </label>
                       <input
-                        type='text'
+                        type="text"
                         value={step.advice}
                         onChange={(e) =>
                           handleUpdateStep(index, {
@@ -415,47 +641,58 @@ export const Guide = () => {
                             advice: e.target.value,
                           })
                         }
-                        className='text-purple-200 w-full bg-purple-900/30 rounded p-2'
-                        placeholder='Digite a recomendação aqui...'
+                        className="text-purple-200 w-full bg-purple-900/30 rounded p-2"
+                        placeholder="Digite a recomendação aqui..."
                       />
                     </div>
                   )}
 
                   {step.image_url !== undefined && (
-                    <div className='bg-indigo-900/20 p-3 rounded'>
-                      <label className='block text-indigo-300 font-medium mb-1'>🖼️ Imagem:</label>
+                    <div className="bg-indigo-900/20 p-3 rounded">
+                      <label className="block text-indigo-300 font-medium mb-1">
+                        🖼️ Imagem:
+                      </label>
                       <input
-                        type='file'
-                        accept='image/*'
+                        type="file"
+                        accept="image/*"
                         onChange={(e) => {
-                          const file = e.target.files?.[0]
+                          const file = e.target.files?.[0];
                           if (file) {
-                            handleImageSelect(index, file)
+                            handleImageSelect(index, file);
                           }
                         }}
-                        className='text-indigo-200 w-full bg-indigo-900/30 rounded p-2'
+                        className="text-indigo-200 w-full bg-indigo-900/30 rounded p-2"
                       />
                       {(pendingImages[index]?.preview || step.image_url) && (
-                        <div className='mt-2'>
-                          <img src={pendingImages[index]?.preview || step.image_url} alt={step.title} className='max-h-40 rounded-lg shadow-lg' />
+                        <div className="mt-2">
+                          <img
+                            src={
+                              pendingImages[index]?.preview || step.image_url
+                            }
+                            alt={step.title}
+                            className="max-h-40 rounded-lg shadow-lg"
+                          />
                         </div>
                       )}
                     </div>
                   )}
 
-                  <div className='flex gap-2 pt-4 border-t border-gray-600'>
-                    <button onClick={() => handleFinishStepEditing(index)} className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors'>
+                  <div className="flex gap-2 pt-4 border-t border-gray-600">
+                    <button
+                      onClick={() => handleFinishStepEditing(index)}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors"
+                    >
                       ✅ Concluir Edição
                     </button>
                     <button
                       onClick={() => handleRemoveStep(index)}
-                      className='bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded
+                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded
                       transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-red-500/30
                       transform hover:scale-105 active:scale-95
                       font-medium
                       border border-red-400/30 hover:border-red-300/40
                       backdrop-blur-sm bg-opacity-90
-                      focus:outline-none focus:ring-2 focus:ring-red-500/50'
+                      focus:outline-none focus:ring-2 focus:ring-red-500/50"
                     >
                       🗑️ Excluir Passo
                     </button>
@@ -463,38 +700,52 @@ export const Guide = () => {
                 </div>
               ) : (
                 <>
-                  <h2 className='text-2xl font-bold text-white mb-4 flex items-center'>
-                    <span className='bg-blue-500 rounded-full w-8 h-8 flex items-center justify-center mr-3 text-lg'>{index + 1}</span>
+                  <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
+                    <span className="bg-blue-500 rounded-full w-8 h-8 flex items-center justify-center mr-3 text-lg">
+                      {index + 1}
+                    </span>
                     {step.title}
                     {isEditing && (
-                      <div className='ml-auto flex gap-2'>
-                        <button onClick={() => handleEditStep(index)} className='text-blue-400 hover:text-blue-300 flex items-center'>
-                          <span className='mr-1'>Editar</span>
+                      <div className="ml-auto flex gap-2">
+                        <button
+                          onClick={() => handleEditStep(index)}
+                          className="text-blue-400 hover:text-blue-300 flex items-center"
+                        >
+                          <span className="mr-1">Editar</span>
                           <span>✏️</span>
                         </button>
-                        <button onClick={() => handleRemoveStep(index)} className='text-red-400 hover:text-red-300 flex items-center'>
-                          <span className='mr-1'>Excluir</span>
+                        <button
+                          onClick={() => handleRemoveStep(index)}
+                          className="text-red-400 hover:text-red-300 flex items-center"
+                        >
+                          <span className="mr-1">Excluir</span>
                           <span>🗑️</span>
                         </button>
                       </div>
                     )}
                   </h2>
-                  <p className='text-gray-300 mb-4 leading-relaxed'>{step.description}</p>
+                  <p className="text-gray-300 mb-4 leading-relaxed">
+                    {step.description}
+                  </p>
 
                   {step.hint && (
-                    <div className='bg-blue-900/30 rounded p-4 mb-4 transform hover:translate-x-2 transition-transform duration-300'>
-                      <p className='text-blue-200 flex items-center'>
-                        <span className='font-bold mr-2'>Dica:</span> {step.hint}
+                    <div className="bg-blue-900/30 rounded p-4 mb-4 transform hover:translate-x-2 transition-transform duration-300">
+                      <p className="text-blue-200 flex items-center">
+                        <span className="font-bold mr-2">Dica:</span>{" "}
+                        {step.hint}
                       </p>
                     </div>
                   )}
 
-                  {step.item && (
-                    <div className='bg-gray-700/30 rounded p-4 mb-4 hover:bg-gray-600/30 transition-colors duration-300'>
-                      <p className='font-bold text-white mb-2'>🎒 Itens:</p>
-                      <ul className='list-disc list-inside text-gray-300 space-y-1'>
-                        {step?.item?.map((item, i) => (
-                          <li key={i} className='hover:text-white transition-colors duration-200'>
+                  {step.items && step.items.length > 0 && (
+                    <div className="bg-gray-700/30 rounded p-4 mb-4 hover:bg-gray-600/30 transition-colors duration-300">
+                      <p className="font-bold text-white mb-2">🎒 Itens:</p>
+                      <ul className="list-disc list-inside text-gray-300 space-y-1">
+                        {step?.items?.map((item, i) => (
+                          <li
+                            key={i}
+                            className="hover:text-white transition-colors duration-200"
+                          >
                             {item}
                           </li>
                         ))}
@@ -503,32 +754,73 @@ export const Guide = () => {
                   )}
 
                   {step.note && (
-                    <div className='bg-yellow-900/30 rounded p-4 mb-4 transform hover:translate-x-2 transition-transform duration-300'>
-                      <p className='text-yellow-200 flex items-center'>
-                        <span className='font-bold mr-2'>📝 Nota:</span> {step.note}
+                    <div className="bg-yellow-900/30 rounded p-4 mb-4 transform hover:translate-x-2 transition-transform duration-300">
+                      <p className="text-yellow-200 flex items-center">
+                        <span className="font-bold mr-2">📝 Nota:</span>{" "}
+                        {step.note}
                       </p>
                     </div>
                   )}
 
                   {step.benefit && (
-                    <div className='bg-green-900/30 rounded p-4 mb-4 transform hover:translate-x-2 transition-transform duration-300'>
-                      <p className='text-green-200 flex items-center'>
-                        <span className='font-bold mr-2'>✨ Benefício:</span> {step.benefit}
+                    <div className="bg-green-900/30 rounded p-4 mb-4 transform hover:translate-x-2 transition-transform duration-300">
+                      <p className="text-green-200 flex items-center">
+                        <span className="font-bold mr-2">✨ Benefício:</span>{" "}
+                        {step.benefit}
                       </p>
                     </div>
                   )}
 
                   {step.advice && (
-                    <div className='bg-purple-900/30 rounded p-4 mb-4 transform hover:translate-x-2 transition-transform duration-300'>
-                      <p className='text-purple-200 flex items-center'>
-                        <span className='font-bold mr-2'>Recomendação:</span> {step.advice}
+                    <div className="bg-purple-900/30 rounded p-4 mb-4 transform hover:translate-x-2 transition-transform duration-300">
+                      <p className="text-purple-200 flex items-center">
+                        <span className="font-bold mr-2">Recomendação:</span>{" "}
+                        {step.advice}
                       </p>
                     </div>
                   )}
 
                   {step.image_url && (
-                    <div className='mt-4 overflow-hidden rounded-lg'>
-                      <img src={step.image_url} alt={step.title} className='w-full hover:scale-105 transition-transform duration-500 rounded-lg shadow-lg' />
+                    <div className="mt-4 overflow-hidden rounded-lg">
+                      <img
+                        src={step.image_url}
+                        alt={step.title}
+                        className="w-full hover:scale-105 transition-transform duration-500 rounded-lg shadow-lg"
+                      />
+                    </div>
+                  )}
+
+                  {step.equipments && step.equipments.length > 0 && (
+                    <div className="mt-4 bg-indigo-900/30 rounded p-4">
+                      <p className="font-bold text-white mb-2">
+                        ⚔️ Equipamentos:
+                      </p>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {step.equipments.map((equipmentId) => {
+                          const equipment = equipments.find(
+                            (eq) =>
+                              eq.id ===
+                              (typeof equipmentId === "string"
+                                ? equipmentId
+                                : equipmentId.id),
+                          );
+                          return equipment ? (
+                            <div
+                              key={equipment.id}
+                              className="flex items-center gap-2 bg-indigo-800/30 p-2 rounded hover:bg-indigo-700/30 transition-colors"
+                            >
+                              <img
+                                src={equipment.imageUrl}
+                                alt={equipment.name}
+                                className="w-8 h-8 rounded"
+                              />
+                              <span className="text-indigo-200">
+                                {equipment.name}
+                              </span>
+                            </div>
+                          ) : null;
+                        })}
+                      </div>
                     </div>
                   )}
                 </>
@@ -538,14 +830,14 @@ export const Guide = () => {
         </div>
 
         {isEditing && (
-          <div className='mt-8 flex justify-center'>
+          <div className="mt-8 flex justify-center">
             <button
               onClick={handleAddStep}
-              className='bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full
+              className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full
               transition-all duration-300 shadow-lg hover:shadow-xl
               transform hover:scale-105 hover:-translate-y-1 active:translate-y-0
               focus:outline-none focus:ring-2 focus:ring-green-500/50
-              text-xl font-bold'
+              text-xl font-bold"
             >
               + Adicionar Novo Passo
             </button>
@@ -555,28 +847,30 @@ export const Guide = () => {
         {isEditing ? (
           <textarea
             value={guide.footer_text}
-            onChange={(e) => handleUpdateGuide('footer_text', e.target.value)}
-            className='text-center mt-12 text-gray-400 italic w-full bg-gray-800/30 rounded p-2'
+            onChange={(e) => handleUpdateGuide("footer_text", e.target.value)}
+            className="text-center mt-12 text-gray-400 italic w-full bg-gray-800/30 rounded p-2"
             rows={2}
           />
         ) : (
-          <div className='text-center mt-12 text-gray-400 italic'>{guide.footer_text}</div>
+          <div className="text-center mt-12 text-gray-400 italic">
+            {guide.footer_text}
+          </div>
         )}
       </div>
 
       <Footer />
 
       {canEdit && (
-      <button
-        className='fixed bottom-8 right-8 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full 
+        <button
+          className="fixed bottom-8 right-8 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full 
         transition-all duration-300 shadow-lg hover:shadow-xl
         transform hover:scale-110 hover:-translate-y-1 active:translate-y-0
-        focus:outline-none focus:ring-2 focus:ring-blue-500/50'
-        onClick={isEditing ? handleSaveGuide : handleEditGuide}
-      >
-          <span className='text-2xl'>{isEditing ? '💾' : '✏️'}</span>
+        focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+          onClick={isEditing ? handleSaveGuide : handleEditGuide}
+        >
+          <span className="text-2xl">{isEditing ? "💾" : "✏️"}</span>
         </button>
       )}
     </div>
-  )
-}
+  );
+};
