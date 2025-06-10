@@ -74,10 +74,8 @@ export const Guide = () => {
           ),
         })),
       };
-      console.log("updatedGuide_____", updatedGuide);
 
       const response = await Api.put(`/guides/${guideId}`, updatedGuide);
-      console.log("response_____", response.data.guide);
       setGuide(response.data?.guide);
       setPendingImages({});
       toast.success("Guia salvo com sucesso!");

@@ -108,7 +108,6 @@ export const CreateGuide = () => {
   };
 
   const handleCreateGuide = async () => {
-    console.log(guide);
     if (!guide.title.trim() || !guide.description.trim()) {
       toast.error("Por favor, preencha o título e a descrição do guia.");
       return;
