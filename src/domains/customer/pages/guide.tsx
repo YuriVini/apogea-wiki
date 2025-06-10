@@ -65,8 +65,6 @@ export const Guide = () => {
         newSteps[stepIndex] = { ...newSteps[stepIndex], image_url: fileName };
       }
 
-      console.log(newSteps);
-
       const updatedGuide = {
         ...guide,
         steps: newSteps.map((step) => ({
@@ -76,9 +74,10 @@ export const Guide = () => {
           ),
         })),
       };
-      console.log(updatedGuide);
+      console.log("updatedGuide_____", updatedGuide);
 
       const response = await Api.put(`/guides/${guideId}`, updatedGuide);
+      console.log("response_____", response.data.guide);
       setGuide(response.data?.guide);
       setPendingImages({});
       toast.success("Guia salvo com sucesso!");
