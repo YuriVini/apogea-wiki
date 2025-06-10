@@ -207,7 +207,7 @@ export const Guide = () => {
     <div>
       <Header />
 
-      <div className="max-w-4xl mx-auto p-8">
+      <div className="min-h-screen max-w-4xl mx-auto p-8">
         <div className="flex justify-between items-center mb-6">
           {isEditing ? (
             <input
