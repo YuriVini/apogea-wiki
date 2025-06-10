@@ -20,6 +20,7 @@ export const CreateGuide = () => {
     title: "",
     description: "",
     steps: [{ title: "", description: "" }],
+    footer_text: "",
   } as GuidesApiTypes.Guide);
   const [pendingImages, setPendingImages] = useState<
     Record<number, StepImageFile>
@@ -30,7 +31,7 @@ export const CreateGuide = () => {
     field: keyof GuidesApiTypes.Guide,
     value: string,
   ) => {
-    setGuide({ ...guide, [field]: value });
+    setGuide((prevGuide) => ({ ...prevGuide, [field]: value }));
   };
 
   const handleUpdateStep = (
@@ -600,6 +601,19 @@ export const CreateGuide = () => {
             </span>
             Adicionar Novo Passo
           </button>
+        </div>
+
+        <div className="mt-8">
+          <label className="block text-white font-medium mb-2">
+            Texto do Rodapé:
+          </label>
+          <textarea
+            value={guide.footer_text}
+            onChange={(e) => handleUpdateGuide("footer_text", e.target.value)}
+            className="text-gray-300 w-full bg-gray-800/30 rounded p-4"
+            rows={3}
+            placeholder="Digite o texto do rodapé do guia..."
+          />
         </div>
       </div>
 
