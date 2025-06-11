@@ -33,6 +33,7 @@ export const EditOther = () => {
     buffs: "",
     requirements: "",
   });
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     // Se o backend retorna o item aninhado em item.item, use isso
@@ -94,33 +95,6 @@ export const EditOther = () => {
     );
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // Descobrir o id correto do backend
-    let backendItem = item;
-    if (item && typeof item === "object" && "item" in item) {
-      backendItem = (item as { item: Other }).item;
-    }
-    const id = (backendItem as Other)?.id;
-    console.log("id used for update:", id);
-    // Sempre envie npcLocation
-    const payload: Partial<Other> = { ...formData, id };
-    if (formData.type === "npc") {
-      payload.npcLocation = formData.location;
-      delete payload.location;
-    } else {
-      payload.npcLocation = "";
-    }
-    console.log("payload to update:", payload);
-    try {
-      await updateOther(payload as Other);
-      toast.success("Item atualizado com sucesso!");
-      navigate("/");
-    } catch {
-      toast.error("Erro ao atualizar item");
-    }
-  };
-
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -131,6 +105,38 @@ export const EditOther = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleEditOrSave = async (e?: React.FormEvent) => {
+    if (isEditing) {
+      if (e) e.preventDefault();
+      // Descobrir o id correto do backend
+      let backendItem = item;
+      if (item && typeof item === "object" && "item" in item) {
+        backendItem = (item as { item: Other }).item;
+      }
+      const id = (backendItem as Other)?.id;
+      console.log("id used for update:", id);
+      // Sempre envie npcLocation
+      const payload: Partial<Other> = { ...formData, id };
+      if (formData.type === "npc") {
+        payload.npcLocation = formData.location;
+        delete payload.location;
+      } else {
+        payload.npcLocation = "";
+      }
+      console.log("payload to update:", payload);
+      try {
+        await updateOther(payload as Other);
+        toast.success("Item atualizado com sucesso!");
+        setIsEditing(false);
+        navigate("/");
+      } catch {
+        toast.error("Erro ao atualizar item");
+      }
+    } else {
+      setIsEditing(true);
+    }
   };
 
   // Campos por tipo, de acordo com as colunas das tabelas do OtherTable
@@ -226,7 +232,7 @@ export const EditOther = () => {
           )}
         </div>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleEditOrSave}
           className="bg-gray-800/70 rounded-lg p-8 shadow-lg"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -243,6 +249,7 @@ export const EditOther = () => {
                     name={key}
                     value={formData[key] as string}
                     onChange={handleInputChange}
+                    disabled={!isEditing}
                     className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
                   >
                     <option value="">Selecione o tipo</option>
@@ -257,6 +264,7 @@ export const EditOther = () => {
                     name={key}
                     value={formData[key] as string}
                     onChange={handleInputChange}
+                    disabled={!isEditing}
                     className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
                     rows={3}
                   />
@@ -266,6 +274,7 @@ export const EditOther = () => {
                     name={key}
                     value={formData[key] as string}
                     onChange={handleInputChange}
+                    disabled={!isEditing}
                     className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
                   />
                 )}
@@ -280,10 +289,15 @@ export const EditOther = () => {
               Cancelar
             </Link>
             <button
-              type="submit"
-              className="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 transition-colors duration-200 font-semibold"
+              type={isEditing ? "submit" : "button"}
+              onClick={handleEditOrSave}
+              className={`px-6 py-3 rounded-md font-semibold transition-colors duration-200 ${
+                isEditing
+                  ? "bg-green-600 hover:bg-green-700 text-white"
+                  : "bg-blue-600 hover:bg-blue-700 text-white"
+              }`}
             >
-              Salvar
+              {isEditing ? "Salvar" : "Editar"}
             </button>
           </div>
         </form>
