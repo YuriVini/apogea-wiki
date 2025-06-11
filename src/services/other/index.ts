@@ -3,6 +3,7 @@ import { Api } from "../../@api/axios";
 import { ApiNoAuth } from "../../@api/axios";
 
 export const OTHER_QUERY_KEY = "other";
+export const OTHER_ITEMS_ID_QUERY_KEY = "other-items-id";
 export const OTHER_ITEMS_TYPE_QUERY_KEY = "other-items-type";
 
 const fetchOther = async (): Promise<OtherApiTypes.OtherListResponse> => {
@@ -66,7 +67,14 @@ export const useOther = () => {
 
 export const useOtherById = (id: string) => {
   return useQuery({
-    queryKey: [OTHER_QUERY_KEY, id],
+    queryKey: [OTHER_ITEMS_ID_QUERY_KEY, id],
     queryFn: () => fetchOtherById(id),
+  });
+};
+
+export const useOtherByType = (type: string) => {
+  return useQuery({
+    queryKey: [OTHER_ITEMS_TYPE_QUERY_KEY, type],
+    queryFn: () => fetchOtherItemsType(type),
   });
 };

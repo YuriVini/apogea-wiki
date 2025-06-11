@@ -1,11 +1,12 @@
 import { Footer } from "../../../components/footer";
 import { useState, useEffect } from "react";
-import { Api } from "../../../@api/axios";
 import { Header } from "../../../components/header";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { useUpload } from "../../../hooks/uploads";
 import { useEquipments } from "../../../services/equipments";
+import { ItemSelector } from "../../../components/item-selector";
+import { useCreateGuide } from "../../../services/guides";
 
 interface StepImageFile {
   file: File;
@@ -26,6 +27,8 @@ export const CreateGuide = () => {
     Record<number, StepImageFile>
   >({});
   const [searchTerm, setSearchTerm] = useState("");
+
+  const { mutate: createGuide } = useCreateGuide();
 
   const handleUpdateGuide = (
     field: keyof GuidesApiTypes.Guide,
@@ -74,7 +77,6 @@ export const CreateGuide = () => {
       newSteps[index] = { ...step, [property]: defaultValue };
     }
 
-    // If we're removing the image_url property, also remove any pending image
     if (property === "image_url" && pendingImages[index]) {
       URL.revokeObjectURL(pendingImages[index].preview);
       const newPendingImages = { ...pendingImages };
@@ -85,17 +87,15 @@ export const CreateGuide = () => {
     setGuide({ ...guide, steps: newSteps });
   };
 
-  const handleUpdateItems = (stepIndex: number, items: string[]) => {
+  const handleUpdateItems = (
+    stepIndex: number,
+    items: OtherApiTypes.Other[],
+  ) => {
     const newSteps = [...guide.steps];
-    newSteps[stepIndex] = { ...newSteps[stepIndex], items: items };
-    setGuide({ ...guide, steps: newSteps });
-  };
-
-  const handleRemoveItem = (stepIndex: number, itemIndex: number) => {
-    const newSteps = [...guide.steps];
-    const newItems = [...(newSteps[stepIndex].items || [])];
-    newItems.splice(itemIndex, 1);
-    newSteps[stepIndex] = { ...newSteps[stepIndex], items: newItems };
+    newSteps[stepIndex] = {
+      ...newSteps[stepIndex],
+      items: items,
+    };
     setGuide({ ...guide, steps: newSteps });
   };
 
@@ -123,7 +123,6 @@ export const CreateGuide = () => {
     }
 
     try {
-      // Upload all pending images first
       const newSteps = [...guide.steps];
       for (const [index, imageData] of Object.entries(pendingImages)) {
         const stepIndex = parseInt(index);
@@ -131,15 +130,24 @@ export const CreateGuide = () => {
         newSteps[stepIndex] = { ...newSteps[stepIndex], image_url: fileName };
       }
 
-      // Update guide with new image URLs
-      const updatedGuide = { ...guide, steps: newSteps };
+      const updatedGuide = {
+        ...guide,
+        steps: newSteps.map((step) => ({
+          ...step,
+          items: step.items?.map((item) => item.id),
+          equipments: step.equipments?.map((equipment) => equipment.id),
+        })),
+      };
 
-      const response = await Api.post<GuidesApiTypes.GuideCreateResponse>(
-        "/guides",
-        updatedGuide,
-      );
-      toast.success("Guia criado com sucesso!");
-      navigate(`/guides/${response.data.guideId}`);
+      createGuide(updatedGuide, {
+        onSuccess: (response) => {
+          toast.success("Guia criado com sucesso!");
+          navigate(`/guides/${response.id}`);
+        },
+        onError: () => {
+          toast.error("Erro ao criar guia.");
+        },
+      });
     } catch {
       toast.error("Erro ao criar guia.");
     }
@@ -334,35 +342,10 @@ export const CreateGuide = () => {
                     <label className="block text-green-300 font-medium mb-2">
                       🎒 Itens:
                     </label>
-                    {step?.items?.map((item, i) => (
-                      <div key={i} className="flex gap-2 mb-2">
-                        <input
-                          type="text"
-                          value={item}
-                          onChange={(e) => {
-                            const newItems = [...step.items!];
-                            newItems[i] = e.target.value;
-                            handleUpdateItems(index, newItems);
-                          }}
-                          className="text-gray-300 flex-1 bg-gray-700/30 rounded p-2"
-                          placeholder="Nome do item..."
-                        />
-                        <button
-                          onClick={() => handleRemoveItem(index, i)}
-                          className="bg-red-500 hover:bg-red-600 text-white px-3 rounded transition-colors"
-                        >
-                          🗑️
-                        </button>
-                      </div>
-                    ))}
-                    <button
-                      onClick={() =>
-                        handleUpdateItems(index, [...(step.items || []), ""])
-                      }
-                      className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded mt-2 transition-colors"
-                    >
-                      + Adicionar Item
-                    </button>
+                    <ItemSelector
+                      selectedItems={step.items as OtherApiTypes.Other[]}
+                      onItemsChange={(items) => handleUpdateItems(index, items)}
+                    />
                   </div>
                 )}
 
@@ -489,12 +472,7 @@ export const CreateGuide = () => {
                                 newEquipmentIds.splice(i, 1);
                                 handleUpdateStep(index, {
                                   ...step,
-                                  equipments: newEquipmentIds.map(
-                                    (equipment) =>
-                                      typeof equipment === "string"
-                                        ? equipment
-                                        : equipment.id,
-                                  ),
+                                  equipments: newEquipmentIds,
                                 });
                               }}
                               className="ml-auto text-red-400 hover:text-red-300"
@@ -551,12 +529,8 @@ export const CreateGuide = () => {
                                       ...step,
                                       equipments: [
                                         ...(step?.equipments || []),
-                                        equipment.id,
-                                      ].map((equipment) =>
-                                        typeof equipment === "string"
-                                          ? equipment
-                                          : equipment.id,
-                                      ),
+                                        equipment,
+                                      ],
                                     });
                                     setSearchTerm("");
                                   }}

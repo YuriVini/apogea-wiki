@@ -12,5 +12,3 @@ echo "✅ Lint-staged completed"
 # Update git index
 git update-index --again
 echo "✅ Git index updated"
-
-git push
