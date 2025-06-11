@@ -8,7 +8,7 @@ export type OtherType =
   | "npc";
 
 export interface OtherDatabaseType {
-  id?: string;
+  id: string;
   name: string;
   imageUrl?: string;
   type: OtherType;
@@ -29,7 +29,7 @@ export interface OtherDatabaseType {
   requirements?: string;
 }
 
-export const OTHER_DATABASE: OtherDatabaseType[] = [
+export const OTHER_DATABASE: Omit<OtherDatabaseType, "id">[] = [
   // Drop Creatures
   {
     name: "Rat Tail",
