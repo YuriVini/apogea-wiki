@@ -31,7 +31,7 @@ export const useUpdateOther = () => {
       other: OtherApiTypes.Other,
     ): Promise<OtherApiTypes.Other> => {
       const { data } = await Api.put<OtherApiTypes.Other>(
-        `/other/${other.id}`,
+        `/other-items/${other.id}`,
         other,
       );
       return data;
@@ -44,7 +44,7 @@ export const useCreateOther = () => {
     mutationFn: async (
       other: Omit<OtherApiTypes.Other, "id">,
     ): Promise<{ id: string }> => {
-      const { data } = await Api.post<{ id: string }>(`/other`, other);
+      const { data } = await Api.post<{ id: string }>(`/other-items`, other);
       return data;
     },
   });
@@ -53,7 +53,7 @@ export const useCreateOther = () => {
 export const useDeleteOther = () => {
   return useMutation({
     mutationFn: async (otherId: string): Promise<void> => {
-      await Api.delete(`/other/${otherId}`);
+      await Api.delete(`/other-items/${otherId}`);
     },
   });
 };
