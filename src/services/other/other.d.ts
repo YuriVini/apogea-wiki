@@ -14,6 +14,7 @@ export interface Other {
   abilities?: string;
   loot?: string;
   location?: string;
+  npcLocation?: string;
   author?: string;
   notes?: string;
   text?: string;

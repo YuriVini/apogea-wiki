@@ -3,6 +3,7 @@ import { Api } from "../../@api/axios";
 import { ApiNoAuth } from "../../@api/axios";
 
 export const OTHER_QUERY_KEY = "other";
+export const OTHER_ITEMS_ID_QUERY_KEY = "other-items-id";
 export const OTHER_ITEMS_TYPE_QUERY_KEY = "other-items-type";
 
 const fetchOther = async (): Promise<OtherApiTypes.OtherListResponse> => {
@@ -30,7 +31,7 @@ export const useUpdateOther = () => {
       other: OtherApiTypes.Other,
     ): Promise<OtherApiTypes.Other> => {
       const { data } = await Api.put<OtherApiTypes.Other>(
-        `/other/${other.id}`,
+        `/other-items/${other.id}`,
         other,
       );
       return data;
@@ -43,7 +44,7 @@ export const useCreateOther = () => {
     mutationFn: async (
       other: Omit<OtherApiTypes.Other, "id">,
     ): Promise<{ id: string }> => {
-      const { data } = await Api.post<{ id: string }>(`/other`, other);
+      const { data } = await Api.post<{ id: string }>(`/other-items`, other);
       return data;
     },
   });
@@ -52,7 +53,7 @@ export const useCreateOther = () => {
 export const useDeleteOther = () => {
   return useMutation({
     mutationFn: async (otherId: string): Promise<void> => {
-      await Api.delete(`/other/${otherId}`);
+      await Api.delete(`/other-items/${otherId}`);
     },
   });
 };
@@ -66,7 +67,14 @@ export const useOther = () => {
 
 export const useOtherById = (id: string) => {
   return useQuery({
-    queryKey: [OTHER_QUERY_KEY, id],
+    queryKey: [OTHER_ITEMS_ID_QUERY_KEY, id],
     queryFn: () => fetchOtherById(id),
+  });
+};
+
+export const useOtherByType = (type: string) => {
+  return useQuery({
+    queryKey: [OTHER_ITEMS_TYPE_QUERY_KEY, type],
+    queryFn: () => fetchOtherItemsType(type),
   });
 };
