@@ -110,14 +110,11 @@ export const EditOther = () => {
   const handleEditOrSave = async (e?: React.FormEvent) => {
     if (isEditing) {
       if (e) e.preventDefault();
-      // Descobrir o id correto do backend
       let backendItem = item;
       if (item && typeof item === "object" && "item" in item) {
         backendItem = (item as { item: Other }).item;
       }
       const id = (backendItem as Other)?.id;
-      console.log("id used for update:", id);
-      // Sempre envie npcLocation
       const payload: Partial<Other> = { ...formData, id };
       if (formData.type === "npc") {
         payload.npcLocation = formData.location;
@@ -125,7 +122,6 @@ export const EditOther = () => {
       } else {
         payload.npcLocation = "";
       }
-      console.log("payload to update:", payload);
       try {
         await updateOther(payload as Other);
         toast.success("Item atualizado com sucesso!");
@@ -139,7 +135,6 @@ export const EditOther = () => {
     }
   };
 
-  // Campos por tipo, de acordo com as colunas das tabelas do OtherTable
   const typeFields: Record<
     string,
     { key: keyof Omit<Other, "id">; label: string; type?: string }[]
@@ -306,5 +301,3 @@ export const EditOther = () => {
     </div>
   );
 };
-
-export default EditOther;

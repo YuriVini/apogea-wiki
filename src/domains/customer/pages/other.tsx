@@ -23,8 +23,6 @@ export const Other = () => {
         item.name.toLowerCase().includes(searchTerm.toLowerCase()),
     ) || [];
 
-  console.log("filteredItems:", filteredItems);
-
   const handleDeleteOther = (itemId: string) => {
     if (window.confirm("Tem certeza que deseja excluir este item?")) {
       deleteOther(itemId, {
