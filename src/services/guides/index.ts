@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { ApiNoAuth } from "../../@api/axios";
+import { Api, ApiNoAuth } from "../../@api/axios";
 
 export const GUIDES_QUERY_KEY = "guides";
 export const GUIDE_BY_ID_QUERY_KEY = "guideById";
@@ -23,6 +23,30 @@ export const useGuideById = (guideId: string) => {
     queryFn: async () => {
       const { data } = await ApiNoAuth.get<{ guide: GuidesApiTypes.Guide }>(
         `/guides/${guideId}`,
+      );
+      return data?.guide;
+    },
+  });
+};
+
+export const useCreateGuide = () => {
+  return useMutation({
+    mutationFn: async (guide: GuidesApiTypes.GuideCreate) => {
+      const { data } = await Api.post<{ guide: GuidesApiTypes.Guide }>(
+        "/guides",
+        guide,
+      );
+      return data?.guide;
+    },
+  });
+};
+
+export const useUpdateGuide = () => {
+  return useMutation({
+    mutationFn: async (guide: GuidesApiTypes.GuideCreate) => {
+      const { data } = await Api.put<{ guide: GuidesApiTypes.Guide }>(
+        `/guides/${guide.id}`,
+        guide,
       );
       return data?.guide;
     },

@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import { useUpload } from "../../../hooks/uploads";
 import { useAuth } from "../../../context/auth";
 import { useEquipments } from "../../../services/equipments";
+import { ItemSelector } from "../../../components/item-selector";
+import { useUpdateGuide } from "../../../services/guides";
 
 interface StepImageFile {
   file: File;
@@ -34,6 +36,8 @@ export const Guide = () => {
     Record<number, StepImageFile>
   >({});
   const [searchTerm, setSearchTerm] = useState("");
+
+  const { mutate: updateGuide } = useUpdateGuide();
 
   const fetchGuideById = async () => {
     try {
@@ -69,21 +73,26 @@ export const Guide = () => {
         ...guide,
         steps: newSteps.map((step) => ({
           ...step,
-          equipments: step.equipments?.map((equipment) =>
-            typeof equipment === "string" ? equipment : equipment.id,
-          ),
+          equipments: step.equipments?.map((equipment) => equipment.id),
+          items: step.items?.map((item) => item.id),
         })),
       };
 
-      const response = await Api.put(`/guides/${guideId}`, updatedGuide);
-      setGuide(response.data?.guide);
-      setPendingImages({});
-      toast.success("Guia salvo com sucesso!");
+      updateGuide(updatedGuide, {
+        onSuccess: (response) => {
+          toast.success("Guia salvo com sucesso!");
+          setGuide(response);
+          setPendingImages({});
+          setIsEditing(false);
+          setEditingStep(null);
+        },
+        onError: () => {
+          setPendingImages({});
+          toast.error("Erro ao salvar guia.");
+        },
+      });
     } catch {
       toast.error("Erro ao salvar guia.");
-    } finally {
-      setIsEditing(false);
-      setEditingStep(null);
     }
   };
 
@@ -135,17 +144,9 @@ export const Guide = () => {
     setGuide({ ...guide, [field]: value });
   };
 
-  const handleUpdateItems = (index: number, items: string[]) => {
+  const handleUpdateItems = (index: number, items: OtherApiTypes.Other[]) => {
     const newSteps = [...guide.steps];
     newSteps[index] = { ...newSteps[index], items: items };
-    setGuide({ ...guide, steps: newSteps });
-  };
-
-  const handleRemoveItem = (stepIndex: number, itemIndex: number) => {
-    const newSteps = [...guide.steps];
-    const newItems = [...(newSteps[stepIndex].items || [])];
-    newItems.splice(itemIndex, 1);
-    newSteps[stepIndex] = { ...newSteps[stepIndex], items: newItems };
     setGuide({ ...guide, steps: newSteps });
   };
 
@@ -438,12 +439,7 @@ export const Guide = () => {
                                   newEquipmentIds.splice(i, 1);
                                   handleUpdateStep(index, {
                                     ...step,
-                                    equipments: newEquipmentIds.map(
-                                      (equipment) =>
-                                        typeof equipment === "string"
-                                          ? equipment
-                                          : equipment.id,
-                                    ),
+                                    equipments: newEquipmentIds,
                                   });
                                 }}
                                 className="ml-auto text-red-400 hover:text-red-300"
@@ -499,12 +495,8 @@ export const Guide = () => {
                                         ...step,
                                         equipments: [
                                           ...(step?.equipments || []),
-                                          equipment.id,
-                                        ].map((equipment) =>
-                                          typeof equipment === "string"
-                                            ? equipment
-                                            : equipment.id,
-                                        ),
+                                          equipment,
+                                        ],
                                       });
                                       setSearchTerm("");
                                     }}
@@ -547,40 +539,17 @@ export const Guide = () => {
                     </div>
                   )}
 
-                  {step.items !== undefined && step.items.length > 0 && (
+                  {step.items !== undefined && (
                     <div className="bg-green-900/20 p-3 rounded">
                       <label className="block text-green-300 font-medium mb-2">
                         🎒 Itens:
                       </label>
-                      {step?.items?.map((item, i) => (
-                        <div key={i} className="flex gap-2 mb-2">
-                          <input
-                            type="text"
-                            value={item}
-                            onChange={(e) => {
-                              const newItems = [...step.items!];
-                              newItems[i] = e.target.value;
-                              handleUpdateItems(index, newItems);
-                            }}
-                            className="text-gray-300 flex-1 bg-gray-700/30 rounded p-2"
-                            placeholder="Nome do item..."
-                          />
-                          <button
-                            onClick={() => handleRemoveItem(index, i)}
-                            className="bg-red-500 hover:bg-red-600 text-white px-3 rounded transition-colors"
-                          >
-                            🗑️
-                          </button>
-                        </div>
-                      ))}
-                      <button
-                        onClick={() =>
-                          handleUpdateItems(index, [...(step.items || []), ""])
+                      <ItemSelector
+                        selectedItems={step.items as OtherApiTypes.Other[]}
+                        onItemsChange={(items) =>
+                          handleUpdateItems(index, items)
                         }
-                        className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded mt-2 transition-colors"
-                      >
-                        + Adicionar Item
-                      </button>
+                      />
                     </div>
                   )}
 
@@ -737,13 +706,18 @@ export const Guide = () => {
                   {step.items && step.items.length > 0 && (
                     <div className="bg-gray-700/30 rounded p-4 mb-4 hover:bg-gray-600/30 transition-colors duration-300">
                       <p className="font-bold text-white mb-2">🎒 Itens:</p>
-                      <ul className="list-disc list-inside text-gray-300 space-y-1">
+                      <ul className="list-disc list-inside text-gray-300 space-y-1 flex flex-wrap gap-2">
                         {step?.items?.map((item, i) => (
                           <li
                             key={i}
-                            className="hover:text-white transition-colors duration-200"
+                            className="flex items-center gap-2 bg-gray-700/30 hover:bg-gray-600/30 p-2 px-4 rounded transition-colors"
                           >
-                            {item}
+                            <img
+                              src={item?.imageUrl}
+                              alt={item?.name}
+                              className="w-8 h-8 rounded-full"
+                            />
+                            {item?.name}
                           </li>
                         ))}
                       </ul>
@@ -792,7 +766,7 @@ export const Guide = () => {
                       <p className="font-bold text-white mb-2">
                         ⚔️ Equipamentos:
                       </p>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      <div className=" md:grid-cols-3 gap-3 flex flex-wrap">
                         {step.equipments.map((equipmentId) => {
                           const equipment = equipments.find(
                             (eq) =>
@@ -804,7 +778,7 @@ export const Guide = () => {
                           return equipment ? (
                             <div
                               key={equipment.id}
-                              className="flex items-center gap-2 bg-indigo-800/30 p-2 rounded hover:bg-indigo-700/30 transition-colors"
+                              className="flex items-center gap-2 bg-indigo-800/30 p-2 px-4 rounded hover:bg-indigo-700/30 transition-colors"
                             >
                               <img
                                 src={equipment.imageUrl}
