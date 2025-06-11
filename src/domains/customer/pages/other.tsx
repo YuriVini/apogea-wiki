@@ -17,11 +17,13 @@ export const Other = () => {
   if (isLoading) return <div>Loading...</div>;
 
   const filteredItems =
-    otherItems?.items.filter(
-      (item) =>
-        item.type === otherCategory &&
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()),
-    ) || [];
+    otherItems?.items
+      .filter(
+        (item) =>
+          item.type === otherCategory &&
+          item.name.toLowerCase().includes(searchTerm.toLowerCase()),
+      )
+      .sort((a, b) => a.name.localeCompare(b.name)) || [];
 
   const handleDeleteOther = (itemId: string) => {
     if (window.confirm("Tem certeza que deseja excluir este item?")) {
