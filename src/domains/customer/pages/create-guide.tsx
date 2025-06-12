@@ -136,6 +136,10 @@ export const CreateGuide = () => {
           ...step,
           items: step.items?.map((item) => item.id),
           equipments: step.equipments?.map((equipment) => equipment.id),
+          hint: Array.isArray(step.hint) ? step.hint[0] : step.hint,
+          note: Array.isArray(step.note) ? step.note[0] : step.note,
+          benefit: Array.isArray(step.benefit) ? step.benefit[0] : step.benefit,
+          advice: Array.isArray(step.advice) ? step.advice[0] : step.advice,
         })),
       };
 
@@ -322,18 +326,71 @@ export const CreateGuide = () => {
                     <label className="block text-blue-300 font-medium mb-1">
                       💡 Dica:
                     </label>
-                    <input
-                      type="text"
-                      value={step.hint}
-                      onChange={(e) =>
+                    {(Array.isArray(step.hint)
+                      ? step.hint
+                      : [step.hint || ""]
+                    ).map((hintValue, hintIdx) => (
+                      <div
+                        key={hintIdx}
+                        className="flex items-center gap-2 mb-2"
+                      >
+                        <input
+                          type="text"
+                          value={hintValue}
+                          onChange={(e) => {
+                            const newHints = Array.isArray(step.hint)
+                              ? [...step.hint]
+                              : [step.hint || ""];
+                            newHints[hintIdx] = e.target.value;
+                            handleUpdateStep(index, {
+                              ...step,
+                              hint:
+                                newHints.length === 1 ? newHints[0] : newHints,
+                            });
+                          }}
+                          className="text-blue-200 w-full bg-blue-900/30 rounded p-2"
+                          placeholder="Digite a dica aqui..."
+                        />
+                        {(Array.isArray(step.hint) ? step.hint.length : 1) >
+                          1 && (
+                          <button
+                            type="button"
+                            className="text-red-400 hover:text-red-300 px-2"
+                            onClick={() => {
+                              const newHints = (
+                                Array.isArray(step.hint)
+                                  ? [...step.hint]
+                                  : [step.hint || ""]
+                              ).filter((_, i) => i !== hintIdx);
+                              handleUpdateStep(index, {
+                                ...step,
+                                hint:
+                                  newHints.length === 1
+                                    ? newHints[0]
+                                    : newHints,
+                              });
+                            }}
+                          >
+                            🗑️
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      className="mt-1 px-2 py-1 bg-blue-700 text-white rounded hover:bg-blue-600 text-xs"
+                      onClick={() => {
+                        const newHints = Array.isArray(step.hint)
+                          ? [...step.hint, ""]
+                          : [step.hint || "", ""];
                         handleUpdateStep(index, {
                           ...step,
-                          hint: e.target.value,
-                        })
-                      }
-                      className="text-blue-200 w-full bg-blue-900/30 rounded p-2"
-                      placeholder="Digite a dica aqui..."
-                    />
+                          hint: newHints.length === 1 ? newHints[0] : newHints,
+                        });
+                      }}
+                    >
+                      + Adicionar Dica
+                    </button>
                   </div>
                 )}
 
@@ -354,18 +411,71 @@ export const CreateGuide = () => {
                     <label className="block text-yellow-300 font-medium mb-1">
                       📝 Nota:
                     </label>
-                    <input
-                      type="text"
-                      value={step.note}
-                      onChange={(e) =>
+                    {(Array.isArray(step.note)
+                      ? step.note
+                      : [step.note || ""]
+                    ).map((noteValue, noteIdx) => (
+                      <div
+                        key={noteIdx}
+                        className="flex items-center gap-2 mb-2"
+                      >
+                        <input
+                          type="text"
+                          value={noteValue}
+                          onChange={(e) => {
+                            const newNotes = Array.isArray(step.note)
+                              ? [...step.note]
+                              : [step.note || ""];
+                            newNotes[noteIdx] = e.target.value;
+                            handleUpdateStep(index, {
+                              ...step,
+                              note:
+                                newNotes.length === 1 ? newNotes[0] : newNotes,
+                            });
+                          }}
+                          className="text-yellow-200 w-full bg-yellow-900/30 rounded p-2"
+                          placeholder="Digite a nota aqui..."
+                        />
+                        {(Array.isArray(step.note) ? step.note.length : 1) >
+                          1 && (
+                          <button
+                            type="button"
+                            className="text-red-400 hover:text-red-300 px-2"
+                            onClick={() => {
+                              const newNotes = (
+                                Array.isArray(step.note)
+                                  ? [...step.note]
+                                  : [step.note || ""]
+                              ).filter((_, i) => i !== noteIdx);
+                              handleUpdateStep(index, {
+                                ...step,
+                                note:
+                                  newNotes.length === 1
+                                    ? newNotes[0]
+                                    : newNotes,
+                              });
+                            }}
+                          >
+                            🗑️
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      className="mt-1 px-2 py-1 bg-yellow-700 text-white rounded hover:bg-yellow-600 text-xs"
+                      onClick={() => {
+                        const newNotes = Array.isArray(step.note)
+                          ? [...step.note, ""]
+                          : [step.note || "", ""];
                         handleUpdateStep(index, {
                           ...step,
-                          note: e.target.value,
-                        })
-                      }
-                      className="text-yellow-200 w-full bg-yellow-900/30 rounded p-2"
-                      placeholder="Digite a nota aqui..."
-                    />
+                          note: newNotes.length === 1 ? newNotes[0] : newNotes,
+                        });
+                      }}
+                    >
+                      + Adicionar Nota
+                    </button>
                   </div>
                 )}
 
@@ -374,18 +484,77 @@ export const CreateGuide = () => {
                     <label className="block text-green-300 font-medium mb-1">
                       ✨ Benefício:
                     </label>
-                    <input
-                      type="text"
-                      value={step.benefit}
-                      onChange={(e) =>
+                    {(Array.isArray(step.benefit)
+                      ? step.benefit
+                      : [step.benefit || ""]
+                    ).map((benefitValue, benefitIdx) => (
+                      <div
+                        key={benefitIdx}
+                        className="flex items-center gap-2 mb-2"
+                      >
+                        <input
+                          type="text"
+                          value={benefitValue}
+                          onChange={(e) => {
+                            const newBenefits = Array.isArray(step.benefit)
+                              ? [...step.benefit]
+                              : [step.benefit || ""];
+                            newBenefits[benefitIdx] = e.target.value;
+                            handleUpdateStep(index, {
+                              ...step,
+                              benefit:
+                                newBenefits.length === 1
+                                  ? newBenefits[0]
+                                  : newBenefits,
+                            });
+                          }}
+                          className="text-green-200 w-full bg-green-900/30 rounded p-2"
+                          placeholder="Digite o benefício aqui..."
+                        />
+                        {(Array.isArray(step.benefit)
+                          ? step.benefit.length
+                          : 1) > 1 && (
+                          <button
+                            type="button"
+                            className="text-red-400 hover:text-red-300 px-2"
+                            onClick={() => {
+                              const newBenefits = (
+                                Array.isArray(step.benefit)
+                                  ? [...step.benefit]
+                                  : [step.benefit || ""]
+                              ).filter((_, i) => i !== benefitIdx);
+                              handleUpdateStep(index, {
+                                ...step,
+                                benefit:
+                                  newBenefits.length === 1
+                                    ? newBenefits[0]
+                                    : newBenefits,
+                              });
+                            }}
+                          >
+                            🗑️
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      className="mt-1 px-2 py-1 bg-green-700 text-white rounded hover:bg-green-600 text-xs"
+                      onClick={() => {
+                        const newBenefits = Array.isArray(step.benefit)
+                          ? [...step.benefit, ""]
+                          : [step.benefit || "", ""];
                         handleUpdateStep(index, {
                           ...step,
-                          benefit: e.target.value,
-                        })
-                      }
-                      className="text-green-200 w-full bg-green-900/30 rounded p-2"
-                      placeholder="Digite o benefício aqui..."
-                    />
+                          benefit:
+                            newBenefits.length === 1
+                              ? newBenefits[0]
+                              : newBenefits,
+                        });
+                      }}
+                    >
+                      + Adicionar Benefício
+                    </button>
                   </div>
                 )}
 
@@ -394,18 +563,76 @@ export const CreateGuide = () => {
                     <label className="block text-purple-300 font-medium mb-1">
                       🔮 Recomendação:
                     </label>
-                    <input
-                      type="text"
-                      value={step.advice}
-                      onChange={(e) =>
+                    {(Array.isArray(step.advice)
+                      ? step.advice
+                      : [step.advice || ""]
+                    ).map((adviceValue, adviceIdx) => (
+                      <div
+                        key={adviceIdx}
+                        className="flex items-center gap-2 mb-2"
+                      >
+                        <input
+                          type="text"
+                          value={adviceValue}
+                          onChange={(e) => {
+                            const newAdvices = Array.isArray(step.advice)
+                              ? [...step.advice]
+                              : [step.advice || ""];
+                            newAdvices[adviceIdx] = e.target.value;
+                            handleUpdateStep(index, {
+                              ...step,
+                              advice:
+                                newAdvices.length === 1
+                                  ? newAdvices[0]
+                                  : newAdvices,
+                            });
+                          }}
+                          className="text-purple-200 w-full bg-purple-900/30 rounded p-2"
+                          placeholder="Digite a recomendação aqui..."
+                        />
+                        {(Array.isArray(step.advice) ? step.advice.length : 1) >
+                          1 && (
+                          <button
+                            type="button"
+                            className="text-red-400 hover:text-red-300 px-2"
+                            onClick={() => {
+                              const newAdvices = (
+                                Array.isArray(step.advice)
+                                  ? [...step.advice]
+                                  : [step.advice || ""]
+                              ).filter((_, i) => i !== adviceIdx);
+                              handleUpdateStep(index, {
+                                ...step,
+                                advice:
+                                  newAdvices.length === 1
+                                    ? newAdvices[0]
+                                    : newAdvices,
+                              });
+                            }}
+                          >
+                            🗑️
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      className="mt-1 px-2 py-1 bg-purple-700 text-white rounded hover:bg-purple-600 text-xs"
+                      onClick={() => {
+                        const newAdvices = Array.isArray(step.advice)
+                          ? [...step.advice, ""]
+                          : [step.advice || "", ""];
                         handleUpdateStep(index, {
                           ...step,
-                          advice: e.target.value,
-                        })
-                      }
-                      className="text-purple-200 w-full bg-purple-900/30 rounded p-2"
-                      placeholder="Digite a recomendação aqui..."
-                    />
+                          advice:
+                            newAdvices.length === 1
+                              ? newAdvices[0]
+                              : newAdvices,
+                        });
+                      }}
+                    >
+                      + Adicionar Recomendação
+                    </button>
                   </div>
                 )}
 

@@ -23,6 +23,7 @@ import { CreateEquipment } from "./domains/admin/pages/create-equipment";
 import { Newsletter } from "./domains/customer/pages/newsletter";
 import { EditOther } from "./domains/admin/pages/edit-other";
 import { CreateOther } from "./domains/admin/pages/create-other";
+import { TableExperience } from "./domains/customer/pages/table-experience";
 
 export const AppRoutes = () => {
   usePrefetchQuery({ queryKey: [EQUIPMENTS_QUERY_KEY] }, queryClient);
@@ -46,6 +47,7 @@ export const AppRoutes = () => {
       <Route path="/other/:otherCategory" element={<Other />} />
       <Route path="/builds" element={<AllBuilds />} />
       <Route path="/newsletter" element={<Newsletter />} />
+      <Route path="/table-experience" element={<TableExperience />} />
 
       {/* Admin Routes */}
       <Route path="/admin/edit/:name" element={<Edit />} />
