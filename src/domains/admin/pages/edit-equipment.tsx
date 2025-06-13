@@ -90,26 +90,34 @@ export const Edit = () => {
     );
   }
 
+  if (!equipment && !isLoading) {
+    return (
+      <div className="text-center text-red-400 mt-10">
+        Equipamento não encontrado ou categoria inválida.
+      </div>
+    );
+  }
   if (!equipment) {
-    return <div>Equipment not found</div>;
+    return null;
   }
 
   const categories = [
     "sword",
     "dagger",
-    "axe",
-    "mace",
     "bow",
     "staff",
-    "gloves",
     "shield",
     "helmet",
     "chest",
     "legs",
     "boots",
+    "glove",
     "necklace",
     "ring",
     "backpack",
+    "book",
+    "class-abilities",
+    "all",
   ];
   const rarities = ["common", "uncommon", "rare", "epic", "legendary"];
 
