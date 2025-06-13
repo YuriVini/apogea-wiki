@@ -32,7 +32,6 @@ import { useGuides } from "../../../services/guides";
 import { useBuilds } from "../../../services/builds";
 import { useNews } from "../../../services/news";
 import { useAuth } from "../../../context/auth";
-import { Countdown } from "../../../components/countdown";
 
 interface Weapon {
   title: string;
@@ -189,8 +188,6 @@ export const Home = () => {
     <div>
       <Suspense fallback={<div>Loading...</div>}>
         <Header />
-
-        <Countdown />
 
         <main className="max-w-7xl mx-auto p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
