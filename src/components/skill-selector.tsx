@@ -1,7 +1,9 @@
 import { SkillIcon } from "./skill-icon";
 import { useEquipments } from "../services/equipments";
-
 import { useBuilder } from "../context/builder";
+import { useState } from "react";
+import { EquipmentTooltip } from "./equipment-tooltip";
+
 interface SkillSelectorProps {
   isOpen: boolean;
   onClose: () => void;
@@ -19,6 +21,8 @@ export const SkillSelector = ({
 }: SkillSelectorProps) => {
   const { data: equipments = [], isLoading } = useEquipments();
   const { build, setBuild } = useBuilder();
+  const [hoveredEquipment, setHoveredEquipment] =
+    useState<EquipmentsApiTypes.Equipment | null>(null);
 
   if (!isOpen) return null;
 
@@ -70,14 +74,22 @@ export const SkillSelector = ({
         {compatibleEquipment?.length > 0 ? (
           <div className="grid grid-cols-2 gap-4">
             {compatibleEquipment?.map((equipment) => (
-              <button
-                key={equipment?.name}
-                onClick={() => handleSelectEquipment(equipment)}
-                className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-800 transition-colors"
-              >
-                <SkillIcon equipment={equipment} />
-                <span className="text-gray-200">{equipment?.name}</span>
-              </button>
+              <div key={equipment?.name} className="relative">
+                <button
+                  onClick={() => handleSelectEquipment(equipment)}
+                  onMouseEnter={() => setHoveredEquipment(equipment)}
+                  onMouseLeave={() => setHoveredEquipment(null)}
+                  className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-800 transition-colors w-full"
+                >
+                  <SkillIcon equipment={equipment} />
+                  <span className="text-gray-200">{equipment?.name}</span>
+                </button>
+                {hoveredEquipment?.id === equipment.id && (
+                  <div className="absolute left-full ml-2 top-0 z-10">
+                    <EquipmentTooltip equipment={equipment} />
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         ) : (

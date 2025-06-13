@@ -125,7 +125,7 @@ export const TableExperience = () => {
     <div className="min-h-screen bg-gray-900 flex flex-col">
       <Header />
       <main className="flex-1 flex items-center justify-center py-4 px-1">
-        <div className="w-full max-w-4xl mx-auto bg-gray-950/95 rounded-xl shadow-md border border-gray-800 p-4 md:p-6">
+        <div className="w-full max-w-4xl mx-auto bg-gray-800 rounded-xl shadow-md border border-gray-800 p-4 md:p-6">
           <h1 className="text-2xl md:text-3xl font-semibold text-yellow-300 mb-1 text-center">
             Experiência por Nível
           </h1>
@@ -136,26 +136,30 @@ export const TableExperience = () => {
             especial para personagens abaixo do nível 26.
           </p>
 
-          {/* Novo bloco: seleção de nível e exibição dos dados */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
-            <label htmlFor="level-select" className="text-gray-200 font-medium">
-              Escolha seu nível:
-            </label>
-            <input
-              id="level-select"
-              type="number"
-              min={1}
-              max={100}
-              value={selectedLevel}
-              onChange={(e) =>
-                setSelectedLevel(
-                  Math.max(1, Math.min(100, Number(e.target.value))),
-                )
-              }
-              className="w-24 text-center bg-gray-800 text-yellow-200 rounded px-2 py-1 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            />
+          <div className="flex flex-col sm:flex-row mb-6">
+            <div className="flex flex-1 items-center justify-end gap-2">
+              <label
+                htmlFor="level-select"
+                className="text-gray-200 font-medium"
+              >
+                Escolha seu nível:
+              </label>
+              <input
+                id="level-select"
+                type="number"
+                min={1}
+                max={100}
+                value={selectedLevel}
+                onChange={(e) =>
+                  setSelectedLevel(
+                    Math.max(1, Math.min(100, Number(e.target.value))),
+                  )
+                }
+                className="w-24 text-center bg-gray-800 text-yellow-200 rounded px-2 py-1 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              />
+            </div>
             {selectedInfo && (
-              <div className="bg-gray-800/80 rounded px-4 py-2 flex flex-col sm:flex-row gap-2 items-center text-base font-mono shadow">
+              <div className="flex-1 bg-gray-800/80 rounded px-4 py-2 flex flex-col sm:flex-row gap-2 items-center text-base font-mono">
                 <span className="text-yellow-300">
                   Level: <span className="font-bold">{selectedInfo.level}</span>
                 </span>
