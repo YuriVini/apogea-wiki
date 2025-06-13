@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { BuyCoffee } from "./buy-coffe";
 
 export const Footer = () => {
   return (
@@ -83,6 +84,7 @@ export const Footer = () => {
               />
               <span className="font-medium text-lg">Baixar na Steam</span>
             </Link>
+            <BuyCoffee />
           </div>
         </div>
         <div className="text-center mt-8 pt-8 border-t border-gray-700">
