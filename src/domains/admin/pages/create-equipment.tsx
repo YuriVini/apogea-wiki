@@ -67,29 +67,23 @@ export const CreateEquipment = () => {
         [name]: value,
       };
 
-      // Atualiza o tipo automaticamente baseado na categoria
       if (name === "category") {
         const categoryToType: Record<
           EquipmentsApiTypes.CategoryType,
           EquipmentsApiTypes.SlotType
         > = {
-          // Armas
           sword: "weapon",
           dagger: "weapon",
           bow: "weapon",
           staff: "weapon",
-          // Armaduras
           shield: "armor",
           helmet: "armor",
           chest: "armor",
           legs: "armor",
           boots: "armor",
-          // Acessórios
           necklace: "accessory",
           ring: "accessory",
-          // Mochilas
           backpack: "backpack",
-          // Outros tipos necessários para satisfazer o tipo CategoryType
           weapon: "weapon",
           armor: "armor",
           accessory: "accessory",
@@ -100,7 +94,7 @@ export const CreateEquipment = () => {
           glove: "armor",
           book: "spell",
           "class-abilities": "ability",
-          "weapon-staff-bow-dagger-shield-glove": "weapon",
+          "sword-staff-bow-dagger-shield-glove": "weapon",
           all: "weapon",
         };
 

@@ -25,13 +25,13 @@ export const SkillSlot = ({
   const sizeClasses = size === "small" ? "w-8 h-8" : "w-16 h-16";
 
   const slotLabel = category
-    ? category === "weapon-staff-bow-dagger-shield-glove"
+    ? category === "sword-staff-bow-dagger-shield-glove"
       ? category?.split("-")?.join(" ")
       : `${category.charAt(0).toUpperCase() + category.slice(1)} Slot`
     : "Equipment Slot";
 
   const categoryToSort =
-    category === "weapon-staff-bow-dagger-shield-glove"
+    category === "sword-staff-bow-dagger-shield-glove"
       ? (category?.split("-") as EquipmentsApiTypes.CategoryType[])
       : [category];
 
