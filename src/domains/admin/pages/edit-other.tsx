@@ -108,8 +108,9 @@ export const EditOther = () => {
   };
 
   const handleEditOrSave = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+
     if (isEditing) {
-      if (e) e.preventDefault();
       let backendItem = item;
       if (item && typeof item === "object" && "item" in item) {
         backendItem = (item as { item: Other }).item;
@@ -284,7 +285,7 @@ export const EditOther = () => {
               Cancelar
             </Link>
             <button
-              type={isEditing ? "submit" : "button"}
+              type="button"
               onClick={handleEditOrSave}
               className={`px-6 py-3 rounded-md font-semibold transition-colors duration-200 ${
                 isEditing
