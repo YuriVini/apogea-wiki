@@ -103,19 +103,133 @@ export const Edit = () => {
 
   const rarities = ["common", "uncommon", "rare", "epic", "legendary"];
 
-  const isArmorOrAccessory = [
-    "helmet",
-    "chest",
-    "legs",
-    "boots",
-    "necklace",
-    "ring",
-    "backpack",
-  ].includes(equipment.category);
+  // Mapeamento de campos por categoria
+  const categoryFieldsMap: Record<string, string[]> = {
+    sword: [
+      "name",
+      "damage",
+      "attackSpeed",
+      "range",
+      "defense",
+      "attributes",
+      "size",
+      "weight",
+      "dropBy",
+      "buyFrom",
+      "sellTo",
+    ],
+    dagger: [
+      "name",
+      "damage",
+      "attackSpeed",
+      "range",
+      "defense",
+      "attributes",
+      "size",
+      "weight",
+      "dropBy",
+      "buyFrom",
+      "sellTo",
+    ],
+    bow: [
+      "name",
+      "damage",
+      "attackSpeed",
+      "range",
+      "defense",
+      "attributes",
+      "size",
+      "weight",
+      "dropBy",
+      "buyFrom",
+      "sellTo",
+    ],
+    staff: [
+      "name",
+      "damage",
+      "attackSpeed",
+      "range",
+      "defense",
+      "attributes",
+      "size",
+      "weight",
+      "dropBy",
+      "buyFrom",
+      "sellTo",
+    ],
+    shield: [
+      "name",
+      "defense",
+      "attributes",
+      "weight",
+      "dropBy",
+      "buyFrom",
+      "sellTo",
+    ],
+    helmet: [
+      "name",
+      "armor",
+      "attributes",
+      "weight",
+      "dropBy",
+      "buyFrom",
+      "sellTo",
+    ],
+    chest: [
+      "name",
+      "armor",
+      "attributes",
+      "weight",
+      "dropBy",
+      "buyFrom",
+      "sellTo",
+    ],
+    legs: [
+      "name",
+      "armor",
+      "attributes",
+      "weight",
+      "dropBy",
+      "buyFrom",
+      "sellTo",
+    ],
+    boots: [
+      "name",
+      "armor",
+      "attributes",
+      "weight",
+      "dropBy",
+      "buyFrom",
+      "sellTo",
+    ],
+    glove: [
+      "name",
+      "armor",
+      "attributes",
+      "weight",
+      "dropBy",
+      "buyFrom",
+      "sellTo",
+    ],
+    necklace: ["name", "attributes", "weight", "dropBy", "buyFrom", "sellTo"],
+    ring: ["name", "attributes", "weight", "dropBy", "buyFrom", "sellTo"],
+    backpack: ["name", "attributes", "weight", "dropBy", "buyFrom", "sellTo"],
+    book: ["name", "attributes", "weight", "dropBy", "buyFrom", "sellTo"],
+    "class-abilities": [
+      "name",
+      "attributes",
+      "weight",
+      "dropBy",
+      "buyFrom",
+      "sellTo",
+    ],
+    all: ["name", "attributes", "weight", "dropBy", "buyFrom", "sellTo"],
+  };
 
-  const fieldsToDisplay = isArmorOrAccessory
-    ? ["name", "armor", "attributes", "weight", "dropBy", "buyFrom", "sellTo"]
-    : Object.keys(equipment).filter((key) => key !== "id");
+  // Determina os campos a exibir com base na categoria selecionada
+  const fieldsToDisplay =
+    categoryFieldsMap[equipment.category] ||
+    Object.keys(equipment).filter((key) => key !== "id");
 
   const typeToCategories: Record<
     EquipmentsApiTypes.SlotType,

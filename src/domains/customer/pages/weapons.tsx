@@ -37,6 +37,7 @@ export const Weapons = () => {
     "ring",
     "backpack",
   ].includes(weaponCategory || "");
+  const isShield = weaponCategory === "shield";
 
   function renderEditHeader() {
     return (
@@ -152,7 +153,7 @@ export const Weapons = () => {
                     <th className="text-center p-4 border-r border-gray-600 font-semibold">
                       Nome
                     </th>
-                    {!isArmorOrAccessory ? (
+                    {!isArmorOrAccessory && !isShield ? (
                       <>
                         <th className="text-center p-4 border-r border-gray-600 font-semibold">
                           Dano
@@ -169,13 +170,13 @@ export const Weapons = () => {
                       </>
                     ) : (
                       <th className="text-center p-4 border-r border-gray-600 font-semibold">
-                        Armor
+                        {isShield ? "Defesa" : "Armor"}
                       </th>
                     )}
                     <th className="text-center p-4 border-r border-gray-600 font-semibold">
                       Atributos
                     </th>
-                    {!isArmorOrAccessory && (
+                    {!isArmorOrAccessory && !isShield && (
                       <th className="text-center p-4 border-r border-gray-600 font-semibold">
                         Tamanho
                       </th>
@@ -212,7 +213,7 @@ export const Weapons = () => {
                       <td className="p-4 border-r border-gray-600 text-yellow-400 font-medium text-center">
                         {weapon.name}
                       </td>
-                      {!isArmorOrAccessory ? (
+                      {!isArmorOrAccessory && !isShield ? (
                         <>
                           <td className="p-4 border-r border-gray-600 text-green-400 text-center">
                             {weapon.damage}
@@ -229,13 +230,13 @@ export const Weapons = () => {
                         </>
                       ) : (
                         <td className="p-4 border-r border-gray-600 text-purple-400 text-center">
-                          {weapon.armor}
+                          {isShield ? weapon.defense : weapon.armor}
                         </td>
                       )}
                       <td className="p-4 border-r border-gray-600 text-gray-300 text-center">
                         {weapon.attributes}
                       </td>
-                      {!isArmorOrAccessory && (
+                      {!isArmorOrAccessory && !isShield && (
                         <td className="p-4 border-r border-gray-600 text-gray-300 text-center">
                           {weapon.size}
                         </td>
