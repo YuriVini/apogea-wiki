@@ -32,6 +32,9 @@ export const SkillSelector = ({
         item.type as EquipmentsApiTypes.CategoryType,
       );
     }
+    if (type === "backpack") {
+      return item.type === "backpack" || item.category === "backpack";
+    }
     return (
       item.type === type &&
       category?.includes(item.category as EquipmentsApiTypes.CategoryType)
