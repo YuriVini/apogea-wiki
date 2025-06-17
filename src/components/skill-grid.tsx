@@ -53,7 +53,7 @@ export const SkillsGrid = ({ buildGrid }: SkillsGridProps) => {
 
           <div className="space-y-4 self-center">
             <SkillSlot
-              type="accessory"
+              type="backpack"
               slot="backpack"
               category="backpack"
               equipment={buildGrid?.backpack}

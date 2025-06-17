@@ -101,24 +101,6 @@ export const Edit = () => {
     return null;
   }
 
-  const categories = [
-    "sword",
-    "dagger",
-    "bow",
-    "staff",
-    "shield",
-    "helmet",
-    "chest",
-    "legs",
-    "boots",
-    "glove",
-    "necklace",
-    "ring",
-    "backpack",
-    "book",
-    "class-abilities",
-    "all",
-  ];
   const rarities = ["common", "uncommon", "rare", "epic", "legendary"];
 
   const isArmorOrAccessory = [
@@ -134,6 +116,19 @@ export const Edit = () => {
   const fieldsToDisplay = isArmorOrAccessory
     ? ["name", "armor", "attributes", "weight", "dropBy", "buyFrom", "sellTo"]
     : Object.keys(equipment).filter((key) => key !== "id");
+
+  const typeToCategories: Record<
+    EquipmentsApiTypes.SlotType,
+    EquipmentsApiTypes.CategoryType[]
+  > = {
+    weapon: ["sword", "dagger", "bow", "staff"],
+    armor: ["glove", "shield", "helmet", "chest", "legs", "boots"],
+    accessory: ["necklace", "ring"],
+    spell: ["book"],
+    ability: ["class-abilities"],
+    backpack: ["backpack"],
+    all: ["all"],
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
@@ -183,68 +178,104 @@ export const Edit = () => {
           </div>
           <div className="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {fieldsToDisplay.map((key) => {
-                const value =
-                  equipment[key as keyof EquipmentsApiTypes.Equipment];
-                return (
-                  <div key={key}>
-                    <label className="block text-gray-300 mb-2 font-semibold">
-                      {key}
-                    </label>
-                    {key === "category" ? (
-                      <select
-                        value={value as string}
-                        onChange={(e) =>
-                          handleInputChange(
-                            key as keyof EquipmentsApiTypes.Equipment,
-                            e.target.value,
-                          )
-                        }
-                        disabled={!isEditing}
-                        className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
-                      >
-                        {categories.map((category) => (
-                          <option key={category} value={category}>
-                            {category}
-                          </option>
-                        ))}
-                      </select>
-                    ) : key === "rarity" ? (
-                      <select
-                        value={value as string}
-                        onChange={(e) =>
-                          handleInputChange(
-                            key as keyof EquipmentsApiTypes.Equipment,
-                            e.target.value,
-                          )
-                        }
-                        disabled={!isEditing}
-                        className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
-                      >
-                        {rarities.map((rarity) => (
-                          <option key={rarity} value={rarity}>
-                            {rarity}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <input
-                        type="text"
-                        value={value as string}
-                        onChange={(e) =>
-                          handleInputChange(
-                            key as keyof EquipmentsApiTypes.Equipment,
-                            e.target.value,
-                          )
-                        }
-                        disabled={!isEditing}
-                        className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
-                        placeholder={`Enter ${key}`}
-                      />
-                    )}
-                  </div>
-                );
-              })}
+              <div>
+                <label className="block text-gray-300 mb-2 font-semibold">
+                  type
+                </label>
+                <select
+                  value={equipment.type}
+                  onChange={(e) => {
+                    const slotType = e.target
+                      .value as EquipmentsApiTypes.SlotType;
+                    const firstCategory = typeToCategories[
+                      slotType
+                    ][0] as EquipmentsApiTypes.CategoryType;
+                    setEquipment(
+                      (prev) =>
+                        prev && {
+                          ...prev,
+                          type: slotType,
+                          category: firstCategory,
+                        },
+                    );
+                  }}
+                  disabled={!isEditing}
+                  className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
+                >
+                  {Object.keys(typeToCategories).map((type) => (
+                    <option key={type} value={type}>
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-gray-300 mb-2 font-semibold">
+                  category
+                </label>
+                <select
+                  value={equipment.category}
+                  onChange={(e) =>
+                    handleInputChange("category", e.target.value)
+                  }
+                  disabled={!isEditing}
+                  className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
+                >
+                  {typeToCategories[
+                    equipment.type as EquipmentsApiTypes.SlotType
+                  ].map((category) => (
+                    <option key={category} value={category}>
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {fieldsToDisplay
+                .filter((key) => key !== "type" && key !== "category")
+                .map((key) => {
+                  const value =
+                    equipment[key as keyof EquipmentsApiTypes.Equipment];
+                  return (
+                    <div key={key}>
+                      <label className="block text-gray-300 mb-2 font-semibold">
+                        {key}
+                      </label>
+                      {key === "rarity" ? (
+                        <select
+                          value={value as string}
+                          onChange={(e) =>
+                            handleInputChange(
+                              key as keyof EquipmentsApiTypes.Equipment,
+                              e.target.value,
+                            )
+                          }
+                          disabled={!isEditing}
+                          className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
+                        >
+                          {rarities.map((rarity) => (
+                            <option key={rarity} value={rarity}>
+                              {rarity}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          type="text"
+                          value={value as string}
+                          onChange={(e) =>
+                            handleInputChange(
+                              key as keyof EquipmentsApiTypes.Equipment,
+                              e.target.value,
+                            )
+                          }
+                          disabled={!isEditing}
+                          className="w-full bg-gray-700 text-white rounded-md p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-200"
+                          placeholder={`Enter ${key}`}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>
