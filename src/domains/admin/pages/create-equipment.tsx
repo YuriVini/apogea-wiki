@@ -47,9 +47,9 @@ export const CreateEquipment = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const result = await createEquipment(formData);
+      await createEquipment(formData);
       toast.success("Equipamento criado com sucesso!");
-      navigate(`/equipments/${result.id}`);
+      navigate("/");
     } catch {
       toast.error("Erro ao criar equipamento");
     }
