@@ -62,47 +62,21 @@ export const CreateEquipment = () => {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => {
-      const newFormData = {
+      if (name === "type") {
+        const slotType = value as EquipmentsApiTypes.SlotType;
+        const firstCategory = typeToCategories[
+          slotType
+        ][0] as EquipmentsApiTypes.CategoryType;
+        return {
+          ...prev,
+          type: slotType,
+          category: firstCategory,
+        };
+      }
+      return {
         ...prev,
         [name]: value,
       };
-
-      if (name === "category") {
-        const categoryToType: Record<
-          EquipmentsApiTypes.CategoryType,
-          EquipmentsApiTypes.SlotType
-        > = {
-          sword: "weapon",
-          dagger: "weapon",
-          bow: "weapon",
-          staff: "weapon",
-          shield: "armor",
-          helmet: "armor",
-          chest: "armor",
-          legs: "armor",
-          boots: "armor",
-          necklace: "accessory",
-          ring: "accessory",
-          backpack: "backpack",
-          weapon: "weapon",
-          armor: "armor",
-          accessory: "accessory",
-          spell: "spell",
-          ability: "ability",
-          leftHand: "weapon",
-          rightHand: "weapon",
-          glove: "armor",
-          book: "spell",
-          "class-abilities": "ability",
-          "sword-staff-bow-dagger-shield-glove": "weapon",
-          all: "weapon",
-        };
-
-        newFormData.type =
-          categoryToType[value as EquipmentsApiTypes.CategoryType] || prev.type;
-      }
-
-      return newFormData;
     });
   };
 
